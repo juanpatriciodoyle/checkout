@@ -31,7 +31,7 @@ const CheckoutGrid = styled.div`
     margin: 0 auto;
 
     @media (min-width: 1024px) {
-        grid-template-columns: 3fr 2fr; /* 60/40 split */
+        grid-template-columns: 3fr 2fr;
     }
 `;
 
