@@ -17,7 +17,7 @@ export interface ShippingMethodI {
     name: string;
     cost: number;
     eta: string;
-    icon: React.FC<LucideProps>;
+    icon: React.ComponentType<any>;
     recommended?: boolean;
 }
 

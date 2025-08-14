@@ -1,15 +1,15 @@
-import React, { useState, ReactNode, useEffect } from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { appTexts, VIVRE_MEMBER_DATA, SHIPPING_OPTIONS } from '../../constants/text';
-import { OrderData, ShippingMethodI, Coupon } from '../../types';
+import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
+import {appTexts, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
+import {Coupon, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
-import { OrderSummary } from '../OrderSummary/OrderSummary';
-import { YourCart } from '../Steps/YourCart/YourCart';
-import { DeliveryInfo } from '../Steps/ShippingInformation/DeliveryInfo';
-import { ShippingMethod } from '../Steps/ShippingMethod/ShippingMethod';
-import { Payment } from '../Steps/Payment/Payment';
-import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal';
+import {OrderSummary} from '../OrderSummary/OrderSummary';
+import {YourCart} from '../Steps/YourCart/YourCart';
+import {DeliveryInfo} from '../Steps/ShippingInformation/DeliveryInfo';
+import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
+import {Payment} from '../Steps/Payment/Payment';
+import {ConfirmationModal} from '../ConfirmationModal/ConfirmationModal';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -18,7 +18,7 @@ type SafeAnimatePresenceProps = AnimatePresenceProps & {
 const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
 
 const PageContainer = styled.div`
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
+    background-color: ${({theme}) => theme.colors.bgSubtle};
     min-height: 100vh;
     padding: 2rem;
 `;
@@ -50,10 +50,10 @@ const RightColumn = styled.div`
 `;
 
 const steps = [
-    { id: 1, title: appTexts.step1Title },
-    { id: 2, title: appTexts.step2Title },
-    { id: 3, title: appTexts.step3Title },
-    { id: 4, title: appTexts.step4Title },
+    {id: 1, title: appTexts.step1Title},
+    {id: 2, title: appTexts.step2Title},
+    {id: 3, title: appTexts.step3Title},
+    {id: 4, title: appTexts.step4Title},
 ];
 
 const standardShippingDefault = SHIPPING_OPTIONS.find(option => option.id === 'standard') || SHIPPING_OPTIONS[0];
@@ -89,9 +89,9 @@ const initialOrderData: OrderData = {
     ],
     subtotal: 179.98,
     shipping: standardShippingDefault,
-    vivreDiscount: { applied: false, discountPercentage: 0.30 },
+    vivreDiscount: {applied: false, discountPercentage: 0.30},
     total: 179.98 + standardShippingDefault.cost,
-    contactInfo: { name: '', email: '', address: '', city: '', zip: '', phone: '' },
+    contactInfo: {name: '', email: '', address: '', city: '', zip: '', phone: ''},
     paymentMethod: 'card',
     trackingNumber: 'VIV-123-XYZ',
     estimatedArrival: 'August 15, 2025',
@@ -150,7 +150,7 @@ export const CheckoutPage = () => {
     };
 
     const handleContactInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setOrderData((prev) => ({
             ...prev,
             contactInfo: {
@@ -166,7 +166,7 @@ export const CheckoutPage = () => {
             setOrderData(prev => ({
                 ...prev,
                 contactInfo: VIVRE_MEMBER_DATA,
-                vivreDiscount: { ...prev.vivreDiscount, applied: true },
+                vivreDiscount: {...prev.vivreDiscount, applied: true},
             }));
             setIsLoggingIn(false);
             handleContinue(3);
@@ -174,7 +174,7 @@ export const CheckoutPage = () => {
     }
 
     const handleShippingChange = (shippingMethod: ShippingMethodI) => {
-        setOrderData(prev => ({ ...prev, shipping: shippingMethod }));
+        setOrderData(prev => ({...prev, shipping: shippingMethod}));
     }
 
     const handleDateChange = (date: Date) => {
@@ -182,13 +182,13 @@ export const CheckoutPage = () => {
     }
 
     const handlePaymentMethodChange = (method: string) => {
-        setOrderData(prev => ({ ...prev, paymentMethod: method }));
+        setOrderData(prev => ({...prev, paymentMethod: method}));
     }
 
     const handleApplyCoupon = (code: string) => {
         if (code.toUpperCase() === 'VIVRE50') {
-            const newCoupon: Coupon = { code: 'Vivre50', discountPercentage: 0.50 };
-            setOrderData(prev => ({ ...prev, coupon: newCoupon }));
+            const newCoupon: Coupon = {code: 'Vivre50', discountPercentage: 0.50};
+            setOrderData(prev => ({...prev, coupon: newCoupon}));
         }
     }
 
@@ -268,7 +268,7 @@ export const CheckoutPage = () => {
                         </SafeAnimatePresence>
                     </LeftColumn>
                     <RightColumn>
-                        <OrderSummary orderData={orderData} />
+                        <OrderSummary orderData={orderData}/>
                     </RightColumn>
                 </CheckoutGrid>
             </PageContainer>

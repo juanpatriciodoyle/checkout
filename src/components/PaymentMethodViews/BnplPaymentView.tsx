@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const BnplContainer = styled.div`
     text-align: center;
     padding: 2rem 1rem;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
 `;
 
 const ProviderLogo = styled.div`
@@ -13,6 +13,7 @@ const ProviderLogo = styled.div`
     font-weight: bold;
     margin-bottom: 1rem;
     /* In a real app, this would be an <img /> tag */
+
     &::before {
         content: 'KLARNA.'; /* Placeholder for logo */
         font-family: 'Georgia', serif;
@@ -30,11 +31,11 @@ const Headline = styled.h4`
 
 const BodyText = styled.p`
     margin: 0 0 1.5rem;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const LearnMoreLink = styled.a`
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.primary};
     text-decoration: none;
     font-weight: 600;
 
@@ -46,7 +47,7 @@ const LearnMoreLink = styled.a`
 export const BnplPaymentView = () => {
     return (
         <BnplContainer>
-            <ProviderLogo />
+            <ProviderLogo/>
             <Headline>Pay in 3 interest-free installments.</Headline>
             <BodyText>You will be redirected to Klarna to securely complete your purchase.</BodyText>
             <LearnMoreLink href="#" target="_blank" rel="noopener noreferrer">Learn More</LearnMoreLink>

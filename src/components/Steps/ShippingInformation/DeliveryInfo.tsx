@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Sparkles, Loader } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { ContactInfo } from '../../../types';
 import { appTexts } from '../../../constants/text';
 import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
+import { ReactComponent as KetcdnSvg } from '../../../assets/icons/keycdn.svg';
 
 const Button = styled.button`
     border: none;
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.borderRadius};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
@@ -56,15 +57,21 @@ const FullWidthField = styled.div`
 `;
 
 const LoaderIcon = styled(Loader)`
-  animation: spin 1s linear infinite;
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
+    animation: spin 1s linear infinite;
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
     }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+`;
+
+const KetcdnIcon = styled(KetcdnSvg)`
+    width: 20px;
+    height: 20px;
+    color: ${({ theme }) => theme.colors.primary};
 `;
 
 interface StepDeliveryInfoProps {
@@ -92,7 +99,7 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                     </>
                 ) : (
                     <>
-                        <Sparkles size={20} />
+                        <KetcdnIcon />
                         {appTexts.loginWithVivre}
                     </>
                 )}

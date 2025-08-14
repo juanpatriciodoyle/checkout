@@ -1,5 +1,8 @@
 import {ShippingMethodI} from "../types";
-import {PackageCheck, Rocket, Truck} from 'lucide-react';
+import {ReactComponent as BoxSvg} from '../assets/icons/box.svg';
+import {ReactComponent as DroneSvg} from '../assets/icons/drone.svg';
+import {ReactComponent as TruckSvg} from '../assets/icons/truck.svg';
+
 
 export const appTexts = {
     title: 'Checkout Process',
@@ -56,9 +59,9 @@ export const appTexts = {
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
-    {id: 'fast', name: 'Fast Delivery', cost: 27.99, eta: 'Tomorrow', icon: Rocket, recommended: true},
-    {id: 'standard', name: 'Standard Delivery', cost: 9.99, eta: 'Next Week', icon: Truck},
-    {id: 'scheduled', name: 'Scheduled Delivery', cost: 5.99, eta: 'Pick a date', icon: PackageCheck},
+    {id: 'fast', name: 'Fast Delivery', cost: 27.99, eta: 'Tomorrow', icon: DroneSvg, recommended: true},
+    {id: 'standard', name: 'Standard Delivery', cost: 9.99, eta: 'Next Week', icon: TruckSvg},
+    {id: 'scheduled', name: 'Scheduled Delivery', cost: 5.99, eta: 'Pick a date', icon: BoxSvg},
 ];
 
 export const VIVRE_MEMBER_DATA = {

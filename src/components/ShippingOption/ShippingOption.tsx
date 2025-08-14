@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { addDays, format } from 'date-fns';
-import { DayPicker } from 'react-day-picker';
+import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
+import {addDays, format} from 'date-fns';
+import {DayPicker} from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { ShippingMethodI } from '../../types';
-import { appTexts } from '../../constants/text';
-import { InfoNotice } from '../InfoNotice/InfoNotice';
+import {ShippingMethodI} from '../../types';
+import {appTexts} from '../../constants/text';
+import {InfoNotice} from '../InfoNotice/InfoNotice';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -20,20 +20,20 @@ const OptionLabel = styled.label<{ isSelected: boolean }>`
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    border: 2px solid ${({ isSelected, theme }) => isSelected ? theme.colors.primary : theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 2px solid ${({isSelected, theme}) => isSelected ? theme.colors.primary : theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
     cursor: pointer;
     transition: border-color 0.2s ease-in-out;
-    background-color: ${({ theme }) => theme.colors.bgWhite};
+    background-color: ${({theme}) => theme.colors.bgWhite};
 
     &:hover {
-        border-color: ${({ theme }) => theme.colors.primary};
+        border-color: ${({theme}) => theme.colors.primary};
     }
 `;
 
 const RadioButton = styled.input`
     /* Using accent-color for modern browsers to style the radio button */
-    accent-color: ${({ theme }) => theme.colors.primary};
+    accent-color: ${({theme}) => theme.colors.primary};
     width: 20px;
     height: 20px;
     margin: 0;
@@ -61,12 +61,12 @@ const Price = styled.span`
 `;
 
 const DotSeparator = styled.span`
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const RecommendedChip = styled.div`
-    background-color: ${({ theme }) => theme.colors.successLight};
-    color: ${({ theme }) => theme.colors.success};
+    background-color: ${({theme}) => theme.colors.successLight};
+    color: ${({theme}) => theme.colors.success};
     font-size: 0.75rem;
     font-weight: bold;
     padding: 0.2rem 0.6rem;
@@ -75,16 +75,23 @@ const RecommendedChip = styled.div`
 
 const Description = styled.div`
     font-size: 0.875rem;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const IconWrapper = styled.div`
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.primary};
     border-radius: 4px;
     padding: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 42px;
+    height: 42px;
+
+    svg {
+        width: 28px;
+        height: 28px;
+    }
 `;
 
 const ConditionalContentWrapper = styled(motion.div)`
@@ -123,7 +130,7 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
         return option.eta;
     };
 
-    const disabledDays = [{ from: new Date(0), to: addDays(today, 7) }];
+    const disabledDays = [{from: new Date(0), to: addDays(today, 7)}];
     const showConditionalContent = isSelected && (option.id === 'fast' || option.id === 'scheduled');
 
     return (
@@ -145,16 +152,16 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                     <Description>{getDeliveryDate()}</Description>
                 </MainContent>
                 <IconWrapper>
-                    <Icon size={28} />
+                    <Icon/>
                 </IconWrapper>
             </OptionLabel>
             <SafeAnimatePresence>
                 {showConditionalContent && (
                     <ConditionalContentWrapper
-                        initial={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
-                        animate={{ opacity: 1, height: 'auto', paddingBottom: '0' }}
-                        exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: '0rem' }}
-                        transition={{ duration: 0.3 }}
+                        initial={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
+                        animate={{opacity: 1, height: 'auto', paddingBottom: '0'}}
+                        exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: '0rem'}}
+                        transition={{duration: 0.3}}
                     >
                         {option.id === 'fast' && <InfoNotice>{appTexts.droneInfo}</InfoNotice>}
                         {option.id === 'scheduled' && (

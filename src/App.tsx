@@ -2,7 +2,7 @@ import React from 'react';
 import {CheckoutPage} from './components/CheckoutPage/CheckoutPage';
 
 function App() {
-    return <CheckoutPage />;
+    return <CheckoutPage/>;
 }
 
 export default App;

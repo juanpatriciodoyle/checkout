@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { Trash2 } from 'lucide-react';
-import { CartItem as CartItemType } from '../../types';
+import {motion} from 'framer-motion';
+import {Trash2} from 'lucide-react';
+import {CartItem as CartItemType} from '../../types';
 
 const ItemContainer = styled(motion.div)`
     display: grid;
@@ -10,7 +10,7 @@ const ItemContainer = styled(motion.div)`
     align-items: center;
     gap: 16px;
     padding: 16px 0;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-bottom: 1px solid ${({theme}) => theme.colors.borderColor};
 
     &:last-child {
         border-bottom: none;
@@ -31,14 +31,14 @@ const ItemName = styled.h4`
     margin: 0;
     font-size: 16px;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.textMain};
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const ItemDescription = styled.p`
     margin: 0.25rem 0 0;
     font-size: 14px;
     font-weight: 400;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const ColorSelector = styled.div`
@@ -63,7 +63,7 @@ const ColorSwatchInput = styled.input`
     cursor: pointer;
 
     &:checked + div {
-        outline: 3px solid ${({ theme }) => theme.colors.primary};
+        outline: 3px solid ${({theme}) => theme.colors.primary};
         outline-offset: 2px;
         transition: outline-offset 0.1s ease-in-out, outline 0.1s ease-in-out;
     }
@@ -73,8 +73,8 @@ const ColorSwatchVisual = styled.div<{ color: string }>`
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-color: ${({ color }) => color};
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    background-color: ${({color}) => color};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
     transition: transform 0.2s ease-in-out;
 
     &:hover {
@@ -92,7 +92,7 @@ const PriceAndActions = styled.div`
 const ItemPrice = styled.span`
     font-size: 16px;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.textMain};
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const RemoveButton = styled.button`
@@ -100,7 +100,7 @@ const RemoveButton = styled.button`
     border: none;
     cursor: pointer;
     padding: 0;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
     transition: color 0.2s;
     display: inline-flex;
 
@@ -110,7 +110,7 @@ const RemoveButton = styled.button`
 `;
 
 const itemVariants = {
-    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+    exit: {opacity: 0, x: -50, transition: {duration: 0.3}},
 };
 
 interface CartItemProps {
@@ -119,14 +119,14 @@ interface CartItemProps {
     onRemove: (itemId: number) => void;
 }
 
-export const CartItem: React.FC<CartItemProps> = ({ item, onColorChange, onRemove }) => {
+export const CartItem: React.FC<CartItemProps> = ({item, onColorChange, onRemove}) => {
     return (
         <ItemContainer
             variants={itemVariants}
             exit="exit"
             layout
         >
-            <ItemImage src={item.image} alt={item.name} />
+            <ItemImage src={item.image} alt={item.name}/>
             <ItemDetails>
                 <ItemName>{item.name}</ItemName>
                 <ItemDescription>{item.description}</ItemDescription>
@@ -141,14 +141,14 @@ export const CartItem: React.FC<CartItemProps> = ({ item, onColorChange, onRemov
                             checked={item.color === color}
                             onChange={() => onColorChange(item.id, color)}
                         />
-                        <ColorSwatchVisual color={color} />
+                        <ColorSwatchVisual color={color}/>
                     </ColorSwatchLabel>
                 ))}
             </ColorSelector>
             <PriceAndActions>
                 <ItemPrice>£{item.price.toFixed(2)}</ItemPrice>
                 <RemoveButton onClick={() => onRemove(item.id)}>
-                    <Trash2 size={18} />
+                    <Trash2 size={18}/>
                 </RemoveButton>
             </PriceAndActions>
         </ItemContainer>

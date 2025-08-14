@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ShippingMethodI as ShippingMethodType } from '../../../types';
-import { ShippingOption } from '../../ShippingOption/ShippingOption';
-import { SHIPPING_OPTIONS, appTexts } from '../../../constants/text';
+import {ShippingMethodI as ShippingMethodType} from '../../../types';
+import {ShippingOption} from '../../ShippingOption/ShippingOption';
+import {appTexts, SHIPPING_OPTIONS} from '../../../constants/text';
 
 const OptionsContainer = styled.div`
     display: flex;
@@ -11,25 +11,25 @@ const OptionsContainer = styled.div`
 `;
 
 const Button = styled.button`
-  border: none;
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+    border: none;
+    border-radius: ${({theme}) => theme.borderRadius};
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 `;
 
 const ContinueButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.bgWhite};
-  
-  &:hover {
-    opacity: 0.9;
-  }
+    background-color: ${({theme}) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.bgWhite};
+
+    &:hover {
+        opacity: 0.9;
+    }
 `;
 
 const ButtonWrapper = styled.div`

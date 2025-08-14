@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { animate } from 'framer-motion';
+import React, {useEffect, useRef} from 'react';
+import {animate} from 'framer-motion';
 
 interface AnimatedNumberProps {
     value: number;
@@ -7,7 +7,7 @@ interface AnimatedNumberProps {
 
 const formatCurrency = (value: number) => `£${value.toFixed(2)}`;
 
-export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value }) => {
+export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({value}) => {
     const nodeRef = useRef<HTMLSpanElement>(null);
     const isInitialRender = useRef(true);
 
@@ -34,5 +34,5 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value }) => {
         return () => controls.stop();
     }, [value]);
 
-    return <span ref={nodeRef} />;
+    return <span ref={nodeRef}/>;
 };

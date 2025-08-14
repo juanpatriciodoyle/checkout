@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Smartphone } from 'lucide-react';
+import {Smartphone} from 'lucide-react';
 
 const NoticeContainer = styled.div`
     display: flex;
@@ -8,18 +8,18 @@ const NoticeContainer = styled.div`
     align-items: center;
     text-align: center;
     padding: 2rem 1rem;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
 `;
 
 const IconWrapper = styled.div`
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.primary};
     margin-bottom: 1rem;
 `;
 
 const NoticeText = styled.p`
     margin: 0;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
     max-width: 400px;
 `;
 
@@ -27,10 +27,11 @@ export const DigitalWalletView = () => {
     return (
         <NoticeContainer>
             <IconWrapper>
-                <Smartphone size={40} />
+                <Smartphone size={40}/>
             </IconWrapper>
             <NoticeText>
-                After clicking 'Pay Securely', you will be prompted on your device to confirm the payment with GPay / Apple Pay.
+                After clicking 'Pay Securely', you will be prompted on your device to confirm the payment with GPay /
+                Apple Pay.
             </NoticeText>
         </NoticeContainer>
     );

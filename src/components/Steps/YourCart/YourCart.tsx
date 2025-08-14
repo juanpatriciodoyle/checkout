@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { CartItem as CartItemType } from '../../../types';
-import { CartItem } from '../../CartItem/CartItem';
-import { appTexts } from '../../../constants/text';
+import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
+import {CartItem as CartItemType} from '../../../types';
+import {CartItem} from '../../CartItem/CartItem';
+import {appTexts} from '../../../constants/text';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -20,10 +20,10 @@ const ItemListContainer = styled(motion.div)`
 `;
 
 const ContinueButton = styled.button`
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.bgWhite};
+    background-color: ${({theme}) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.bgWhite};
     border: none;
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.borderRadius};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

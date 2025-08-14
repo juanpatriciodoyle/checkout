@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Copy } from 'lucide-react';
+import {Copy} from 'lucide-react';
 
 const CryptoContainer = styled.div`
     display: flex;
@@ -8,20 +8,20 @@ const CryptoContainer = styled.div`
     align-items: center;
     gap: 1.5rem;
     padding: 2rem 1rem;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
 `;
 
 const QrCodePlaceholder = styled.div`
     width: 150px;
     height: 150px;
     background-color: #f0f0f0;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.8rem;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const WalletAddressWrapper = styled.div`
@@ -32,22 +32,22 @@ const WalletAddressWrapper = styled.div`
 
 const AddressInput = styled.input`
     flex-grow: 1;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius} 0 0 ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius} 0 0 ${({theme}) => theme.borderRadius};
     padding: 0.75rem;
     font-size: 0.875rem;
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
+    background-color: ${({theme}) => theme.colors.bgSubtle};
     font-family: monospace;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
     border-right: none;
 `;
 
 const CopyButton = styled.button`
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({theme}) => theme.colors.primary};
     color: white;
     border: none;
     padding: 0 1rem;
-    border-radius: 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0;
+    border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius} 0;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -69,9 +69,9 @@ export const CryptoPaymentView = () => {
         <CryptoContainer>
             <QrCodePlaceholder>QR Code</QrCodePlaceholder>
             <WalletAddressWrapper>
-                <AddressInput type="text" readOnly value={walletAddress} />
+                <AddressInput type="text" readOnly value={walletAddress}/>
                 <CopyButton onClick={handleCopy}>
-                    <Copy size={16} /> Copy
+                    <Copy size={16}/> Copy
                 </CopyButton>
             </WalletAddressWrapper>
         </CryptoContainer>
