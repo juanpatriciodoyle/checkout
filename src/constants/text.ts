@@ -1,5 +1,5 @@
-import {ContactInfo, ShippingMethodI} from "../types";
-import {PackageCheck, Rocket, Truck} from 'lucide-react';
+import { ContactInfo, ShippingMethodI } from "../types";
+import { PackageCheck, Rocket, Truck } from 'lucide-react';
 
 export const appTexts = {
     title: 'Checkout Process',
@@ -33,6 +33,7 @@ export const appTexts = {
     labelAddress: 'Address',
     labelCity: 'City',
     labelZip: 'ZIP Code',
+    labelPhone: 'Phone',
 
     recommended: 'Recommended',
 
@@ -57,15 +58,16 @@ export const appTexts = {
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
-    {id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true},
-    {id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck},
-    {id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck},
+    { id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true },
+    { id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck },
+    { id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck },
 ];
 
-export const KATE_CRESTWELL_DATA: ContactInfo = {
-    name: 'Kate Crestwell',
-    email: 'kate.c@vivre.com',
-    address: '123 Wellness Lane',
-    city: 'San Francisco',
-    zip: '94105',
+export const VIVRE_MEMBER_DATA = {
+    name: "Kate Crestwell",
+    email: "kchrestwell@gmail.com",
+    address: "10 Downing Street, London",
+    city: "London",
+    zip: "SW1A 2AA",
+    phone: "(020) 1234 4321"
 };

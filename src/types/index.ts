@@ -20,9 +20,9 @@ export interface ShippingMethodI {
     recommended?: boolean;
 }
 
-export interface Discount {
-    name: string;
-    amount: number;
+export interface VivreDiscount {
+    applied: boolean;
+    discountPercentage: number;
 }
 
 export interface Coupon {
@@ -36,17 +36,17 @@ export interface ContactInfo {
     address: string;
     city: string;
     zip: string;
+    phone: string;
 }
 
 export interface OrderData {
     items: CartItem[];
     subtotal: number;
     shipping: ShippingMethodI;
-    discount: Discount;
+    vivreDiscount: VivreDiscount;
     coupon?: Coupon;
     total: number;
     contactInfo?: ContactInfo;
-    isVivreMember: boolean;
     paymentMethod: string;
     trackingNumber: string;
     estimatedArrival: string;

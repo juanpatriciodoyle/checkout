@@ -1,8 +1,8 @@
 import React, { useState, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS } from '../../constants/text';
-import { OrderData, ShippingMethodI, Coupon, CartItem } from '../../types';
+import { appTexts, VIVRE_MEMBER_DATA, SHIPPING_OPTIONS } from '../../constants/text';
+import { OrderData, ShippingMethodI, Coupon } from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import { OrderSummary } from '../OrderSummary/OrderSummary';
 import { YourCart } from '../Steps/YourCart/YourCart';
@@ -79,10 +79,9 @@ const initialOrderData: OrderData = {
     ],
     subtotal: 179.98,
     shipping: SHIPPING_OPTIONS[1],
-    discount: { name: appTexts.discount, amount: 20.0 },
-    total: 159.98,
-    contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
-    isVivreMember: false,
+    vivreDiscount: { applied: false, discountPercentage: 0.30 },
+    total: 189.98,
+    contactInfo: { name: '', email: '', address: '', city: '', zip: '', phone: '' },
     paymentMethod: 'card',
     trackingNumber: 'VIV-123-XYZ',
     estimatedArrival: 'August 15, 2025'
@@ -97,7 +96,7 @@ export const CheckoutPage = () => {
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
-        const memberDiscount = orderData.isVivreMember ? orderData.discount.amount : 0;
+        const memberDiscount = orderData.vivreDiscount.applied ? subtotal * orderData.vivreDiscount.discountPercentage : 0;
         const couponDiscount = orderData.coupon ? subtotal * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
@@ -106,7 +105,7 @@ export const CheckoutPage = () => {
             subtotal,
             total,
         }));
-    }, [orderData.items, orderData.shipping.cost, orderData.discount.amount, orderData.coupon, orderData.isVivreMember]);
+    }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon]);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -148,8 +147,8 @@ export const CheckoutPage = () => {
         setTimeout(() => {
             setOrderData(prev => ({
                 ...prev,
-                contactInfo: KATE_CRESTWELL_DATA,
-                isVivreMember: true,
+                contactInfo: VIVRE_MEMBER_DATA,
+                vivreDiscount: { ...prev.vivreDiscount, applied: true },
             }));
             setIsLoggingIn(false);
             handleContinue(3);
@@ -162,13 +161,13 @@ export const CheckoutPage = () => {
     }
 
     const handlePaymentMethodChange = (method: string) => {
-        setOrderData(prev => ({...prev, paymentMethod: method}));
+        setOrderData(prev => ({ ...prev, paymentMethod: method }));
     }
 
     const handleApplyCoupon = (code: string) => {
         if (code.toUpperCase() === 'VIVRE50') {
             const newCoupon: Coupon = { code: 'Vivre50', discountPercentage: 0.50 };
-            setOrderData(prev => ({...prev, coupon: newCoupon}));
+            setOrderData(prev => ({ ...prev, coupon: newCoupon }));
         }
     }
 
