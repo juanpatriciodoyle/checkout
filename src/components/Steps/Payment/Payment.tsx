@@ -1,34 +1,35 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { CreditCard } from 'lucide-react';
 import { appTexts } from '../../../constants/text';
 import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
 
 const SegmentedControl = styled.div`
-  display: flex;
-  border: 1px solid ${({ theme }) => theme.colors.borderColor};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  overflow: hidden;
-  margin-bottom: 2rem;
+    display: flex;
+    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    overflow: hidden;
+    margin-bottom: 2rem;
 `;
 
 const SegmentButton = styled.button<{ isActive: boolean }>`
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 1rem;
-  background-color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : 'transparent')};
-  color: ${({ isActive, theme }) => (isActive ? theme.colors.bgWhite : theme.colors.textMain)};
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : 'transparent')};
+    color: ${({ isActive, theme }) => (isActive ? theme.colors.bgWhite : theme.colors.textMain)};
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 
-  &:not(:last-child) {
-    border-right: 1px solid ${({ theme }) => theme.colors.borderColor};
-  }
+    &:not(:last-child) {
+        border-right: 1px solid ${({ theme }) => theme.colors.borderColor};
+    }
 `;
 
 const ContentContainer = styled.div`
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 `;
 
 const CardFormGrid = styled.div`
@@ -39,47 +40,50 @@ const CardFormGrid = styled.div`
 `;
 
 const CouponSection = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.borderColor};
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid ${({ theme }) => theme.colors.borderColor};
 `;
 
 const CouponInput = styled.input`
-  flex-grow: 1;
-  border: 1px solid ${({ theme }) => theme.colors.borderColor};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 0.75rem;
-  font-size: 1rem;
+    flex-grow: 1;
+    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    padding: 0.75rem;
+    font-size: 1rem;
 `;
 
 const ApplyButton = styled.button`
-  background-color: transparent;
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
-  }
-`;
-
-const CompleteButton = styled(ApplyButton)`
-    background-color: ${({theme}) => theme.colors.primary};
-    color: ${({theme}) => theme.colors.bgWhite};
-    width: 100%;
-    margin-top: 2rem;
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
 
     &:hover {
-        opacity: 0.9;
+        background-color: ${({ theme }) => theme.colors.bgSubtle};
     }
-`
+`;
+
+const PayButton = styled(motion.button)`
+    background-color: ${({theme}) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.bgWhite};
+    border: none;
+    border-radius: ${({theme}) => theme.borderRadius};
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 2rem;
+`;
 
 interface PaymentProps {
+    total: number;
     onApplyCoupon: (code: string) => void;
     onPaymentMethodChange: (method: string) => void;
     onComplete: () => void;
@@ -87,6 +91,7 @@ interface PaymentProps {
 }
 
 export const Payment: React.FC<PaymentProps> = ({
+                                                    total,
                                                     onApplyCoupon,
                                                     onPaymentMethodChange,
                                                     onComplete,
@@ -141,9 +146,13 @@ export const Payment: React.FC<PaymentProps> = ({
                 </ApplyButton>
             </CouponSection>
 
-            <CompleteButton onClick={onComplete}>
-                {appTexts.completeOrder}
-            </CompleteButton>
+            <PayButton
+                onClick={onComplete}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+            >
+                {appTexts.payNow} ${total.toFixed(2)}
+            </PayButton>
         </div>
     );
 };

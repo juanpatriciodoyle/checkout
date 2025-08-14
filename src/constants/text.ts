@@ -18,7 +18,7 @@ export const appTexts = {
 
     continueToDelivery: 'Continue to Delivery',
     continueToPayment: 'Continue to Payment',
-    completeOrder: 'Complete Order',
+    payNow: 'Pay',
 
     item1Name: "Drive Safe",
     item1Description: 'Telemetric device. GPS, Speed, Break Time, and more metrics are being captured by Drive Safe.',

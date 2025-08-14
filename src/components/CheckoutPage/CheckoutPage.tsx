@@ -102,7 +102,7 @@ export const CheckoutPage = () => {
             subtotal,
             total,
         }));
-    }, [orderData.items, orderData.shipping, orderData.discount, orderData.coupon]);
+    }, [orderData.items, orderData.shipping.cost, orderData.discount.amount, orderData.coupon]);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -185,6 +185,7 @@ export const CheckoutPage = () => {
                 return <ShippingMethod selectedShippingId={orderData.shipping.id} onSelectShipping={handleShippingChange} />;
             case 4:
                 return <Payment
+                    total={orderData.total}
                     onPaymentMethodChange={handlePaymentMethodChange}
                     onApplyCoupon={handleApplyCoupon}
                     appliedCouponCode={orderData.coupon?.code}
