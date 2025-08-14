@@ -1,56 +1,89 @@
-import React from 'react';
+import React, { useState, ReactNode } from 'react';
 import styled from 'styled-components';
+import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
 import { appTexts } from '../../constants/text';
+import AccordionStep from '../AccordionStep/AccordionStep';
+
+type SafeAnimatePresenceProps = AnimatePresenceProps & {
+    children: ReactNode;
+};
+
+const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
 
 const PageContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.bgSubtle};
-  min-height: 100vh;
-  padding: 2rem;
+    background-color: ${({ theme }) => theme.colors.bgSubtle};
+    min-height: 100vh;
+    padding: 2rem;
 `;
 
 const CheckoutGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 3fr 2fr; /* 60/40 split */
-  }
+    @media (min-width: 1024px) {
+        grid-template-columns: 3fr 2fr; /* 60/40 split */
+    }
 `;
 
 const LeftColumn = styled.div`
-  width: 100%;
+    width: 100%;
 `;
 
 const RightColumn = styled.div`
-  width: 100%;
+    width: 100%;
 
-  @media (min-width: 1024px) {
-    position: sticky;
-    top: 20px;
-    align-self: start;
-  }
+    @media (min-width: 1024px) {
+        position: sticky;
+        top: 20px;
+        align-self: start;
+    }
 `;
 
 const Placeholder = styled.div`
-  background-color: ${({ theme }) => theme.colors.bgWhite};
-  border: 1px solid ${({ theme }) => theme.colors.borderColor};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 2rem;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: ${({ theme }) => theme.colors.bgWhite};
+    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    padding: 2rem;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
-const CheckoutPage = () => {
+const steps = [
+    { id: 1, title: appTexts.step1Title },
+    { id: 2, title: appTexts.step2Title },
+    { id: 3, title: appTexts.step3Title },
+];
+
+export const CheckoutPage = () => {
+    const [activeStep, setActiveStep] = useState(1);
+
+    const handleToggle = (stepId: number) => {
+        setActiveStep(activeStep === stepId ? 0 : stepId);
+    };
+
     return (
         <PageContainer>
             <CheckoutGrid>
                 <LeftColumn>
-                    <Placeholder>{appTexts.accordionPlaceholder}</Placeholder>
+                    <SafeAnimatePresence initial={false}>
+                        {steps.map((step) => (
+                            <AccordionStep
+                                key={step.id}
+                                title={step.title}
+                                stepNumber={step.id}
+                                isActive={activeStep === step.id}
+                                isCompleted={activeStep > step.id}
+                                onToggle={() => handleToggle(step.id)}
+                            >
+                                <p>Content for {step.title}</p>
+                            </AccordionStep>
+                        ))}
+                    </SafeAnimatePresence>
                 </LeftColumn>
                 <RightColumn>
                     <Placeholder>{appTexts.orderSummaryPlaceholder}</Placeholder>
@@ -60,4 +93,3 @@ const CheckoutPage = () => {
     );
 };
 
-export default CheckoutPage;
