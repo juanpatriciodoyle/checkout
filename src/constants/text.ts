@@ -18,6 +18,7 @@ export const appTexts = {
 
     continueToDelivery: 'Continue to Delivery',
     continueToShippingMethod: 'Continue to Shipping Method',
+    continueToPayment: 'Continue to Payment',
     payNow: 'Pay',
 
     item1Name: "Drive Safe",

@@ -158,7 +158,6 @@ export const CheckoutPage = () => {
 
     const handleShippingChange = (shippingMethod: ShippingMethodI) => {
         setOrderData(prev => ({ ...prev, shipping: shippingMethod }));
-        handleContinue(4);
     }
 
     const handleDateChange = (date: Date) => {
@@ -215,6 +214,7 @@ export const CheckoutPage = () => {
                     onSelectShipping={handleShippingChange}
                     selectedDate={orderData.scheduledDate}
                     onDateChange={handleDateChange}
+                    onContinue={() => handleContinue(4)}
                 />;
             case 4:
                 return <Payment
