@@ -48,4 +48,6 @@ export interface OrderData {
     contactInfo?: ContactInfo;
     isVivreMember: boolean;
     paymentMethod: string;
+    trackingNumber: string;
+    estimatedArrival: string;
 }

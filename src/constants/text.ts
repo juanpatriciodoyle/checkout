@@ -48,6 +48,12 @@ export const appTexts = {
     labelCardNumber: 'Card Number',
     labelExpiry: 'MM/YY',
     labelCVC: 'CVC',
+
+    confirmationTitle: 'Congratulations!',
+    confirmationSubtitle: 'Your health package is on its way.',
+    trackingNumber: 'Tracking Number',
+    estimatedArrival: 'Estimated Arrival',
+    goToHomepage: 'Go to Homepage',
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [

@@ -9,6 +9,7 @@ import { YourCart } from '../Steps/YourCart/YourCart';
 import { DeliveryInfo } from '../Steps/ShippingInformation/DeliveryInfo';
 import { ShippingMethod } from '../Steps/ShippingMethod/ShippingMethod';
 import { Payment } from '../Steps/Payment/Payment';
+import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -53,7 +54,6 @@ const steps = [
     { id: 2, title: appTexts.step2Title },
     { id: 3, title: appTexts.step3Title },
     { id: 4, title: appTexts.step4Title },
-    { id: 5, title: appTexts.step5Title },
 ];
 
 const initialOrderData: OrderData = {
@@ -84,16 +84,20 @@ const initialOrderData: OrderData = {
     contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
     isVivreMember: false,
     paymentMethod: 'card',
+    trackingNumber: 'VIV-123-XYZ',
+    estimatedArrival: 'August 15, 2025'
 };
 
 export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
-        const memberDiscount = orderData.discount.amount;
+        const memberDiscount = orderData.isVivreMember ? orderData.discount.amount : 0;
         const couponDiscount = orderData.coupon ? subtotal * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
@@ -102,7 +106,7 @@ export const CheckoutPage = () => {
             subtotal,
             total,
         }));
-    }, [orderData.items, orderData.shipping.cost, orderData.discount.amount, orderData.coupon]);
+    }, [orderData.items, orderData.shipping.cost, orderData.discount.amount, orderData.coupon, orderData.isVivreMember]);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -161,6 +165,20 @@ export const CheckoutPage = () => {
         }
     }
 
+    const handleCompleteOrder = () => {
+        setIsProcessingPayment(true);
+        setTimeout(() => {
+            setIsProcessingPayment(false);
+            setShowConfirmation(true);
+        }, 1500);
+    }
+
+    const handleCloseConfirmation = () => {
+        setShowConfirmation(false);
+        // Here you would typically redirect the user
+        // window.location.href = '/';
+    }
+
     const getStepContent = (stepId: number) => {
         switch (stepId) {
             case 1:
@@ -186,41 +204,51 @@ export const CheckoutPage = () => {
             case 4:
                 return <Payment
                     total={orderData.total}
+                    isProcessing={isProcessingPayment}
                     onPaymentMethodChange={handlePaymentMethodChange}
                     onApplyCoupon={handleApplyCoupon}
                     appliedCouponCode={orderData.coupon?.code}
-                    onComplete={() => handleContinue(5)}
+                    onComplete={handleCompleteOrder}
                 />;
-            case 5:
-                return <p>Content for {appTexts.step5Title}</p>;
             default:
                 return null;
         }
     };
 
     return (
-        <PageContainer>
-            <CheckoutGrid>
-                <LeftColumn>
-                    <SafeAnimatePresence initial={false}>
-                        {steps.map((step) => (
-                            <AccordionStep
-                                key={step.id}
-                                title={step.title}
-                                stepNumber={step.id}
-                                isActive={activeStep === step.id}
-                                isCompleted={activeStep > step.id}
-                                onToggle={() => handleToggle(step.id)}
-                            >
-                                {getStepContent(step.id)}
-                            </AccordionStep>
-                        ))}
-                    </SafeAnimatePresence>
-                </LeftColumn>
-                <RightColumn>
-                    <OrderSummary orderData={orderData} />
-                </RightColumn>
-            </CheckoutGrid>
-        </PageContainer>
+        <>
+            <PageContainer>
+                <CheckoutGrid>
+                    <LeftColumn>
+                        <SafeAnimatePresence initial={false}>
+                            {steps.map((step) => (
+                                <AccordionStep
+                                    key={step.id}
+                                    title={step.title}
+                                    stepNumber={step.id}
+                                    isActive={activeStep === step.id}
+                                    isCompleted={activeStep > step.id}
+                                    onToggle={() => handleToggle(step.id)}
+                                >
+                                    {getStepContent(step.id)}
+                                </AccordionStep>
+                            ))}
+                        </SafeAnimatePresence>
+                    </LeftColumn>
+                    <RightColumn>
+                        <OrderSummary orderData={orderData} />
+                    </RightColumn>
+                </CheckoutGrid>
+            </PageContainer>
+            <SafeAnimatePresence>
+                {showConfirmation && (
+                    <ConfirmationModal
+                        trackingNumber={orderData.trackingNumber}
+                        estimatedArrival={orderData.estimatedArrival}
+                        onClose={handleCloseConfirmation}
+                    />
+                )}
+            </SafeAnimatePresence>
+        </>
     );
 };
