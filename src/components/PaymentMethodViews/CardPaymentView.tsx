@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CreditCard, User, MapPin } from 'lucide-react';
 
@@ -24,7 +24,7 @@ const StyledInput = styled.input`
     width: 100%;
     border: 1px solid ${({ theme }) => theme.colors.borderColor};
     border-radius: ${({ theme }) => theme.borderRadius};
-    padding: 1rem 1rem 1rem 2.5rem; /* Make space for icon */
+    padding: 1rem;
     font-size: 1rem;
     height: 50px;
 
@@ -34,33 +34,54 @@ const StyledInput = styled.input`
     }
 `;
 
-const CardInputPlaceholder = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+const IconStyledInput = styled(StyledInput)`
     padding-left: 2.5rem;
-    font-size: 1rem;
-    height: 50px;
-    color: ${({ theme }) => theme.colors.textLight};
 `;
 
+const CardDetailsRow = styled.div`
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+`;
 
 export const CardPaymentView = () => {
+    const [expiryDate, setExpiryDate] = useState('');
+
+    const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value;
+
+        // Remove all non-digit characters
+        value = value.replace(/\D/g, '');
+
+        // Add a slash after the month (MM)
+        if (value.length > 2) {
+            value = value.slice(0, 2) + ' / ' + value.slice(2, 4);
+        }
+
+        setExpiryDate(value);
+    };
+
     return (
         <FormContainer>
-            <InputWrapper>
-                <IconWrapper><CreditCard size={20} /></IconWrapper>
-                <CardInputPlaceholder>Card Number&nbsp;&nbsp;&nbsp;&nbsp;MM/YY&nbsp;&nbsp;&nbsp;&nbsp;CVC</CardInputPlaceholder>
-            </InputWrapper>
+            <CardDetailsRow>
+                <InputWrapper>
+                    <IconWrapper><CreditCard size={20} /></IconWrapper>
+                    <IconStyledInput placeholder="Card Number" />
+                </InputWrapper>
+                <StyledInput
+                    placeholder="MM / YY"
+                    value={expiryDate}
+                    onChange={handleExpiryChange}
+                />
+                <StyledInput placeholder="CVC" maxLength={4} />
+            </CardDetailsRow>
             <InputWrapper>
                 <IconWrapper><User size={20} /></IconWrapper>
-                <StyledInput placeholder="Cardholder Name" />
+                <IconStyledInput placeholder="Cardholder Name" />
             </InputWrapper>
             <InputWrapper>
                 <IconWrapper><MapPin size={20} /></IconWrapper>
-                <StyledInput placeholder="Billing Postal Code" />
+                <IconStyledInput placeholder="Billing Postal Code" />
             </InputWrapper>
         </FormContainer>
     );
