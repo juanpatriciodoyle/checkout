@@ -18,10 +18,20 @@ export interface Discount {
     amount: number;
 }
 
+export interface ContactInfo {
+    name: string;
+    email: string;
+    address: string;
+    city: string;
+    zip: string;
+}
+
 export interface OrderData {
     items: CartItem[];
     subtotal: number;
     shipping: ShippingMethod;
     discount: Discount;
     total: number;
+    contactInfo?: ContactInfo;
+    isVivreMember: boolean;
 }

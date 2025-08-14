@@ -1,11 +1,12 @@
 import React, { useState, ReactNode } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { appTexts } from '../../constants/text';
+import { appTexts, KATE_CRESTWELL_DATA } from '../../constants/text';
 import { OrderData } from '../../types';
-import AccordionStep from '../AccordionStep/AccordionStep';
+import AccordionStep from '../Accordion/AccordionStep';
 import { OrderSummary } from '../OrderSummary/OrderSummary';
-import { StepYourCart } from '../StepYourCart/StepYourCart';
+import { StepYourCart } from '../Steps/YourCart/StepYourCart';
+import { StepDeliveryInfo } from '../Steps/ShippingInformation/StepDeliveryInfo';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -76,11 +77,14 @@ const initialOrderData: OrderData = {
     shipping: { name: 'Standard', cost: 0.0 },
     discount: { name: appTexts.discount, amount: 20.0 },
     total: 100.0,
+    contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
+    isVivreMember: false,
 };
 
 export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -91,13 +95,37 @@ export const CheckoutPage = () => {
     };
 
     const handleColorChange = (itemId: number, newColor: string) => {
-        setOrderData((prevData) => ({
-            ...prevData,
-            items: prevData.items.map((item) =>
+        setOrderData((prev) => ({
+            ...prev,
+            items: prev.items.map((item) =>
                 item.id === itemId ? { ...item, color: newColor } : item
             ),
         }));
     };
+
+    const handleContactInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setOrderData((prev) => ({
+            ...prev,
+            contactInfo: {
+                ...prev.contactInfo!,
+                [name]: value,
+            }
+        }));
+    };
+
+    const handleVivreLogin = () => {
+        setIsLoggingIn(true);
+        setTimeout(() => {
+            setOrderData(prev => ({
+                ...prev,
+                contactInfo: KATE_CRESTWELL_DATA,
+                isVivreMember: true,
+            }));
+            setIsLoggingIn(false);
+            handleContinue(3);
+        }, 1500);
+    }
 
     const getStepContent = (stepId: number) => {
         switch (stepId) {
@@ -110,7 +138,15 @@ export const CheckoutPage = () => {
                     />
                 );
             case 2:
-                return <p>Content for {appTexts.step2Title}</p>;
+                return (
+                    <StepDeliveryInfo
+                        contactInfo={orderData.contactInfo!}
+                        loading={isLoggingIn}
+                        onInfoChange={handleContactInfoChange}
+                        onVivreLogin={handleVivreLogin}
+                        onContinue={() => handleContinue(3)}
+                    />
+                );
             case 3:
                 return <p>Content for {appTexts.step3Title}</p>;
             default:

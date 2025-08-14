@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {CartItem as CartItemType} from '../../types';
-import {CartItem} from '../CartItem/CartItem';
-import {appTexts} from '../../constants/text';
+import {CartItem as CartItemType} from '../../../types';
+import {CartItem} from '../../CartItem/CartItem';
+import {appTexts} from '../../../constants/text';
 
 const StepContent = styled.div`
     display: flex;
