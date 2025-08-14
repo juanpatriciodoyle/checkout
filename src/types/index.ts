@@ -1,3 +1,6 @@
+import { LucideProps } from 'lucide-react';
+import React from 'react';
+
 export interface CartItem {
     id: number;
     name: string;
@@ -9,8 +12,12 @@ export interface CartItem {
 }
 
 export interface ShippingMethod {
+    id: string;
     name: string;
     cost: number;
+    eta: string;
+    icon: React.FC<LucideProps>;
+    recommended?: boolean;
 }
 
 export interface Discount {

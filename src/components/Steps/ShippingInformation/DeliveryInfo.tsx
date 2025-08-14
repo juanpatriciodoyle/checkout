@@ -71,7 +71,7 @@ interface StepDeliveryInfoProps {
     onContinue: () => void;
 }
 
-export const StepDeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
+export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                                                                       contactInfo,
                                                                       loading,
                                                                       onInfoChange,

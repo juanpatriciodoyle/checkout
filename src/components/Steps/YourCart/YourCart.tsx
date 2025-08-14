@@ -35,7 +35,7 @@ interface StepYourCartProps {
     onContinue: () => void;
 }
 
-export const StepYourCart: React.FC<StepYourCartProps> = ({
+export const YourCart: React.FC<StepYourCartProps> = ({
                                                               items,
                                                               onColorChange,
                                                               onContinue,

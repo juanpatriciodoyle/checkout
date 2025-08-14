@@ -1,12 +1,13 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { appTexts, KATE_CRESTWELL_DATA } from '../../constants/text';
-import { OrderData } from '../../types';
+import { appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS } from '../../constants/text';
+import { OrderData, ShippingMethod } from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import { OrderSummary } from '../OrderSummary/OrderSummary';
-import { StepYourCart } from '../Steps/YourCart/StepYourCart';
-import { StepDeliveryInfo } from '../Steps/ShippingInformation/StepDeliveryInfo';
+import { YourCart } from '../Steps/YourCart/YourCart';
+import { DeliveryInfo } from '../Steps/ShippingInformation/DeliveryInfo';
+import { ShippingMethod } from '../Steps/ShippingMethod/ShippingMethod';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -50,6 +51,7 @@ const steps = [
     { id: 1, title: appTexts.step1Title },
     { id: 2, title: appTexts.step2Title },
     { id: 3, title: appTexts.step3Title },
+    { id: 4, title: appTexts.step4Title },
 ];
 
 const initialOrderData: OrderData = {
@@ -74,7 +76,7 @@ const initialOrderData: OrderData = {
         },
     ],
     subtotal: 120.0,
-    shipping: { name: 'Standard', cost: 0.0 },
+    shipping: SHIPPING_OPTIONS[1],
     discount: { name: appTexts.discount, amount: 20.0 },
     total: 100.0,
     contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
@@ -85,6 +87,17 @@ export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+    useEffect(() => {
+        const newSubtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
+        const newTotal = newSubtotal + orderData.shipping.cost - orderData.discount.amount;
+
+        setOrderData(prev => ({
+            ...prev,
+            subtotal: newSubtotal,
+            total: newTotal
+        }));
+    }, [orderData.items, orderData.shipping, orderData.discount]);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -127,11 +140,16 @@ export const CheckoutPage = () => {
         }, 1500);
     }
 
+    const handleShippingChange = (shippingMethod: ShippingMethod) => {
+        setOrderData(prev => ({ ...prev, shipping: shippingMethod }));
+        handleContinue(4);
+    }
+
     const getStepContent = (stepId: number) => {
         switch (stepId) {
             case 1:
                 return (
-                    <StepYourCart
+                    <YourCart
                         items={orderData.items}
                         onColorChange={handleColorChange}
                         onContinue={() => handleContinue(2)}
@@ -139,7 +157,7 @@ export const CheckoutPage = () => {
                 );
             case 2:
                 return (
-                    <StepDeliveryInfo
+                    <DeliveryInfo
                         contactInfo={orderData.contactInfo!}
                         loading={isLoggingIn}
                         onInfoChange={handleContactInfoChange}
@@ -148,7 +166,9 @@ export const CheckoutPage = () => {
                     />
                 );
             case 3:
-                return <p>Content for {appTexts.step3Title}</p>;
+                return <ShippingMethod selectedShippingId={orderData.shipping.id} onSelectShipping={handleShippingChange} />;
+            case 4:
+                return <p>Content for {appTexts.step4Title}</p>;
             default:
                 return null;
         }
