@@ -17,15 +17,14 @@ const SegmentButton = styled.button<{ isActive: boolean }>`
     flex: 1;
     padding: 0.75rem;
     font-size: 1rem;
-    background-color: ${({isActive, theme}) => (isActive ? theme.colors.primary : 'transparent')};
-    color: ${({isActive, theme}) => (isActive ? theme.colors.bgWhite : theme.colors.textMain)};
-    border: none;
+    background-color: ${({isActive, theme}) => (isActive ? theme.colors.secondary : 'transparent')};
+    color: ${({theme}) => (theme.colors.textMain)};
+    font-weight: ${({isActive}) => isActive ? "600" : "normal"};
+    border: 1px solid white;
+    border-radius: 6px;
+    margin: 5px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
-
-    &:not(:last-child) {
-        border-right: 1px solid ${({theme}) => theme.colors.borderColor};
-    }
 `;
 
 const ContentContainer = styled.div`
