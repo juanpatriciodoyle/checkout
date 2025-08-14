@@ -1,12 +1,12 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
-import {addDays} from 'date-fns';
-import {DayPicker} from 'react-day-picker';
+import { motion, AnimatePresence, AnimatePresenceProps } from 'framer-motion';
+import { addDays } from 'date-fns';
+import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import {ShippingMethodI} from '../../types';
-import {appTexts} from '../../constants/text';
-import {InfoNotice} from '../InfoNotice/InfoNotice';
+import { ShippingMethodI } from '../../types';
+import { appTexts } from '../../constants/text';
+import { InfoNotice } from '../InfoNotice/InfoNotice';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -15,20 +15,20 @@ const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps
 
 const OptionWrapper = styled.div``;
 
-const OptionLabel = styled.label<{ isSelected: boolean }>`
+const OptionLabel = styled.label<{ isSelected: boolean, hasConditionalContent: boolean }>`
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    border: 2px solid ${({isSelected, theme}) => isSelected ? theme.colors.primary : theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border: 2px solid ${({ isSelected, theme }) => isSelected ? theme.colors.primary : theme.colors.borderColor};
+    border-radius: ${({ hasConditionalContent, theme }) => hasConditionalContent ? `${theme.borderRadius} ${theme.borderRadius} 0 0` : theme.borderRadius};
     cursor: pointer;
-    transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
     position: relative;
-    background-color: ${({theme}) => theme.colors.bgWhite};
+    background-color: ${({ theme }) => theme.colors.bgWhite};
 
     &:hover {
-        border-color: ${({theme}) => theme.colors.primary};
+        border-color: ${({ theme }) => theme.colors.primary};
     }
 `;
 
@@ -40,7 +40,7 @@ const HiddenRadio = styled.input`
 `;
 
 const IconWrapper = styled.div`
-    color: ${({theme}) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
 `;
 
 const DetailsWrapper = styled.div`
@@ -53,7 +53,7 @@ const Title = styled.div`
 
 const Eta = styled.div`
     font-size: 0.875rem;
-    color: ${({theme}) => theme.colors.textLight};
+    color: ${({ theme }) => theme.colors.textLight};
 `;
 
 const Price = styled.div`
@@ -65,7 +65,7 @@ const RecommendedChip = styled.div`
     position: absolute;
     top: -10px;
     right: 1rem;
-    background-color: ${({theme}) => theme.colors.success};
+    background-color: ${({ theme }) => theme.colors.success};
     color: white;
     font-size: 0.75rem;
     font-weight: bold;
@@ -74,14 +74,11 @@ const RecommendedChip = styled.div`
 `;
 
 const ConditionalContent = styled(motion.div)`
-    padding: 0 1rem 1rem;
-    background-color: ${({theme}) => theme.colors.bgWhite};
-    border: 2px solid ${({theme}) => theme.colors.primary};
+    padding: 1rem;
+    background-color: ${({ theme }) => theme.colors.bgWhite};
+    border: 2px solid ${({ theme }) => theme.colors.primary};
     border-top: none;
-    border-radius: 0 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius};
-    margin-top: -8px;
-    z-index: -1;
-    position: relative;
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
 `;
 
 interface ShippingOptionProps {
@@ -102,9 +99,15 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
     const Icon = option.icon;
     const today = new Date();
 
+    const disabledDays = [
+        { from: new Date(0), to: addDays(today, 7) }
+    ];
+
+    const showConditionalContent = isSelected && (option.id === 'fast' || option.id === 'scheduled');
+
     return (
         <OptionWrapper>
-            <OptionLabel isSelected={isSelected}>
+            <OptionLabel isSelected={isSelected} hasConditionalContent={showConditionalContent}>
                 {option.recommended && <RecommendedChip>{appTexts.recommended}</RecommendedChip>}
                 <HiddenRadio
                     type="radio"
@@ -113,7 +116,7 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                     onChange={onSelect}
                 />
                 <IconWrapper>
-                    <Icon size={32}/>
+                    <Icon size={32} />
                 </IconWrapper>
                 <DetailsWrapper>
                     <Title>{option.name}</Title>
@@ -122,12 +125,12 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                 <Price>${option.cost.toFixed(2)}</Price>
             </OptionLabel>
             <SafeAnimatePresence>
-                {isSelected && (option.id === 'fast' || option.id === 'scheduled') && (
+                {showConditionalContent && (
                     <ConditionalContent
-                        initial={{opacity: 0, y: -20}}
-                        animate={{opacity: 1, y: 0}}
-                        exit={{opacity: 0, y: -20}}
-                        transition={{duration: 0.3}}
+                        initial={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
+                        animate={{ opacity: 1, height: 'auto', paddingTop: '1rem', paddingBottom: '1rem' }}
+                        exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
+                        transition={{ duration: 0.3 }}
                     >
                         {option.id === 'fast' && (
                             <InfoNotice>{appTexts.droneInfo}</InfoNotice>
@@ -137,7 +140,8 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                                 mode="single"
                                 selected={selectedDate}
                                 onSelect={(date) => date && onDateChange(date)}
-                                fromDate={addDays(today, 8)}
+                                disabled={disabledDays}
+                                fromDate={addDays(today, 8)} // Ensures calendar starts on an enabled date
                                 toDate={addDays(today, 30)}
                             />
                         )}

@@ -56,6 +56,8 @@ const steps = [
     { id: 4, title: appTexts.step4Title },
 ];
 
+const standardShippingDefault = SHIPPING_OPTIONS.find(option => option.id === 'standard') || SHIPPING_OPTIONS[0];
+
 const initialOrderData: OrderData = {
     items: [
         {
@@ -78,9 +80,9 @@ const initialOrderData: OrderData = {
         },
     ],
     subtotal: 179.98,
-    shipping: SHIPPING_OPTIONS[1],
+    shipping: standardShippingDefault,
     vivreDiscount: { applied: false, discountPercentage: 0.30 },
-    total: 189.98,
+    total: 179.98 + standardShippingDefault.cost,
     contactInfo: { name: '', email: '', address: '', city: '', zip: '', phone: '' },
     paymentMethod: 'card',
     trackingNumber: 'VIV-123-XYZ',
