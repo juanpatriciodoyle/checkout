@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Copy} from 'lucide-react';
+import {ReactComponent as QrCodeSvg} from '../../assets/icons/qrcode.svg';
 
 const CryptoContainer = styled.div`
     display: flex;
@@ -15,13 +16,18 @@ const CryptoContainer = styled.div`
 const QrCodePlaceholder = styled.div`
     width: 150px;
     height: 150px;
-    background-color: #f0f0f0;
+    padding: 0.5rem;
+    background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    color: ${({theme}) => theme.colors.textLight};
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 const WalletAddressWrapper = styled.div`
@@ -67,7 +73,9 @@ export const CryptoPaymentView = () => {
 
     return (
         <CryptoContainer>
-            <QrCodePlaceholder>QR Code</QrCodePlaceholder>
+            <QrCodePlaceholder>
+                <QrCodeSvg/>
+            </QrCodePlaceholder>
             <WalletAddressWrapper>
                 <AddressInput type="text" readOnly value={walletAddress}/>
                 <CopyButton onClick={handleCopy}>
