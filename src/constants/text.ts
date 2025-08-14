@@ -1,4 +1,4 @@
-import { ContactInfo, ShippingMethod } from "../types";
+import { ContactInfo, ShippingMethodI } from "../types";
 import { Rocket, Truck, PackageCheck } from 'lucide-react';
 
 export const appTexts = {
@@ -35,7 +35,7 @@ export const appTexts = {
     recommended: 'Recommended',
 };
 
-export const SHIPPING_OPTIONS: ShippingMethod[] = [
+export const SHIPPING_OPTIONS: ShippingMethodI[] = [
     { id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true },
     { id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck },
     { id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck },

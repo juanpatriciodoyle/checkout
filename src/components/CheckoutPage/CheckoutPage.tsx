@@ -1,13 +1,13 @@
-import React, { useState, ReactNode, useEffect } from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS } from '../../constants/text';
-import { OrderData, ShippingMethod } from '../../types';
+import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
+import {appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS} from '../../constants/text';
+import {OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
-import { OrderSummary } from '../OrderSummary/OrderSummary';
-import { YourCart } from '../Steps/YourCart/YourCart';
-import { DeliveryInfo } from '../Steps/ShippingInformation/DeliveryInfo';
-import { ShippingMethod } from '../Steps/ShippingMethod/ShippingMethod';
+import {OrderSummary} from '../OrderSummary/OrderSummary';
+import {YourCart} from '../Steps/YourCart/YourCart';
+import {DeliveryInfo} from '../Steps/ShippingInformation/DeliveryInfo';
+import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -16,7 +16,7 @@ type SafeAnimatePresenceProps = AnimatePresenceProps & {
 const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
 
 const PageContainer = styled.div`
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
+    background-color: ${({theme}) => theme.colors.bgSubtle};
     min-height: 100vh;
     padding: 2rem;
 `;
@@ -48,10 +48,10 @@ const RightColumn = styled.div`
 `;
 
 const steps = [
-    { id: 1, title: appTexts.step1Title },
-    { id: 2, title: appTexts.step2Title },
-    { id: 3, title: appTexts.step3Title },
-    { id: 4, title: appTexts.step4Title },
+    {id: 1, title: appTexts.step1Title},
+    {id: 2, title: appTexts.step2Title},
+    {id: 3, title: appTexts.step3Title},
+    {id: 4, title: appTexts.step4Title},
 ];
 
 const initialOrderData: OrderData = {
@@ -77,9 +77,9 @@ const initialOrderData: OrderData = {
     ],
     subtotal: 120.0,
     shipping: SHIPPING_OPTIONS[1],
-    discount: { name: appTexts.discount, amount: 20.0 },
+    discount: {name: appTexts.discount, amount: 20.0},
     total: 100.0,
-    contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
+    contactInfo: {name: '', email: '', address: '', city: '', zip: ''},
     isVivreMember: false,
 };
 
@@ -111,13 +111,13 @@ export const CheckoutPage = () => {
         setOrderData((prev) => ({
             ...prev,
             items: prev.items.map((item) =>
-                item.id === itemId ? { ...item, color: newColor } : item
+                item.id === itemId ? {...item, color: newColor} : item
             ),
         }));
     };
 
     const handleContactInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setOrderData((prev) => ({
             ...prev,
             contactInfo: {
@@ -140,8 +140,8 @@ export const CheckoutPage = () => {
         }, 1500);
     }
 
-    const handleShippingChange = (shippingMethod: ShippingMethod) => {
-        setOrderData(prev => ({ ...prev, shipping: shippingMethod }));
+    const handleShippingChange = (shippingMethod: ShippingMethodI) => {
+        setOrderData(prev => ({...prev, shipping: shippingMethod}));
         handleContinue(4);
     }
 
@@ -166,7 +166,8 @@ export const CheckoutPage = () => {
                     />
                 );
             case 3:
-                return <ShippingMethod selectedShippingId={orderData.shipping.id} onSelectShipping={handleShippingChange} />;
+                return <ShippingMethod selectedShippingId={orderData.shipping.id}
+                                       onSelectShipping={handleShippingChange}/>;
             case 4:
                 return <p>Content for {appTexts.step4Title}</p>;
             default:
@@ -194,7 +195,7 @@ export const CheckoutPage = () => {
                     </SafeAnimatePresence>
                 </LeftColumn>
                 <RightColumn>
-                    <OrderSummary orderData={orderData} />
+                    <OrderSummary orderData={orderData}/>
                 </RightColumn>
             </CheckoutGrid>
         </PageContainer>

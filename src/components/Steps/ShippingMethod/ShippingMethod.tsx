@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ShippingMethod as ShippingMethodType } from '../../../types';
+import { ShippingMethodI as ShippingMethodType } from '../../../types';
 import { ShippingOption } from '../../ShippingOption/ShippingOption';
 import { SHIPPING_OPTIONS } from '../../../constants/text';
 

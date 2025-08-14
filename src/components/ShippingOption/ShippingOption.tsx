@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ShippingMethod } from '../../types';
+import { ShippingMethodI } from '../../types';
 import { appTexts } from '../../constants/text';
 
 const OptionLabel = styled.label<{ isSelected: boolean }>`
@@ -62,7 +62,7 @@ const RecommendedChip = styled.div`
 
 
 interface ShippingOptionProps {
-    option: ShippingMethod;
+    option: ShippingMethodI;
     isSelected: boolean;
     onSelect: () => void;
 }

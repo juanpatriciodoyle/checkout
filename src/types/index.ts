@@ -11,7 +11,7 @@ export interface CartItem {
     availableColors: string[];
 }
 
-export interface ShippingMethod {
+export interface ShippingMethodI {
     id: string;
     name: string;
     cost: number;
@@ -36,7 +36,7 @@ export interface ContactInfo {
 export interface OrderData {
     items: CartItem[];
     subtotal: number;
-    shipping: ShippingMethod;
+    shipping: ShippingMethodI;
     discount: Discount;
     total: number;
     contactInfo?: ContactInfo;
