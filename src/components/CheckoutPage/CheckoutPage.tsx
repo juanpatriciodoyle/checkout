@@ -2,7 +2,7 @@ import React, { useState, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
 import { appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS } from '../../constants/text';
-import { OrderData, ShippingMethodI, Coupon } from '../../types';
+import { OrderData, ShippingMethodI, Coupon, CartItem } from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import { OrderSummary } from '../OrderSummary/OrderSummary';
 import { YourCart } from '../Steps/YourCart/YourCart';
@@ -62,7 +62,7 @@ const initialOrderData: OrderData = {
             id: 1,
             name: appTexts.item1Name,
             description: appTexts.item1Description,
-            price: 0.0,
+            price: 59.99,
             image: 'https://via.placeholder.com/80',
             color: '#000000',
             availableColors: ['#000000', '#FFFFFF'],
@@ -71,16 +71,16 @@ const initialOrderData: OrderData = {
             id: 2,
             name: appTexts.item2Name,
             description: appTexts.item2Description,
-            price: 120.0,
+            price: 119.99,
             image: 'https://via.placeholder.com/80',
             color: '#808080',
             availableColors: ['#808080', '#000000'],
         },
     ],
-    subtotal: 120.0,
+    subtotal: 179.98,
     shipping: SHIPPING_OPTIONS[1],
     discount: { name: appTexts.discount, amount: 20.0 },
-    total: 100.0,
+    total: 159.98,
     contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
     isVivreMember: false,
     paymentMethod: 'card',
@@ -122,6 +122,13 @@ export const CheckoutPage = () => {
             items: prev.items.map((item) =>
                 item.id === itemId ? { ...item, color: newColor } : item
             ),
+        }));
+    };
+
+    const handleRemoveItem = (itemId: number) => {
+        setOrderData(prev => ({
+            ...prev,
+            items: prev.items.filter(item => item.id !== itemId)
         }));
     };
 
@@ -175,8 +182,6 @@ export const CheckoutPage = () => {
 
     const handleCloseConfirmation = () => {
         setShowConfirmation(false);
-        // Here you would typically redirect the user
-        // window.location.href = '/';
     }
 
     const getStepContent = (stepId: number) => {
@@ -186,6 +191,7 @@ export const CheckoutPage = () => {
                     <YourCart
                         items={orderData.items}
                         onColorChange={handleColorChange}
+                        onRemoveItem={handleRemoveItem}
                         onContinue={() => handleContinue(2)}
                     />
                 );
