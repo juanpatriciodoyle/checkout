@@ -1,22 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { appTexts } from './constatns/text';
-
-const AppContainer = styled.div`
-  text-align: center;
-  padding: 2rem;
-`;
-
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.primary};
-`;
+import CheckoutPage from './components/CheckoutPage/CheckoutPage';
 
 function App() {
-    return (
-        <AppContainer>
-            <Title>{appTexts.title}</Title>
-        </AppContainer>
-    );
+    return <CheckoutPage />;
 }
 
 export default App;
