@@ -9,6 +9,7 @@ export interface CartItem {
     image: string;
     color: string;
     availableColors: string[];
+    availableImages: { [color: string]: string };
 }
 
 export interface ShippingMethodI {

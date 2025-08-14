@@ -68,6 +68,10 @@ const initialOrderData: OrderData = {
             image: `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
             color: '#000000',
             availableColors: ['#000000', '#FFFFFF'],
+            availableImages: {
+                '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+                '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
+            }
         },
         {
             id: 2,
@@ -75,8 +79,12 @@ const initialOrderData: OrderData = {
             description: appTexts.item2Description,
             price: 119.99,
             image: `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
-            color: '#808080',
-            availableColors: ['#808080', '#000000'],
+            color: '#000000',
+            availableColors: ['#000000', '#FFFFFF'],
+            availableImages: {
+                '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
+                '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Dashcam-white.jpg`
+            }
         },
     ],
     subtotal: 179.98,
@@ -121,9 +129,16 @@ export const CheckoutPage = () => {
     const handleColorChange = (itemId: number, newColor: string) => {
         setOrderData((prev) => ({
             ...prev,
-            items: prev.items.map((item) =>
-                item.id === itemId ? { ...item, color: newColor } : item
-            ),
+            items: prev.items.map((item) => {
+                if (item.id === itemId) {
+                    return {
+                        ...item,
+                        color: newColor,
+                        image: item.availableImages[newColor] || item.image,
+                    };
+                }
+                return item;
+            }),
         }));
     };
 
