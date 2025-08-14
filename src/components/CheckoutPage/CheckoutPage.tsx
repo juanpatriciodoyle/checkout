@@ -5,6 +5,7 @@ import { appTexts } from '../../constants/text';
 import { OrderData } from '../../types';
 import AccordionStep from '../AccordionStep/AccordionStep';
 import { OrderSummary } from '../OrderSummary/OrderSummary';
+import { StepYourCart } from '../StepYourCart/StepYourCart';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -52,21 +53,69 @@ const steps = [
 
 const initialOrderData: OrderData = {
     items: [
-        { id: 1, name: 'Vintage T-Shirt', price: 25.0 },
-        { id: 2, name: 'Designer Jeans', price: 75.0 },
+        {
+            id: 1,
+            name: appTexts.item1Name,
+            description: appTexts.item1Description,
+            price: 0.0,
+            image: 'https://via.placeholder.com/80',
+            color: '#000000',
+            availableColors: ['#000000', '#FFFFFF'],
+        },
+        {
+            id: 2,
+            name: appTexts.item2Name,
+            description: appTexts.item2Description,
+            price: 120.0,
+            image: 'https://via.placeholder.com/80',
+            color: '#808080',
+            availableColors: ['#808080', '#000000'],
+        },
     ],
-    subtotal: 100.0,
-    shipping: { name: 'Standard', cost: 10.0 },
-    discount: { name: appTexts.discount, amount: 15.0 },
-    total: 95.0,
+    subtotal: 120.0,
+    shipping: { name: 'Standard', cost: 0.0 },
+    discount: { name: appTexts.discount, amount: 20.0 },
+    total: 100.0,
 };
 
 export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
-    const [orderData] = useState<OrderData>(initialOrderData);
+    const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
+    };
+
+    const handleContinue = (nextStep: number) => {
+        setActiveStep(nextStep);
+    };
+
+    const handleColorChange = (itemId: number, newColor: string) => {
+        setOrderData((prevData) => ({
+            ...prevData,
+            items: prevData.items.map((item) =>
+                item.id === itemId ? { ...item, color: newColor } : item
+            ),
+        }));
+    };
+
+    const getStepContent = (stepId: number) => {
+        switch (stepId) {
+            case 1:
+                return (
+                    <StepYourCart
+                        items={orderData.items}
+                        onColorChange={handleColorChange}
+                        onContinue={() => handleContinue(2)}
+                    />
+                );
+            case 2:
+                return <p>Content for {appTexts.step2Title}</p>;
+            case 3:
+                return <p>Content for {appTexts.step3Title}</p>;
+            default:
+                return null;
+        }
     };
 
     return (
@@ -83,7 +132,7 @@ export const CheckoutPage = () => {
                                 isCompleted={activeStep > step.id}
                                 onToggle={() => handleToggle(step.id)}
                             >
-                                <p>Content for {step.title}</p>
+                                {getStepContent(step.id)}
                             </AccordionStep>
                         ))}
                     </SafeAnimatePresence>

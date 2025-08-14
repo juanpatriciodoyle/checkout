@@ -1,7 +1,11 @@
 export interface CartItem {
     id: number;
     name: string;
+    description: string;
     price: number;
+    image: string;
+    color: string;
+    availableColors: string[];
 }
 
 export interface ShippingMethod {
