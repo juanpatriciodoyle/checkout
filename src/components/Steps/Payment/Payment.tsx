@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { CreditCard } from 'lucide-react';
-import { appTexts } from '../../../constants/text';
-import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
+import {motion} from 'framer-motion';
+import {appTexts} from '../../../constants/text';
+import {FloatingLabelInput} from '../../FloatingLabelInput/FloatingLabelInput';
 
 const SegmentedControl = styled.div`
     display: flex;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
     overflow: hidden;
     margin-bottom: 2rem;
 `;
@@ -17,14 +16,14 @@ const SegmentButton = styled.button<{ isActive: boolean }>`
     flex: 1;
     padding: 0.75rem;
     font-size: 1rem;
-    background-color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : 'transparent')};
-    color: ${({ isActive, theme }) => (isActive ? theme.colors.bgWhite : theme.colors.textMain)};
+    background-color: ${({isActive, theme}) => (isActive ? theme.colors.primary : 'transparent')};
+    color: ${({isActive, theme}) => (isActive ? theme.colors.bgWhite : theme.colors.textMain)};
     border: none;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 
     &:not(:last-child) {
-        border-right: 1px solid ${({ theme }) => theme.colors.borderColor};
+        border-right: 1px solid ${({theme}) => theme.colors.borderColor};
     }
 `;
 
@@ -44,28 +43,28 @@ const CouponSection = styled.div`
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-top: 1px solid ${({theme}) => theme.colors.borderColor};
 `;
 
 const CouponInput = styled.input`
     flex-grow: 1;
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
     padding: 0.75rem;
     font-size: 1rem;
 `;
 
 const ApplyButton = styled.button`
     background-color: transparent;
-    color: ${({ theme }) => theme.colors.primary};
-    border: 1px solid ${({ theme }) => theme.colors.primary};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    color: ${({theme}) => theme.colors.primary};
+    border: 1px solid ${({theme}) => theme.colors.primary};
+    border-radius: ${({theme}) => theme.borderRadius};
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     cursor: pointer;
 
     &:hover {
-        background-color: ${({ theme }) => theme.colors.bgSubtle};
+        background-color: ${({theme}) => theme.colors.bgSubtle};
     }
 `;
 
@@ -127,9 +126,12 @@ export const Payment: React.FC<PaymentProps> = ({
             <ContentContainer>
                 {selectedMethod === 'card' && (
                     <CardFormGrid>
-                        <FloatingLabelInput label={appTexts.labelCardNumber} name="card" value="" onChange={() => {}} />
-                        <FloatingLabelInput label={appTexts.labelExpiry} name="expiry" value="" onChange={() => {}} />
-                        <FloatingLabelInput label={appTexts.labelCVC} name="cvc" value="" onChange={() => {}} />
+                        <FloatingLabelInput label={appTexts.labelCardNumber} name="card" value="" onChange={() => {
+                        }}/>
+                        <FloatingLabelInput label={appTexts.labelExpiry} name="expiry" value="" onChange={() => {
+                        }}/>
+                        <FloatingLabelInput label={appTexts.labelCVC} name="cvc" value="" onChange={() => {
+                        }}/>
                     </CardFormGrid>
                 )}
                 {selectedMethod !== 'card' && <p>{appTexts.cardNotImplemented}</p>}
@@ -148,8 +150,8 @@ export const Payment: React.FC<PaymentProps> = ({
 
             <PayButton
                 onClick={onComplete}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{scale: 1.02}}
+                whileTap={{scale: 0.98}}
             >
                 {appTexts.payNow} ${total.toFixed(2)}
             </PayButton>
