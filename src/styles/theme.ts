@@ -8,6 +8,7 @@ const theme = {
         bgWhite: '#FFFFFF',
         borderColor: '#EAEBEE',
         success: '#28A745',
+        successLight: '#EAF7EC',
     },
     fonts: {
         body: "'Inter', sans-serif",

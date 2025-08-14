@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence, AnimatePresenceProps } from 'framer-motion';
-import { addDays } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { ShippingMethodI } from '../../types';
@@ -15,16 +15,15 @@ const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps
 
 const OptionWrapper = styled.div``;
 
-const OptionLabel = styled.label<{ isSelected: boolean, hasConditionalContent: boolean }>`
+const OptionLabel = styled.label<{ isSelected: boolean }>`
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
     border: 2px solid ${({ isSelected, theme }) => isSelected ? theme.colors.primary : theme.colors.borderColor};
-    border-radius: ${({ hasConditionalContent, theme }) => hasConditionalContent ? `${theme.borderRadius} ${theme.borderRadius} 0 0` : theme.borderRadius};
+    border-radius: ${({ theme }) => theme.borderRadius};
     cursor: pointer;
-    transition: border-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-    position: relative;
+    transition: border-color 0.2s ease-in-out;
     background-color: ${({ theme }) => theme.colors.bgWhite};
 
     &:hover {
@@ -32,53 +31,64 @@ const OptionLabel = styled.label<{ isSelected: boolean, hasConditionalContent: b
     }
 `;
 
-const HiddenRadio = styled.input`
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+const RadioButton = styled.input`
+    /* Using accent-color for modern browsers to style the radio button */
+    accent-color: ${({ theme }) => theme.colors.primary};
+    width: 20px;
+    height: 20px;
+    margin: 0;
 `;
 
-const IconWrapper = styled.div`
-    color: ${({ theme }) => theme.colors.primary};
-`;
-
-const DetailsWrapper = styled.div`
+const MainContent = styled.div`
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+`;
+
+const TitleRow = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
 `;
 
 const Title = styled.div`
     font-weight: 600;
 `;
 
-const Eta = styled.div`
-    font-size: 0.875rem;
+const Price = styled.span`
+    font-weight: 600;
+`;
+
+const DotSeparator = styled.span`
     color: ${({ theme }) => theme.colors.textLight};
 `;
 
-const Price = styled.div`
-    font-weight: 600;
-    font-size: 1.125rem;
-`;
-
 const RecommendedChip = styled.div`
-    position: absolute;
-    top: -10px;
-    right: 1rem;
-    background-color: ${({ theme }) => theme.colors.success};
-    color: white;
+    background-color: ${({ theme }) => theme.colors.successLight};
+    color: ${({ theme }) => theme.colors.success};
     font-size: 0.75rem;
     font-weight: bold;
     padding: 0.2rem 0.6rem;
     border-radius: 12px;
 `;
 
-const ConditionalContent = styled(motion.div)`
-    padding: 1rem;
-    background-color: ${({ theme }) => theme.colors.bgWhite};
-    border: 2px solid ${({ theme }) => theme.colors.primary};
-    border-top: none;
-    border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
+const Description = styled.div`
+    font-size: 0.875rem;
+    color: ${({ theme }) => theme.colors.textLight};
+`;
+
+const IconWrapper = styled.div`
+    color: ${({ theme }) => theme.colors.primary};
+    border-radius: 4px;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const ConditionalContentWrapper = styled(motion.div)`
+    padding-top: 1rem;
 `;
 
 interface ShippingOptionProps {
@@ -99,53 +109,66 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
     const Icon = option.icon;
     const today = new Date();
 
-    const disabledDays = [
-        { from: new Date(0), to: addDays(today, 7) }
-    ];
+    const getDeliveryDate = () => {
+        if (option.id === 'fast') {
+            return `Get it by Tomorrow, ${format(addDays(today, 1), 'dd MMM')}`;
+        }
+        if (option.id === 'standard') {
+            const startDate = format(addDays(today, 5), 'dd');
+            const endDate = format(addDays(today, 6), 'dd MMM');
+            return `Get it by ${startDate} - ${endDate}`;
+        }
+        if (option.id === 'scheduled') {
+            return selectedDate ? `Get it on ${format(selectedDate, 'dd MMM')}` : 'Pick a delivery date';
+        }
+        return option.eta;
+    };
 
+    const disabledDays = [{ from: new Date(0), to: addDays(today, 7) }];
     const showConditionalContent = isSelected && (option.id === 'fast' || option.id === 'scheduled');
 
     return (
         <OptionWrapper>
-            <OptionLabel isSelected={isSelected} hasConditionalContent={showConditionalContent}>
-                {option.recommended && <RecommendedChip>{appTexts.recommended}</RecommendedChip>}
-                <HiddenRadio
+            <OptionLabel isSelected={isSelected}>
+                <RadioButton
                     type="radio"
                     name="shippingOption"
                     checked={isSelected}
                     onChange={onSelect}
                 />
+                <MainContent>
+                    <TitleRow>
+                        <Price>${option.cost.toFixed(2)}</Price>
+                        <DotSeparator>•</DotSeparator>
+                        <Title>{option.name}</Title>
+                        {option.recommended && <RecommendedChip>{appTexts.recommended}</RecommendedChip>}
+                    </TitleRow>
+                    <Description>{getDeliveryDate()}</Description>
+                </MainContent>
                 <IconWrapper>
-                    <Icon size={32} />
+                    <Icon size={28} />
                 </IconWrapper>
-                <DetailsWrapper>
-                    <Title>{option.name}</Title>
-                    <Eta>{option.eta}</Eta>
-                </DetailsWrapper>
-                <Price>${option.cost.toFixed(2)}</Price>
             </OptionLabel>
             <SafeAnimatePresence>
                 {showConditionalContent && (
-                    <ConditionalContent
+                    <ConditionalContentWrapper
                         initial={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
-                        animate={{ opacity: 1, height: 'auto', paddingTop: '1rem', paddingBottom: '1rem' }}
-                        exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
+                        animate={{ opacity: 1, height: 'auto', paddingTop: '1rem', paddingBottom: '0' }}
+                        exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: '0rem' }}
                         transition={{ duration: 0.3 }}
                     >
-                        {option.id === 'fast' && (
-                            <InfoNotice>{appTexts.droneInfo}</InfoNotice>
-                        )}
+                        {option.id === 'fast' && <InfoNotice>{appTexts.droneInfo}</InfoNotice>}
                         {option.id === 'scheduled' && (
                             <DayPicker
                                 mode="single"
                                 selected={selectedDate}
                                 onSelect={(date) => date && onDateChange(date)}
                                 disabled={disabledDays}
-                                fromDate={addDays(today, 8)} // Ensures calendar starts on an enabled date
+                                fromDate={addDays(today, 8)}
                                 toDate={addDays(today, 30)}
                             />
                         )}
-                    </ConditionalContent>
+                    </ConditionalContentWrapper>
                 )}
             </SafeAnimatePresence>
         </OptionWrapper>
