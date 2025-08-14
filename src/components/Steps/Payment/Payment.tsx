@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {motion} from 'framer-motion';
-import {Loader2} from 'lucide-react';
+import {Loader2, Lock} from 'lucide-react';
 import {appTexts} from '../../../constants/text';
-import {FloatingLabelInput} from '../../FloatingLabelInput/FloatingLabelInput';
+import {CardPaymentView} from '../../PaymentMethodViews/CardPaymentView';
+import {BnplPaymentView} from '../../PaymentMethodViews/BnplPaymentView';
+import {DigitalWalletView} from '../../PaymentMethodViews/DigitalWalletView';
+import {CryptoPaymentView} from '../../PaymentMethodViews/CryptoPaymentView';
 
 const SegmentedControl = styled.div`
     display: flex;
@@ -11,6 +14,7 @@ const SegmentedControl = styled.div`
     border-radius: ${({theme}) => theme.borderRadius};
     overflow: hidden;
     margin-bottom: 2rem;
+    padding: 4px;
 `;
 
 const SegmentButton = styled.button<{ isActive: boolean }>`
@@ -29,13 +33,6 @@ const SegmentButton = styled.button<{ isActive: boolean }>`
 
 const ContentContainer = styled.div`
     margin-bottom: 2rem;
-`;
-
-const CardFormGrid = styled.div`
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 1rem;
-    align-items: center;
 `;
 
 const CouponSection = styled.div`
@@ -83,6 +80,7 @@ const PayButton = styled(motion.button)`
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    height: 50px;
 `;
 
 const LoaderIcon = styled(Loader2)`
@@ -97,7 +95,6 @@ const LoaderIcon = styled(Loader2)`
     }
 `;
 
-
 interface PaymentProps {
     total: number;
     isProcessing: boolean;
@@ -107,8 +104,14 @@ interface PaymentProps {
     appliedCouponCode?: string;
 }
 
+const paymentMethods = [
+    {id: 'gpay', label: appTexts.paymentGPay},
+    {id: 'card', label: appTexts.paymentCard},
+    {id: 'bnpl', label: appTexts.paymentBNPL},
+    {id: 'crypto', label: appTexts.paymentCrypto},
+];
+
 export const Payment: React.FC<PaymentProps> = ({
-                                                    total,
                                                     isProcessing,
                                                     onApplyCoupon,
                                                     onPaymentMethodChange,
@@ -128,32 +131,37 @@ export const Payment: React.FC<PaymentProps> = ({
         setCouponCode('');
     };
 
+    const renderPaymentView = () => {
+        switch (selectedMethod) {
+            case 'gpay':
+                return <DigitalWalletView/>;
+            case 'card':
+                return <CardPaymentView/>;
+            case 'bnpl':
+                return <BnplPaymentView/>;
+            case 'crypto':
+                return <CryptoPaymentView/>;
+            default:
+                return <CardPaymentView/>;
+        }
+    };
+
     return (
         <div>
             <SegmentedControl>
-                <SegmentButton isActive={selectedMethod === 'gpay'} onClick={() => handleMethodClick('gpay')}>
-                    {appTexts.paymentGPay}
-                </SegmentButton>
-                <SegmentButton isActive={selectedMethod === 'card'} onClick={() => handleMethodClick('card')}>
-                    {appTexts.paymentCard}
-                </SegmentButton>
-                <SegmentButton isActive={selectedMethod === 'crypto'} onClick={() => handleMethodClick('crypto')}>
-                    {appTexts.paymentCrypto}
-                </SegmentButton>
+                {paymentMethods.map(method => (
+                    <SegmentButton
+                        key={method.id}
+                        isActive={selectedMethod === method.id}
+                        onClick={() => handleMethodClick(method.id)}
+                    >
+                        {method.label}
+                    </SegmentButton>
+                ))}
             </SegmentedControl>
 
             <ContentContainer>
-                {selectedMethod === 'card' && (
-                    <CardFormGrid>
-                        <FloatingLabelInput label={appTexts.labelCardNumber} name="card" value="" onChange={() => {
-                        }}/>
-                        <FloatingLabelInput label={appTexts.labelExpiry} name="expiry" value="" onChange={() => {
-                        }}/>
-                        <FloatingLabelInput label={appTexts.labelCVC} name="cvc" value="" onChange={() => {
-                        }}/>
-                    </CardFormGrid>
-                )}
-                {selectedMethod !== 'card' && <p>{appTexts.cardNotImplemented}</p>}
+                {renderPaymentView()}
             </ContentContainer>
 
             <CouponSection>
@@ -161,8 +169,9 @@ export const Payment: React.FC<PaymentProps> = ({
                     placeholder={appTexts.couponLabel}
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
+                    disabled={!!appliedCouponCode}
                 />
-                <ApplyButton onClick={handleApplyClick}>
+                <ApplyButton onClick={handleApplyClick} disabled={!!appliedCouponCode}>
                     {appliedCouponCode ? appTexts.couponApplied : appTexts.couponButton}
                 </ApplyButton>
             </CouponSection>
@@ -179,7 +188,10 @@ export const Payment: React.FC<PaymentProps> = ({
                         {appTexts.loading}
                     </>
                 ) : (
-                    `${appTexts.payNow} $${total.toFixed(2)}`
+                    <>
+                        <Lock size={18}/>
+                        {appTexts.paySecurely}
+                    </>
                 )}
             </PayButton>
         </div>

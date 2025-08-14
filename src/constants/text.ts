@@ -19,7 +19,7 @@ export const appTexts = {
     continueToDelivery: 'Continue to Delivery',
     continueToShippingMethod: 'Continue to Shipping Method',
     continueToPayment: 'Continue to Payment',
-    payNow: 'Pay',
+    paySecurely: 'Pay Securely',
 
     item1Name: "Drive Safe",
     item1Description: 'Telemetric device. GPS, Speed, Break Time, and more metrics are being captured by Drive Safe.',
@@ -41,16 +41,12 @@ export const appTexts = {
 
     paymentGPay: 'GPay / Apple Pay',
     paymentCard: 'Card',
+    paymentBNPL: 'BNPL',
     paymentCrypto: 'Crypto',
 
     couponLabel: 'Got a coupon? Let us know',
     couponButton: 'Apply',
     couponApplied: 'Coupon Applied!',
-
-    cardNotImplemented: 'This payment method is not yet available.',
-    labelCardNumber: 'Card Number',
-    labelExpiry: 'MM/YY',
-    labelCVC: 'CVC',
 
     confirmationTitle: 'Congratulations!',
     confirmationSubtitle: 'Your health package is on its way.',
