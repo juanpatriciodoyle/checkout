@@ -2,7 +2,9 @@ import React, { useState, ReactNode } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
 import { appTexts } from '../../constants/text';
+import { OrderData } from '../../types';
 import AccordionStep from '../AccordionStep/AccordionStep';
+import { OrderSummary } from '../OrderSummary/OrderSummary';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -42,25 +44,26 @@ const RightColumn = styled.div`
     }
 `;
 
-const Placeholder = styled.div`
-    background-color: ${({ theme }) => theme.colors.bgWhite};
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
-    border-radius: ${({ theme }) => theme.borderRadius};
-    padding: 2rem;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
 const steps = [
     { id: 1, title: appTexts.step1Title },
     { id: 2, title: appTexts.step2Title },
     { id: 3, title: appTexts.step3Title },
 ];
 
+const initialOrderData: OrderData = {
+    items: [
+        { id: 1, name: 'Vintage T-Shirt', price: 25.0 },
+        { id: 2, name: 'Designer Jeans', price: 75.0 },
+    ],
+    subtotal: 100.0,
+    shipping: { name: 'Standard', cost: 10.0 },
+    discount: { name: appTexts.discount, amount: 15.0 },
+    total: 95.0,
+};
+
 export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
+    const [orderData] = useState<OrderData>(initialOrderData);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -86,10 +89,9 @@ export const CheckoutPage = () => {
                     </SafeAnimatePresence>
                 </LeftColumn>
                 <RightColumn>
-                    <Placeholder>{appTexts.orderSummaryPlaceholder}</Placeholder>
+                    <OrderSummary orderData={orderData} />
                 </RightColumn>
             </CheckoutGrid>
         </PageContainer>
     );
 };
-
