@@ -25,6 +25,11 @@ export interface Discount {
     amount: number;
 }
 
+export interface Coupon {
+    code: string;
+    discountPercentage: number;
+}
+
 export interface ContactInfo {
     name: string;
     email: string;
@@ -38,7 +43,9 @@ export interface OrderData {
     subtotal: number;
     shipping: ShippingMethodI;
     discount: Discount;
+    coupon?: Coupon;
     total: number;
     contactInfo?: ContactInfo;
     isVivreMember: boolean;
+    paymentMethod: string;
 }

@@ -1,5 +1,5 @@
-import { ContactInfo, ShippingMethodI } from "../types";
-import { Rocket, Truck, PackageCheck } from 'lucide-react';
+import {ContactInfo, ShippingMethodI} from "../types";
+import {PackageCheck, Rocket, Truck} from 'lucide-react';
 
 export const appTexts = {
     title: 'Checkout Process',
@@ -8,6 +8,7 @@ export const appTexts = {
     step2Title: 'Shipping Information',
     step3Title: 'Shipping Method',
     step4Title: 'Payment Method',
+    step5Title: 'Review & Confirm',
 
     orderSummaryTitle: 'Order Summary',
     subtotal: 'Subtotal',
@@ -17,6 +18,7 @@ export const appTexts = {
 
     continueToDelivery: 'Continue to Delivery',
     continueToPayment: 'Continue to Payment',
+    completeOrder: 'Complete Order',
 
     item1Name: "Drive Safe",
     item1Description: 'Telemetric device. GPS, Speed, Break Time, and more metrics are being captured by Drive Safe.',
@@ -33,12 +35,25 @@ export const appTexts = {
     labelZip: 'ZIP Code',
 
     recommended: 'Recommended',
+
+    paymentGPay: 'GPay / Apple Pay',
+    paymentCard: 'Card',
+    paymentCrypto: 'Crypto',
+
+    couponLabel: 'Got a coupon? Let us know',
+    couponButton: 'Apply',
+    couponApplied: 'Coupon Applied!',
+
+    cardNotImplemented: 'This payment method is not yet available.',
+    labelCardNumber: 'Card Number',
+    labelExpiry: 'MM/YY',
+    labelCVC: 'CVC',
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
-    { id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true },
-    { id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck },
-    { id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck },
+    {id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true},
+    {id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck},
+    {id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck},
 ];
 
 export const KATE_CRESTWELL_DATA: ContactInfo = {

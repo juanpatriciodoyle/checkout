@@ -51,7 +51,9 @@ const formatCurrency = (amount: number) => {
 };
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
-    const {items, subtotal, shipping, discount, total} = orderData;
+    const {items, subtotal, shipping, discount, coupon, total} = orderData;
+
+    const couponDiscountAmount = coupon ? subtotal * coupon.discountPercentage : 0;
 
     return (
         <SummaryContainer>
@@ -72,10 +74,18 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
                 <span>{appTexts.shipping}</span>
                 <span>{formatCurrency(shipping.cost)}</span>
             </SummaryRow>
-            <SummaryRow>
-                <span>{discount.name}</span>
-                <span>-{formatCurrency(discount.amount)}</span>
-            </SummaryRow>
+            {discount.amount > 0 && (
+                <SummaryRow>
+                    <span>{discount.name}</span>
+                    <span>-{formatCurrency(discount.amount)}</span>
+                </SummaryRow>
+            )}
+            {coupon && (
+                <SummaryRow>
+                    <span>Coupon ({coupon.code})</span>
+                    <span>-{formatCurrency(couponDiscountAmount)}</span>
+                </SummaryRow>
+            )}
             <TotalRow>
                 <span>{appTexts.total}</span>
                 <span>{formatCurrency(total)}</span>

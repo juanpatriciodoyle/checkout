@@ -1,13 +1,14 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
-import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
-import {appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS} from '../../constants/text';
-import {OrderData, ShippingMethodI} from '../../types';
+import { AnimatePresence, AnimatePresenceProps } from 'framer-motion';
+import { appTexts, KATE_CRESTWELL_DATA, SHIPPING_OPTIONS } from '../../constants/text';
+import { OrderData, ShippingMethodI, Coupon } from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
-import {OrderSummary} from '../OrderSummary/OrderSummary';
-import {YourCart} from '../Steps/YourCart/YourCart';
-import {DeliveryInfo} from '../Steps/ShippingInformation/DeliveryInfo';
-import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
+import { OrderSummary } from '../OrderSummary/OrderSummary';
+import { YourCart } from '../Steps/YourCart/YourCart';
+import { DeliveryInfo } from '../Steps/ShippingInformation/DeliveryInfo';
+import { ShippingMethod } from '../Steps/ShippingMethod/ShippingMethod';
+import { Payment } from '../Steps/Payment/Payment';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -16,7 +17,7 @@ type SafeAnimatePresenceProps = AnimatePresenceProps & {
 const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
 
 const PageContainer = styled.div`
-    background-color: ${({theme}) => theme.colors.bgSubtle};
+    background-color: ${({ theme }) => theme.colors.bgSubtle};
     min-height: 100vh;
     padding: 2rem;
 `;
@@ -48,10 +49,11 @@ const RightColumn = styled.div`
 `;
 
 const steps = [
-    {id: 1, title: appTexts.step1Title},
-    {id: 2, title: appTexts.step2Title},
-    {id: 3, title: appTexts.step3Title},
-    {id: 4, title: appTexts.step4Title},
+    { id: 1, title: appTexts.step1Title },
+    { id: 2, title: appTexts.step2Title },
+    { id: 3, title: appTexts.step3Title },
+    { id: 4, title: appTexts.step4Title },
+    { id: 5, title: appTexts.step5Title },
 ];
 
 const initialOrderData: OrderData = {
@@ -77,10 +79,11 @@ const initialOrderData: OrderData = {
     ],
     subtotal: 120.0,
     shipping: SHIPPING_OPTIONS[1],
-    discount: {name: appTexts.discount, amount: 20.0},
+    discount: { name: appTexts.discount, amount: 20.0 },
     total: 100.0,
-    contactInfo: {name: '', email: '', address: '', city: '', zip: ''},
+    contactInfo: { name: '', email: '', address: '', city: '', zip: '' },
     isVivreMember: false,
+    paymentMethod: 'card',
 };
 
 export const CheckoutPage = () => {
@@ -89,15 +92,17 @@ export const CheckoutPage = () => {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     useEffect(() => {
-        const newSubtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
-        const newTotal = newSubtotal + orderData.shipping.cost - orderData.discount.amount;
+        const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
+        const memberDiscount = orderData.discount.amount;
+        const couponDiscount = orderData.coupon ? subtotal * orderData.coupon.discountPercentage : 0;
+        const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
         setOrderData(prev => ({
             ...prev,
-            subtotal: newSubtotal,
-            total: newTotal
+            subtotal,
+            total,
         }));
-    }, [orderData.items, orderData.shipping, orderData.discount]);
+    }, [orderData.items, orderData.shipping, orderData.discount, orderData.coupon]);
 
     const handleToggle = (stepId: number) => {
         setActiveStep(activeStep === stepId ? 0 : stepId);
@@ -111,13 +116,13 @@ export const CheckoutPage = () => {
         setOrderData((prev) => ({
             ...prev,
             items: prev.items.map((item) =>
-                item.id === itemId ? {...item, color: newColor} : item
+                item.id === itemId ? { ...item, color: newColor } : item
             ),
         }));
     };
 
     const handleContactInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setOrderData((prev) => ({
             ...prev,
             contactInfo: {
@@ -141,8 +146,19 @@ export const CheckoutPage = () => {
     }
 
     const handleShippingChange = (shippingMethod: ShippingMethodI) => {
-        setOrderData(prev => ({...prev, shipping: shippingMethod}));
+        setOrderData(prev => ({ ...prev, shipping: shippingMethod }));
         handleContinue(4);
+    }
+
+    const handlePaymentMethodChange = (method: string) => {
+        setOrderData(prev => ({...prev, paymentMethod: method}));
+    }
+
+    const handleApplyCoupon = (code: string) => {
+        if (code.toUpperCase() === 'VIVRE50') {
+            const newCoupon: Coupon = { code: 'Vivre50', discountPercentage: 0.50 };
+            setOrderData(prev => ({...prev, coupon: newCoupon}));
+        }
     }
 
     const getStepContent = (stepId: number) => {
@@ -166,10 +182,16 @@ export const CheckoutPage = () => {
                     />
                 );
             case 3:
-                return <ShippingMethod selectedShippingId={orderData.shipping.id}
-                                       onSelectShipping={handleShippingChange}/>;
+                return <ShippingMethod selectedShippingId={orderData.shipping.id} onSelectShipping={handleShippingChange} />;
             case 4:
-                return <p>Content for {appTexts.step4Title}</p>;
+                return <Payment
+                    onPaymentMethodChange={handlePaymentMethodChange}
+                    onApplyCoupon={handleApplyCoupon}
+                    appliedCouponCode={orderData.coupon?.code}
+                    onComplete={() => handleContinue(5)}
+                />;
+            case 5:
+                return <p>Content for {appTexts.step5Title}</p>;
             default:
                 return null;
         }
@@ -195,7 +217,7 @@ export const CheckoutPage = () => {
                     </SafeAnimatePresence>
                 </LeftColumn>
                 <RightColumn>
-                    <OrderSummary orderData={orderData}/>
+                    <OrderSummary orderData={orderData} />
                 </RightColumn>
             </CheckoutGrid>
         </PageContainer>
