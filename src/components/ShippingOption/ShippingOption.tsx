@@ -88,7 +88,6 @@ const IconWrapper = styled.div`
 `;
 
 const ConditionalContentWrapper = styled(motion.div)`
-    padding-top: 1rem;
 `;
 
 interface ShippingOptionProps {
@@ -153,7 +152,7 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                 {showConditionalContent && (
                     <ConditionalContentWrapper
                         initial={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
-                        animate={{ opacity: 1, height: 'auto', paddingTop: '1rem', paddingBottom: '0' }}
+                        animate={{ opacity: 1, height: 'auto', paddingBottom: '0' }}
                         exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: '0rem' }}
                         transition={{ duration: 0.3 }}
                     >
