@@ -50,4 +50,5 @@ export interface OrderData {
     paymentMethod: string;
     trackingNumber: string;
     estimatedArrival: string;
+    scheduledDate?: Date;
 }

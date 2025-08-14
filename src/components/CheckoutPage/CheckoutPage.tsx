@@ -84,7 +84,8 @@ const initialOrderData: OrderData = {
     contactInfo: { name: '', email: '', address: '', city: '', zip: '', phone: '' },
     paymentMethod: 'card',
     trackingNumber: 'VIV-123-XYZ',
-    estimatedArrival: 'August 15, 2025'
+    estimatedArrival: 'August 15, 2025',
+    scheduledDate: undefined,
 };
 
 export const CheckoutPage = () => {
@@ -160,6 +161,10 @@ export const CheckoutPage = () => {
         handleContinue(4);
     }
 
+    const handleDateChange = (date: Date) => {
+        setOrderData(prev => ({...prev, scheduledDate: date}));
+    }
+
     const handlePaymentMethodChange = (method: string) => {
         setOrderData(prev => ({ ...prev, paymentMethod: method }));
     }
@@ -205,7 +210,12 @@ export const CheckoutPage = () => {
                     />
                 );
             case 3:
-                return <ShippingMethod selectedShippingId={orderData.shipping.id} onSelectShipping={handleShippingChange} />;
+                return <ShippingMethod
+                    selectedShippingId={orderData.shipping.id}
+                    onSelectShipping={handleShippingChange}
+                    selectedDate={orderData.scheduledDate}
+                    onDateChange={handleDateChange}
+                />;
             case 4:
                 return <Payment
                     total={orderData.total}

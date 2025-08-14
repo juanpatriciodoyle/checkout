@@ -149,7 +149,7 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
             </form>
             <ButtonWrapper>
                 <ContinueButton onClick={onContinue}>
-                    {appTexts.continueToPayment}
+                    {appTexts.continueToShippingMethod}
                 </ContinueButton>
             </ButtonWrapper>
         </div>

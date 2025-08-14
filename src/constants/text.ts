@@ -1,5 +1,5 @@
-import { ContactInfo, ShippingMethodI } from "../types";
-import { PackageCheck, Rocket, Truck } from 'lucide-react';
+import {ShippingMethodI} from "../types";
+import {PackageCheck, Rocket, Truck} from 'lucide-react';
 
 export const appTexts = {
     title: 'Checkout Process',
@@ -17,7 +17,7 @@ export const appTexts = {
     total: 'Total',
 
     continueToDelivery: 'Continue to Delivery',
-    continueToPayment: 'Continue to Payment',
+    continueToShippingMethod: 'Continue to Shipping Method',
     payNow: 'Pay',
 
     item1Name: "Drive Safe",
@@ -36,6 +36,7 @@ export const appTexts = {
     labelPhone: 'Phone',
 
     recommended: 'Recommended',
+    droneInfo: 'Please ensure a clear, private green space (e.g., a garden or yard) is available for the drone to land safely.',
 
     paymentGPay: 'GPay / Apple Pay',
     paymentCard: 'Card',
@@ -58,9 +59,9 @@ export const appTexts = {
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
-    { id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true },
-    { id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck },
-    { id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck },
+    {id: 'fast', name: 'Fast Delivery', cost: 25.00, eta: 'Tomorrow', icon: Rocket, recommended: true},
+    {id: 'standard', name: 'Standard Delivery', cost: 10.00, eta: 'Next Week', icon: Truck},
+    {id: 'scheduled', name: 'Scheduled Delivery', cost: 0.00, eta: 'Pick a date', icon: PackageCheck},
 ];
 
 export const VIVRE_MEMBER_DATA = {

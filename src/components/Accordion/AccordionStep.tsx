@@ -27,7 +27,7 @@ const StepTitle = styled.h2`
 `;
 
 const ContentWrapper = styled(motion.div)`
-    padding: 0 1.5rem 1.5rem;
+    padding: 1.5rem;
     border-top: 1px solid ${({theme}) => theme.colors.borderColor};
 `;
 

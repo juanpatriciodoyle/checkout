@@ -5,20 +5,24 @@ import { ShippingOption } from '../../ShippingOption/ShippingOption';
 import { SHIPPING_OPTIONS } from '../../../constants/text';
 
 const OptionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 `;
 
 interface StepShippingMethodProps {
     selectedShippingId: string;
     onSelectShipping: (option: ShippingMethodType) => void;
+    selectedDate?: Date;
+    onDateChange: (date: Date) => void;
 }
 
 export const ShippingMethod: React.FC<StepShippingMethodProps> = ({
-                                                                          selectedShippingId,
-                                                                          onSelectShipping,
-                                                                      }) => {
+                                                                      selectedShippingId,
+                                                                      onSelectShipping,
+                                                                      selectedDate,
+                                                                      onDateChange
+                                                                  }) => {
     return (
         <OptionsContainer>
             {SHIPPING_OPTIONS.map((option) => (
@@ -27,6 +31,8 @@ export const ShippingMethod: React.FC<StepShippingMethodProps> = ({
                     option={option}
                     isSelected={selectedShippingId === option.id}
                     onSelect={() => onSelectShipping(option)}
+                    selectedDate={selectedDate}
+                    onDateChange={onDateChange}
                 />
             ))}
         </OptionsContainer>
