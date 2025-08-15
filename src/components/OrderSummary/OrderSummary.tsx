@@ -77,8 +77,8 @@ const formatCurrency = (amount: number) => {
 export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
     const {items, subtotal, shipping, vivreDiscount, coupon, total} = orderData;
 
-    const couponDiscountAmount = coupon ? subtotal * coupon.discountPercentage : 0;
     const discountAmount = vivreDiscount.applied ? subtotal * vivreDiscount.discountPercentage : 0;
+    const couponDiscountAmount = coupon ? vivreDiscount.applied ? ((subtotal-discountAmount) * coupon.discountPercentage) : subtotal * coupon.discountPercentage : 0;
 
     return (
         <SummaryContainer>

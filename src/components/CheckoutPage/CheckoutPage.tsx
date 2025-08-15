@@ -108,7 +108,7 @@ export const CheckoutPage = () => {
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
         const memberDiscount = orderData.vivreDiscount.applied ? subtotal * orderData.vivreDiscount.discountPercentage : 0;
-        const couponDiscount = orderData.coupon ? subtotal * orderData.coupon.discountPercentage : 0;
+        const couponDiscount = orderData.coupon ? (subtotal-memberDiscount) * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
         setOrderData(prev => ({
