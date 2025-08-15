@@ -52,7 +52,7 @@ export const appTexts = {
     couponApplied: 'Coupon Applied!',
 
     confirmationTitle: 'Congratulations!',
-    confirmationSubtitle: 'Your health package is on its way.',
+    confirmationSubtitle: 'Your package is on its way.',
     trackingNumber: 'Tracking Number',
     estimatedArrival: 'Estimated Arrival',
     goToHomepage: 'Go to Homepage',
