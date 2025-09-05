@@ -83,7 +83,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
         });
     }, [getTransactionInfo]);
 
-    const handlePaymentAuthorized = useCallback((paymentData: google.payments.api.PaymentData) => {
+    const handlePaymentAuthorized = useCallback((_paymentData: google.payments.api.PaymentData) => {
         return new Promise<google.payments.api.PaymentAuthorizationResult>((resolve) => {
             onPaymentAuthorized();
             resolve({ transactionState: 'SUCCESS' });
