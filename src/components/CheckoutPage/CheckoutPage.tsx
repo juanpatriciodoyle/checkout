@@ -1,8 +1,8 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
 import {appTexts, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
-import {Coupon, OrderData, ShippingMethodI} from '../../types';
+import {ContactInfo, Coupon, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import {OrderSummary} from '../OrderSummary/OrderSummary';
 import {YourCart} from '../Steps/YourCart/YourCart';
@@ -98,12 +98,19 @@ const initialOrderData: OrderData = {
     scheduledDate: undefined,
 };
 
+const isContactInfoValid = (contactInfo: ContactInfo): boolean => {
+    return Object.values(contactInfo).every(value => value.trim() !== '');
+};
+
 export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
+    const [highestCompletedStep, setHighestCompletedStep] = useState(0);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const isDeliveryFormValid = useMemo(() => isContactInfoValid(orderData.contactInfo!), [orderData.contactInfo]);
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
@@ -119,11 +126,26 @@ export const CheckoutPage = () => {
     }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon]);
 
     const handleToggle = (stepId: number) => {
+        if (stepId > highestCompletedStep + 1) {
+            return;
+        }
         setActiveStep(activeStep === stepId ? 0 : stepId);
     };
 
-    const handleContinue = (nextStep: number) => {
-        setActiveStep(nextStep);
+    const handleContinueFromCart = () => {
+        setHighestCompletedStep(prev => Math.max(prev, 1));
+        setActiveStep(2);
+    };
+
+    const handleContinueFromDelivery = () => {
+        if (!isDeliveryFormValid) return;
+        setHighestCompletedStep(prev => Math.max(prev, 2));
+        setActiveStep(3);
+    };
+
+    const handleContinueFromShipping = () => {
+        setHighestCompletedStep(prev => Math.max(prev, 3));
+        setActiveStep(4);
     };
 
     const handleColorChange = (itemId: number, newColor: string) => {
@@ -169,7 +191,8 @@ export const CheckoutPage = () => {
                 vivreDiscount: {...prev.vivreDiscount, applied: true},
             }));
             setIsLoggingIn(false);
-            handleContinue(3);
+            setHighestCompletedStep(prev => Math.max(prev, 2));
+            setActiveStep(3);
         }, 1500);
     }
 
@@ -212,7 +235,7 @@ export const CheckoutPage = () => {
                         items={orderData.items}
                         onColorChange={handleColorChange}
                         onRemoveItem={handleRemoveItem}
-                        onContinue={() => handleContinue(2)}
+                        onContinue={handleContinueFromCart}
                     />
                 );
             case 2:
@@ -222,7 +245,8 @@ export const CheckoutPage = () => {
                         loading={isLoggingIn}
                         onInfoChange={handleContactInfoChange}
                         onVivreLogin={handleVivreLogin}
-                        onContinue={() => handleContinue(3)}
+                        onContinue={handleContinueFromDelivery}
+                        isFormValid={isDeliveryFormValid}
                     />
                 );
             case 3:
@@ -231,7 +255,7 @@ export const CheckoutPage = () => {
                     onSelectShipping={handleShippingChange}
                     selectedDate={orderData.scheduledDate}
                     onDateChange={handleDateChange}
-                    onContinue={() => handleContinue(4)}
+                    onContinue={handleContinueFromShipping}
                 />;
             case 4:
                 return <Payment
@@ -259,7 +283,8 @@ export const CheckoutPage = () => {
                                     title={step.title}
                                     stepNumber={step.id}
                                     isActive={activeStep === step.id}
-                                    isCompleted={activeStep > step.id}
+                                    isCompleted={step.id <= highestCompletedStep}
+                                    isLocked={step.id > highestCompletedStep + 1}
                                     onToggle={() => handleToggle(step.id)}
                                 >
                                     {getStepContent(step.id)}

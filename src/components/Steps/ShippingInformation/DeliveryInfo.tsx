@@ -17,6 +17,12 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    transition: opacity 0.2s;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 `;
 
 const LoginButton = styled(Button)`
@@ -26,7 +32,7 @@ const LoginButton = styled(Button)`
     width: 100%;
     margin-bottom: 2rem;
 
-    &:hover {
+    &:hover:not(:disabled) {
         background-color: ${({ theme }) => theme.colors.bgSubtle};
     }
 `;
@@ -35,7 +41,7 @@ const ContinueButton = styled(Button)`
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.bgWhite};
 
-    &:hover {
+    &:hover:not(:disabled) {
         opacity: 0.9;
     }
 `;
@@ -80,6 +86,7 @@ interface StepDeliveryInfoProps {
     onInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onVivreLogin: () => void;
     onContinue: () => void;
+    isFormValid: boolean;
 }
 
 export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
@@ -88,6 +95,7 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                                                                   onInfoChange,
                                                                   onVivreLogin,
                                                                   onContinue,
+                                                                  isFormValid,
                                                               }) => {
     return (
         <div>
@@ -155,7 +163,7 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                 </FormGrid>
             </form>
             <ButtonWrapper>
-                <ContinueButton onClick={onContinue}>
+                <ContinueButton onClick={onContinue} disabled={!isFormValid}>
                     {appTexts.continueToShippingMethod}
                 </ContinueButton>
             </ButtonWrapper>

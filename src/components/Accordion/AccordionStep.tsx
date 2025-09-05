@@ -11,19 +11,20 @@ const StepContainer = styled.div`
     overflow: hidden;
 `;
 
-const StepHeader = styled.div`
+const StepHeader = styled.div<{ isLocked: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    cursor: pointer;
+    cursor: ${({isLocked}) => (isLocked ? 'not-allowed' : 'pointer')};
     user-select: none;
 `;
 
-const StepTitle = styled.h2`
+const StepTitle = styled.h2<{ isLocked: boolean }>`
     margin: 0;
     font-size: 1.125rem;
-    color: ${({theme}) => theme.colors.textMain};
+    color: ${({isLocked, theme}) => (isLocked ? theme.colors.textLight : theme.colors.textMain)};
+    transition: color 0.2s ease-in-out;
 `;
 
 const ContentWrapper = styled(motion.div)`
@@ -50,6 +51,7 @@ interface AccordionStepProps {
     stepNumber: number;
     isActive: boolean;
     isCompleted: boolean;
+    isLocked: boolean;
     onToggle: () => void;
     children: React.ReactNode;
 }
@@ -58,13 +60,14 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
                                                          title,
                                                          isActive,
                                                          isCompleted,
+                                                         isLocked,
                                                          onToggle,
                                                          children,
                                                      }) => {
     return (
         <StepContainer>
-            <StepHeader onClick={onToggle}>
-                <StepTitle>{title}</StepTitle>
+            <StepHeader onClick={onToggle} isLocked={isLocked}>
+                <StepTitle isLocked={isLocked}>{title}</StepTitle>
                 {isCompleted && <CheckCircle2 color="green"/>}
             </StepHeader>
             {isActive && (
