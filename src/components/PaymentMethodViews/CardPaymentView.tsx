@@ -50,10 +50,8 @@ export const CardPaymentView = () => {
     const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
 
-        // Remove all non-digit characters
         value = value.replace(/\D/g, '');
 
-        // Add a slash after the month (MM)
         if (value.length > 2) {
             value = value.slice(0, 2) + ' / ' + value.slice(2, 4);
         }
