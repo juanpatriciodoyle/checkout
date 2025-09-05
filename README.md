@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# Vivre Checkout Process 🛍️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Days](https://img.shields.io/static/v1?label=Working-Days&message=1&color=blue)
+![Status](https://img.shields.io/static/v1?label=Done-Status&message=100%&color=green)
 
-## Available Scripts
+This project is a modern, multi-step checkout experience built with React, TypeScript, and styled-components. It demonstrates a sophisticated, user-friendly interface with a focus on modern web technologies and clean coding principles. ✨
 
-In the project directory, you can run:
+## Key Features
 
-### `npm start`
+-   **Multi-Step Accordion UI 📜**: A sleek, collapsible interface guides the user through the checkout process, including steps for the cart, shipping information, shipping method, and payment.
+-   **Step Locking & Validation 🔒**: Users are required to complete each step before proceeding to the next, ensuring a complete and valid order. This includes form validation for shipping information.
+-   **Dynamic Order Summary 🧾**: A real-time order summary panel that updates totals and discounts as the user modifies their cart, shipping options, or applies coupons.
+-   **Multiple Payment Options 💳**: A segmented control allows users to choose between various payment methods, including Credit Card, BNPL, Crypto, and Google Pay.
+-   **Google Pay API Integration 🇬 G**: A full-featured integration with the Google Pay for Web API (in a test environment).
+    -   Includes a dynamic flow for selecting shipping addresses and options directly within the Google Pay payment sheet.
+    -   Supports real-time price updates based on the selected shipping option.
+-   **Advanced Animations ✨**: Smooth and intuitive animations powered by Framer Motion enhance the user experience throughout the application.
+-   **Centralized Text Management 🌍**: All static text and placeholders are managed in a single constants file for easy maintenance and future internationalization.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🛠️ Tech Stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-   **React 19** with TypeScript
+-   **Styled-components** for all styling
+-   **Framer Motion** for animations
+-   **Lucide React** for icons
+-   **date-fns** for date management
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Coded with ❤️ by Juan Patricio Doyle ✨2025
