@@ -235,7 +235,7 @@ export const CheckoutPage = () => {
                 />;
             case 4:
                 return <Payment
-                    total={orderData.total}
+                    orderData={orderData}
                     isProcessing={isProcessingPayment}
                     onPaymentMethodChange={handlePaymentMethodChange}
                     onApplyCoupon={handleApplyCoupon}

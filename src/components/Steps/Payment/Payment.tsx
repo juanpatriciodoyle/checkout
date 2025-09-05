@@ -7,6 +7,7 @@ import {CardPaymentView} from '../../PaymentMethodViews/CardPaymentView';
 import {BnplPaymentView} from '../../PaymentMethodViews/BnplPaymentView';
 import {DigitalWalletView} from '../../PaymentMethodViews/DigitalWalletView';
 import {CryptoPaymentView} from '../../PaymentMethodViews/CryptoPaymentView';
+import { OrderData } from '../../../types';
 
 const SegmentedControl = styled.div`
     display: flex;
@@ -96,7 +97,7 @@ const LoaderIcon = styled(Loader2)`
 `;
 
 interface PaymentProps {
-    total: number;
+    orderData: OrderData;
     isProcessing: boolean;
     onApplyCoupon: (code: string) => void;
     onPaymentMethodChange: (method: string) => void;
@@ -112,6 +113,7 @@ const paymentMethods = [
 ];
 
 export const Payment: React.FC<PaymentProps> = ({
+                                                    orderData,
                                                     isProcessing,
                                                     onApplyCoupon,
                                                     onPaymentMethodChange,
@@ -134,7 +136,7 @@ export const Payment: React.FC<PaymentProps> = ({
     const renderPaymentView = () => {
         switch (selectedMethod) {
             case 'gpay':
-                return <DigitalWalletView/>;
+                return <DigitalWalletView orderData={orderData} onPaymentAuthorized={onComplete} />;
             case 'card':
                 return <CardPaymentView/>;
             case 'bnpl':
@@ -176,24 +178,26 @@ export const Payment: React.FC<PaymentProps> = ({
                 </ApplyButton>
             </CouponSection>
 
-            <PayButton
-                onClick={onComplete}
-                disabled={isProcessing}
-                whileHover={{scale: isProcessing ? 1 : 1.02}}
-                whileTap={{scale: isProcessing ? 1 : 0.98}}
-            >
-                {isProcessing ? (
-                    <>
-                        <LoaderIcon size={20}/>
-                        {appTexts.loading}
-                    </>
-                ) : (
-                    <>
-                        <Lock size={18}/>
-                        {appTexts.paySecurely}
-                    </>
-                )}
-            </PayButton>
+            {selectedMethod !== 'gpay' && (
+                <PayButton
+                    onClick={onComplete}
+                    disabled={isProcessing}
+                    whileHover={{scale: isProcessing ? 1 : 1.02}}
+                    whileTap={{scale: isProcessing ? 1 : 0.98}}
+                >
+                    {isProcessing ? (
+                        <>
+                            <LoaderIcon size={20}/>
+                            {appTexts.loading}
+                        </>
+                    ) : (
+                        <>
+                            <Lock size={18}/>
+                            {appTexts.paySecurely}
+                        </>
+                    )}
+                </PayButton>
+            )}
         </div>
     );
 };

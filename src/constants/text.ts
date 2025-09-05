@@ -56,6 +56,7 @@ export const appTexts = {
     trackingNumber: 'Tracking Number',
     estimatedArrival: 'Estimated Arrival',
     goToHomepage: 'Go to Homepage',
+    googlePayNotSupported: 'Google Pay is not supported on this browser.',
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
