@@ -1,6 +1,6 @@
 # Vivre Checkout Process 🛍️
 
-![Days](https://img.shields.io/static/v1?label=Working-Days&message=1&color=blue)
+![Days](https://img.shields.io/static/v1?label=Working-Days&message=2&color=blue)
 ![Status](https://img.shields.io/static/v1?label=Done-Status&message=100%&color=green)
 
 This project is a modern, multi-step checkout experience built with React, TypeScript, and styled-components. It demonstrates a sophisticated, user-friendly interface with a focus on modern web technologies and clean coding principles. ✨
