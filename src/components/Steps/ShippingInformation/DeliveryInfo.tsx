@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Loader } from 'lucide-react';
 import { ContactInfo } from '../../../types';
 import { appTexts } from '../../../constants/text';
 import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
@@ -142,18 +141,6 @@ const FullWidthField = styled.div`
     grid-column: 1 / -1;
 `;
 
-const LoaderIcon = styled(Loader)`
-    animation: spin 1s linear infinite;
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-`;
-
 const LoginIcon = styled.img`
     width: 20px;
     height: 20px;
@@ -161,7 +148,6 @@ const LoginIcon = styled.img`
 
 interface StepDeliveryInfoProps {
     contactInfo: ContactInfo;
-    loading: boolean;
     isLoggedIn: boolean;
     onInfoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onVivreLogin: () => void;
@@ -172,7 +158,6 @@ interface StepDeliveryInfoProps {
 
 export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                                                                   contactInfo,
-                                                                  loading,
                                                                   isLoggedIn,
                                                                   onInfoChange,
                                                                   onVivreLogin,
@@ -189,18 +174,9 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
                     <CardFront>
-                        <LoginButton onClick={onVivreLogin} disabled={loading || isLoggedIn}>
-                            {loading ? (
-                                <>
-                                    <LoaderIcon size={20} />
-                                    {appTexts.loading}
-                                </>
-                            ) : (
-                                <>
-                                    <LoginIcon src={`${process.env.PUBLIC_URL}/vivre/Logo.png`} alt="Vivre Logo" />
-                                    {appTexts.loginWithVivre}
-                                </>
-                            )}
+                        <LoginButton onClick={onVivreLogin} disabled={isLoggedIn}>
+                            <LoginIcon src={`${process.env.PUBLIC_URL}/vivre/Logo.png`} alt="Vivre Logo" />
+                            {appTexts.loginWithVivre}
                         </LoginButton>
                     </CardFront>
                     <CardBack>

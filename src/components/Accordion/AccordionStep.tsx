@@ -11,19 +11,19 @@ const StepContainer = styled.div`
     overflow: hidden;
 `;
 
-const StepHeader = styled.div<{ isLocked: boolean }>`
+const StepHeader = styled.div<{ $isLocked: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    cursor: ${({isLocked}) => (isLocked ? 'not-allowed' : 'pointer')};
+    cursor: ${({$isLocked}) => ($isLocked ? 'not-allowed' : 'pointer')};
     user-select: none;
 `;
 
-const StepTitle = styled.h2<{ isLocked: boolean }>`
+const StepTitle = styled.h2<{ $isLocked: boolean }>`
     margin: 0;
     font-size: 1.125rem;
-    color: ${({isLocked, theme}) => (isLocked ? theme.colors.textLight : theme.colors.textMain)};
+    color: ${({$isLocked, theme}) => ($isLocked ? theme.colors.textLight : theme.colors.textMain)};
     transition: color 0.2s ease-in-out;
 `;
 
@@ -66,8 +66,8 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
                                                      }) => {
     return (
         <StepContainer>
-            <StepHeader onClick={onToggle} isLocked={isLocked}>
-                <StepTitle isLocked={isLocked}>{title}</StepTitle>
+            <StepHeader onClick={onToggle} $isLocked={isLocked}>
+                <StepTitle $isLocked={isLocked}>{title}</StepTitle>
                 {isCompleted && <CheckCircle2 color="green"/>}
             </StepHeader>
             {isActive && (

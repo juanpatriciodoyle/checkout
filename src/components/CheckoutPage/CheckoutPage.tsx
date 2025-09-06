@@ -10,6 +10,7 @@ import {DeliveryInfo} from '../Steps/ShippingInformation/DeliveryInfo';
 import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
 import {Payment} from '../Steps/Payment/Payment';
 import {ConfirmationModal} from '../ConfirmationModal/ConfirmationModal';
+import {LoginModal} from "../LoginModal/LoginModal";
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -106,7 +107,7 @@ export const CheckoutPage = () => {
     const [activeStep, setActiveStep] = useState(1);
     const [highestCompletedStep, setHighestCompletedStep] = useState(0);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -182,18 +183,15 @@ export const CheckoutPage = () => {
         }));
     };
 
-    const handleVivreLogin = () => {
-        setIsLoggingIn(true);
-        setTimeout(() => {
-            setOrderData(prev => ({
-                ...prev,
-                contactInfo: VIVRE_MEMBER_DATA,
-                vivreDiscount: {...prev.vivreDiscount, applied: true},
-            }));
-            setHighestCompletedStep(prev => Math.max(prev, 2));
-            setIsLoggingIn(false);
-        }, 1500);
-    }
+    const handleVivreLoginSuccess = () => {
+        setOrderData(prev => ({
+            ...prev,
+            contactInfo: VIVRE_MEMBER_DATA,
+            vivreDiscount: {...prev.vivreDiscount, applied: true},
+        }));
+        setHighestCompletedStep(prev => Math.max(prev, 2));
+        setIsLoginModalOpen(false);
+    };
 
     const handleLogout = () => {
         setOrderData(prev => ({
@@ -250,10 +248,9 @@ export const CheckoutPage = () => {
                 return (
                     <DeliveryInfo
                         contactInfo={orderData.contactInfo!}
-                        loading={isLoggingIn}
                         isLoggedIn={orderData.vivreDiscount.applied}
                         onInfoChange={handleContactInfoChange}
-                        onVivreLogin={handleVivreLogin}
+                        onVivreLogin={() => setIsLoginModalOpen(true)}
                         onLogout={handleLogout}
                         onContinue={handleContinueFromDelivery}
                         isFormValid={isDeliveryFormValid}
@@ -307,6 +304,16 @@ export const CheckoutPage = () => {
                     </RightColumn>
                 </CheckoutGrid>
             </PageContainer>
+
+            <SafeAnimatePresence>
+                {isLoginModalOpen && (
+                    <LoginModal
+                        onLoginSuccess={handleVivreLoginSuccess}
+                        onClose={() => setIsLoginModalOpen(false)}
+                    />
+                )}
+            </SafeAnimatePresence>
+
             <SafeAnimatePresence>
                 {showConfirmation && (
                     <ConfirmationModal
