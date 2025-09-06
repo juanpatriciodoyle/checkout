@@ -28,9 +28,9 @@ const ModalContent = styled(motion.div)`
 `;
 
 const RiveCanvasWrapper = styled.div`
-    width: 150px;
-    height: 150px;
-    margin: -4rem auto 1rem;
+    width: 200px;
+    height: 200px;
+    margin: -12.91rem auto 1rem;
 `;
 
 const Title = styled.h2`
