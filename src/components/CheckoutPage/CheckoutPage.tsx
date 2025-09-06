@@ -1,6 +1,7 @@
 import React, {ReactNode, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
+import {addDays, format} from 'date-fns';
 import {appTexts, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
 import {ContactInfo, Coupon, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
@@ -101,6 +102,22 @@ const initialOrderData: OrderData = {
 
 const isContactInfoValid = (contactInfo: ContactInfo): boolean => {
     return Object.values(contactInfo).every(value => value.trim() !== '');
+};
+
+const getEstimatedArrivalText = (shippingOption: ShippingMethodI, scheduledDate?: Date): string => {
+    const today = new Date();
+    switch (shippingOption.id) {
+        case 'fast':
+            return `Tomorrow, ${format(addDays(today, 1), 'dd MMM')}`;
+        case 'standard':
+            const startDate = format(addDays(today, 5), 'dd');
+            const endDate = format(addDays(today, 6), 'dd MMM');
+            return `${startDate} - ${endDate}`;
+        case 'scheduled':
+            return scheduledDate ? format(scheduledDate, 'dd MMM yyyy') : 'A future date';
+        default:
+            return shippingOption.eta;
+    }
 };
 
 export const CheckoutPage = () => {
@@ -222,6 +239,9 @@ export const CheckoutPage = () => {
     }
 
     const handleCompleteOrder = () => {
+        const estimatedArrival = getEstimatedArrivalText(orderData.shipping, orderData.scheduledDate);
+        setOrderData(prev => ({ ...prev, estimatedArrival }));
+
         setIsProcessingPayment(true);
         setTimeout(() => {
             setIsProcessingPayment(false);
