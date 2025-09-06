@@ -28,9 +28,9 @@ const ModalContent = styled(motion.div)`
 `;
 
 const RiveCanvasWrapper = styled.div`
-    width: 200px;
-    height: 200px;
-    margin: -12.91rem auto 1rem;
+    width: 250px;
+    height: 250px;
+    margin: -6rem auto 0;
 `;
 
 const Title = styled.h2`
@@ -53,20 +53,78 @@ const Input = styled.input`
     }
 `;
 
-const LoginButton = styled.button`
-    width: 100%;
+const LoginButton = styled.button<{ $isProcessing?: boolean }>`
+    z-index: 1;
+    position: relative;
     padding: 0.75rem;
-    border: none;
-    border-radius: ${({ theme }) => theme.borderRadius};
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: white;
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
     font-size: 1rem;
     font-weight: 600;
+    background-color: ${({ $isProcessing }) => ($isProcessing ? '#a989ce' : '#d00a75')};
+    outline: none;
+    border: none;
+    transition: color 0.5s, background-color 0.3s ease-in-out;
     cursor: pointer;
+    border-radius: ${({ theme }) => theme.borderRadius};
 
-    &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
+    .blob-btn__inner {
+        z-index: -1;
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: ${({ theme }) => theme.borderRadius};
+    }
+
+    .blob-btn__blobs {
+        position: relative;
+        display: block;
+        height: 100%;
+        filter: url('#goo');
+    }
+
+    .blob-btn__blob {
+        position: absolute;
+        top: 2px;
+        width: 25%;
+        height: 100%;
+        background: ${({ theme }) => theme.colors.primary};
+        border-radius: 100%;
+        transform: translate3d(0, 150%, 0) scale(1.7);
+        transition: transform 0.45s;
+
+        @supports (filter: url('#goo')) {
+            transform: translate3d(0, 150%, 0) scale(1.4);
+        }
+
+        &:nth-child(1) {
+            left: 0%;
+            transition-delay: 0s;
+        }
+        &:nth-child(2) {
+            left: 25%;
+            transition-delay: 0.08s;
+        }
+        &:nth-child(3) {
+            left: 50%;
+            transition-delay: 0.16s;
+        }
+        &:nth-child(4) {
+            left: 75%;
+            transition-delay: 0.24s;
+        }
+    }
+
+    &:hover:not(:disabled) .blob-btn__blob,
+    &.success .blob-btn__blob {
+        transform: translateZ(0) scale(1.7);
+        @supports (filter: url('#goo')) {
+            transform: translateZ(0) scale(1.4);
+        }
     }
 `;
 
@@ -90,6 +148,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const { rive, RiveComponent } = useRive({
         src: `${process.env.PUBLIC_URL}/login/animated_login_character.riv`,
@@ -126,15 +185,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
         setTimeout(() => {
             if (username === 'kc123456' && password === 'HCL-Dem0') {
                 if(trigSuccessInput) trigSuccessInput.fire();
+                setIsSuccess(true);
                 setTimeout(() => {
                     onLoginSuccess();
                 }, 1000);
             } else {
                 if(trigFailInput) trigFailInput.fire();
                 setError('Invalid username or password.');
+                setIsProcessing(false);
+                if(isCheckingInput) isCheckingInput.value = false;
             }
-            setIsProcessing(false);
-            if(isCheckingInput) isCheckingInput.value = false;
         }, 1500);
     };
 
@@ -145,6 +205,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
             exit={{ opacity: 0 }}
             onClick={onClose}
         >
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
+                <defs>
+                    <filter id="goo">
+                        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+                        <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+                    </filter>
+                </defs>
+            </svg>
             <ModalContent
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -172,8 +241,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
                         onFocus={handlePasswordFocus}
                         onBlur={handlePasswordBlur}
                     />
-                    <LoginButton type="submit" disabled={isProcessing}>
+                    <LoginButton
+                        type="submit"
+                        disabled={isProcessing}
+                        $isProcessing={isProcessing}
+                        className={isSuccess ? 'success' : ''}
+                    >
                         {isProcessing ? 'Logging in...' : 'Log in'}
+                        <span className="blob-btn__inner">
+                            <span className="blob-btn__blobs">
+                                <span className="blob-btn__blob"></span>
+                                <span className="blob-btn__blob"></span>
+                                <span className="blob-btn__blob"></span>
+                                <span className="blob-btn__blob"></span>
+                            </span>
+                        </span>
                     </LoginButton>
                 </form>
                 {error && (
