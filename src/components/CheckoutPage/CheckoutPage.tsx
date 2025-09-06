@@ -190,11 +190,19 @@ export const CheckoutPage = () => {
                 contactInfo: VIVRE_MEMBER_DATA,
                 vivreDiscount: {...prev.vivreDiscount, applied: true},
             }));
-            setIsLoggingIn(false);
             setHighestCompletedStep(prev => Math.max(prev, 2));
-            setActiveStep(3);
+            setIsLoggingIn(false);
         }, 1500);
     }
+
+    const handleLogout = () => {
+        setOrderData(prev => ({
+            ...prev,
+            contactInfo: initialOrderData.contactInfo,
+            vivreDiscount: { ...prev.vivreDiscount, applied: false },
+        }));
+        setHighestCompletedStep(1);
+    };
 
     const handleShippingChange = (shippingMethod: ShippingMethodI) => {
         setOrderData(prev => ({...prev, shipping: shippingMethod}));
@@ -243,8 +251,10 @@ export const CheckoutPage = () => {
                     <DeliveryInfo
                         contactInfo={orderData.contactInfo!}
                         loading={isLoggingIn}
+                        isLoggedIn={orderData.vivreDiscount.applied}
                         onInfoChange={handleContactInfoChange}
                         onVivreLogin={handleVivreLogin}
+                        onLogout={handleLogout}
                         onContinue={handleContinueFromDelivery}
                         isFormValid={isDeliveryFormValid}
                     />
