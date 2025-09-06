@@ -11,7 +11,7 @@ This project is a modern, multi-step checkout experience built with React, TypeS
 -   **Step Locking & Validation 🔒**: Users are required to complete each step before proceeding to the next, ensuring a complete and valid order. This includes form validation for shipping information.
 -   **Dynamic Order Summary 🧾**: A real-time order summary panel that updates totals and discounts as the user modifies their cart, shipping options, or applies coupons.
 -   **Multiple Payment Options 💳**: A segmented control allows users to choose between various payment methods, including Credit Card, BNPL, Crypto, and Google Pay.
--   **Google Pay API Integration 🇬 G**: A full-featured integration with the Google Pay for Web API (in a test environment).
+-   **Google Pay API Integration 💸**: A full-featured integration with the Google Pay for Web API (in a test environment).
     -   Includes a dynamic flow for selecting shipping addresses and options directly within the Google Pay payment sheet.
     -   Supports real-time price updates based on the selected shipping option.
 -   **Advanced Animations ✨**: Smooth and intuitive animations powered by Framer Motion enhance the user experience throughout the application.

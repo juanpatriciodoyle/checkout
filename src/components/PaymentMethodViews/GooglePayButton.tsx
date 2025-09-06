@@ -49,30 +49,55 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
     const buttonContainerRef = useRef<HTMLDivElement>(null);
 
     const getTransactionInfo = useCallback((shippingOptionId?: string): google.payments.api.TransactionInfo => {
-        const selectedShipping = SHIPPING_OPTIONS.find(opt => opt.id === shippingOptionId) || orderData.shipping;
-        const total = orderData.subtotal + selectedShipping.cost;
+        const { subtotal, shipping, vivreDiscount, coupon } = orderData;
+        const selectedShipping = SHIPPING_OPTIONS.find(opt => opt.id === shippingOptionId) || shipping;
+
+        const displayItems: google.payments.api.DisplayItem[] = [
+            {
+                label: "Subtotal",
+                type: "SUBTOTAL",
+                price: subtotal.toFixed(2),
+            },
+            {
+                label: "Shipping cost",
+                type: "LINE_ITEM",
+                price: selectedShipping.cost.toFixed(2),
+                status: "FINAL"
+            }
+        ];
+
+        let total = subtotal + selectedShipping.cost;
+
+        if (vivreDiscount.applied) {
+            const discountAmount = subtotal * vivreDiscount.discountPercentage;
+            displayItems.push({
+                label: appTexts.discount,
+                type: 'LINE_ITEM',
+                price: `-${discountAmount.toFixed(2)}`
+            });
+            total -= discountAmount;
+        }
+
+        if (coupon) {
+            const memberDiscount = vivreDiscount.applied ? subtotal * vivreDiscount.discountPercentage : 0;
+            const couponDiscountAmount = (subtotal - memberDiscount) * coupon.discountPercentage;
+            displayItems.push({
+                label: `Coupon (${coupon.code})`,
+                type: 'LINE_ITEM',
+                price: `-${couponDiscountAmount.toFixed(2)}`
+            });
+            total -= couponDiscountAmount;
+        }
 
         return {
             totalPriceStatus: 'FINAL',
             totalPrice: total.toFixed(2),
             currencyCode: 'GBP',
             countryCode: 'GB',
-            displayItems: [
-                {
-                    label: 'Subtotal',
-                    type: 'SUBTOTAL',
-                    price: orderData.subtotal.toFixed(2),
-                },
-                {
-                    label: 'Shipping cost',
-                    type: 'LINE_ITEM',
-                    price: selectedShipping.cost.toFixed(2),
-                    status: 'FINAL',
-                },
-            ],
-            totalPriceLabel: 'Total',
+            displayItems,
+            totalPriceLabel: "Total"
         };
-    }, [orderData.subtotal, orderData.shipping]);
+    }, [orderData]);
 
     const onPaymentDataChanged = useCallback((intermediatePaymentData: google.payments.api.IntermediatePaymentData): Promise<google.payments.api.PaymentDataRequestUpdate> => {
         return new Promise((resolve) => {
