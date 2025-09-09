@@ -32,7 +32,6 @@ const OptionLabel = styled.label<{ isSelected: boolean }>`
 `;
 
 const RadioButton = styled.input`
-    /* Using accent-color for modern browsers to style the radio button */
     accent-color: ${({theme}) => theme.colors.primary};
     width: 20px;
     height: 20px;

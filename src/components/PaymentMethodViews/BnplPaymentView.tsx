@@ -12,10 +12,9 @@ const ProviderLogo = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    /* In a real app, this would be an <img /> tag */
 
     &::before {
-        content: 'KLARNA.'; /* Placeholder for logo */
+        content: 'KLARNA.';
         font-family: 'Georgia', serif;
         background-color: #FFB3C7;
         color: black;
