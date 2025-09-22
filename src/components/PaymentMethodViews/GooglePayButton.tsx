@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import { appTexts, SHIPPING_OPTIONS } from '../../constants/text';
-import { OrderData } from '../../types';
+import {appTexts, CURRENCIES, EXCHANGE_RATE_EUR, SHIPPING_OPTIONS} from '../../constants/text';
+import {Currency, OrderData} from '../../types';
 
 const GooglePayButtonWrapper = styled.div`
     display: flex;
@@ -14,6 +14,7 @@ const GooglePayButtonWrapper = styled.div`
 interface GooglePayButtonProps {
     orderData: OrderData;
     onPaymentAuthorized: () => void;
+    currency: Currency;
 }
 
 const baseRequest: Omit<google.payments.api.IsReadyToPayRequest, 'allowedPaymentMethods'> = {
@@ -38,30 +39,37 @@ const allowedPaymentMethods: google.payments.api.AllowedPaymentMethod[] = [
     },
 ];
 
-const merchantInfo: google.payments.api.MerchantInfo = {
+const merchantInfoGB: google.payments.api.MerchantInfo = {
     merchantId: '12345678901234567890',
     merchantName: 'Vivre',
 };
 
-export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onPaymentAuthorized }) => {
+const merchantInfoIE: google.payments.api.MerchantInfo = {
+    merchantId: '09876543210987654321', // Using a different merchant ID for demo purposes
+    merchantName: 'Vivre Ireland',
+};
+
+export const GooglePayButton: React.FC<GooglePayButtonProps> = ({orderData, onPaymentAuthorized, currency}) => {
     const [googlePayClient, setGooglePayClient] = useState<google.payments.api.PaymentsClient | null>(null);
     const [canUseGooglePay, setCanUseGooglePay] = useState(false);
     const buttonContainerRef = useRef<HTMLDivElement>(null);
 
     const getTransactionInfo = useCallback((shippingOptionId?: string): google.payments.api.TransactionInfo => {
-        const { subtotal, shipping, vivreDiscount, coupon } = orderData;
+        const {subtotal, shipping, vivreDiscount, coupon} = orderData;
         const selectedShipping = SHIPPING_OPTIONS.find(opt => opt.id === shippingOptionId) || shipping;
+
+        const rate = currency === 'EUR' ? EXCHANGE_RATE_EUR : 1;
 
         const displayItems: google.payments.api.DisplayItem[] = [
             {
                 label: "Subtotal",
                 type: "SUBTOTAL",
-                price: subtotal.toFixed(2),
+                price: (subtotal * rate).toFixed(2),
             },
             {
                 label: "Shipping cost",
                 type: "LINE_ITEM",
-                price: selectedShipping.cost.toFixed(2),
+                price: (selectedShipping.cost * rate).toFixed(2),
                 status: "FINAL"
             }
         ];
@@ -73,7 +81,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
             displayItems.push({
                 label: appTexts.discount,
                 type: 'LINE_ITEM',
-                price: `-${discountAmount.toFixed(2)}`
+                price: `-${(discountAmount * rate).toFixed(2)}`
             });
             total -= discountAmount;
         }
@@ -84,20 +92,20 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
             displayItems.push({
                 label: `Coupon (${coupon.code})`,
                 type: 'LINE_ITEM',
-                price: `-${couponDiscountAmount.toFixed(2)}`
+                price: `-${(couponDiscountAmount * rate).toFixed(2)}`
             });
             total -= couponDiscountAmount;
         }
 
         return {
             totalPriceStatus: 'FINAL',
-            totalPrice: total.toFixed(2),
-            currencyCode: 'GBP',
-            countryCode: 'GB',
+            totalPrice: (total * rate).toFixed(2),
+            currencyCode: currency,
+            countryCode: currency === 'EUR' ? 'IE' : 'GB',
             displayItems,
             totalPriceLabel: "Total"
         };
-    }, [orderData]);
+    }, [orderData, currency]);
 
     const onPaymentDataChanged = useCallback((intermediatePaymentData: google.payments.api.IntermediatePaymentData): Promise<google.payments.api.PaymentDataRequestUpdate> => {
         return new Promise((resolve) => {
@@ -111,16 +119,19 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
     const handlePaymentAuthorized = useCallback((_paymentData: google.payments.api.PaymentData) => {
         return new Promise<google.payments.api.PaymentAuthorizationResult>((resolve) => {
             onPaymentAuthorized();
-            resolve({ transactionState: 'SUCCESS' });
+            resolve({transactionState: 'SUCCESS'});
         });
     }, [onPaymentAuthorized]);
 
     const onGooglePayClicked = useCallback(() => {
         if (!googlePayClient) return;
 
+        const rate = currency === 'EUR' ? EXCHANGE_RATE_EUR : 1;
+        const merchantInfo = currency === 'EUR' ? merchantInfoIE : merchantInfoGB;
+
         const googleShippingOptions: google.payments.api.ShippingOption[] = SHIPPING_OPTIONS.map(option => ({
             id: option.id,
-            label: `£${option.cost.toFixed(2)}: ${option.name}`,
+            label: `${CURRENCIES[currency]}${(option.cost * rate).toFixed(2)}: ${option.name}`,
             description: option.eta,
         }));
 
@@ -138,7 +149,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
             shippingAddressRequired: true,
             shippingAddressParameters: {
                 phoneNumberRequired: true,
-                allowedCountryCodes: ['GB']
+                allowedCountryCodes: ['GB', 'IE']
             },
             shippingOptionRequired: true,
         };
@@ -146,7 +157,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
         paymentDataRequest.shippingOptionParameters = shippingOptionParameters;
 
         googlePayClient.loadPaymentData(paymentDataRequest).catch(console.error);
-    }, [googlePayClient, orderData.shipping.id, getTransactionInfo]);
+    }, [googlePayClient, orderData.shipping.id, getTransactionInfo, currency]);
 
     useEffect(() => {
         const client = new google.payments.api.PaymentsClient({
@@ -162,7 +173,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
     useEffect(() => {
         if (!googlePayClient) return;
 
-        const isReadyToPayRequest = { ...baseRequest, allowedPaymentMethods };
+        const isReadyToPayRequest = {...baseRequest, allowedPaymentMethods};
         googlePayClient.isReadyToPay(isReadyToPayRequest)
             .then(response => {
                 setCanUseGooglePay(response.result);
@@ -185,7 +196,7 @@ export const GooglePayButton: React.FC<GooglePayButtonProps> = ({ orderData, onP
     return (
         <GooglePayButtonWrapper>
             {!canUseGooglePay && <div>{appTexts.googlePayNotSupported}</div>}
-            <div ref={buttonContainerRef} />
+            <div ref={buttonContainerRef}/>
         </GooglePayButtonWrapper>
     );
 };

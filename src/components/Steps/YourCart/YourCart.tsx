@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
-import {CartItem as CartItemType} from '../../../types';
+import {CartItem as CartItemType, Currency} from '../../../types';
 import {CartItem} from '../../CartItem/CartItem';
 import {appTexts} from '../../../constants/text';
 
@@ -40,6 +40,7 @@ interface StepYourCartProps {
     onColorChange: (itemId: number, newColor: string) => void;
     onRemoveItem: (itemId: number) => void;
     onContinue: () => void;
+    currency: Currency;
 }
 
 export const YourCart: React.FC<StepYourCartProps> = ({
@@ -47,6 +48,7 @@ export const YourCart: React.FC<StepYourCartProps> = ({
                                                           onColorChange,
                                                           onRemoveItem,
                                                           onContinue,
+                                                          currency
                                                       }) => {
     return (
         <StepContent>
@@ -58,6 +60,7 @@ export const YourCart: React.FC<StepYourCartProps> = ({
                             item={item}
                             onColorChange={onColorChange}
                             onRemove={onRemoveItem}
+                            currency={currency}
                         />
                     ))}
                 </SafeAnimatePresence>

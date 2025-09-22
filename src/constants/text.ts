@@ -73,3 +73,10 @@ export const VIVRE_MEMBER_DATA = {
     zip: "SW1A 2AA",
     phone: "(020) 1234 4321"
 };
+
+export const CURRENCIES = {
+    GBP: '£',
+    EUR: '€'
+};
+
+export const EXCHANGE_RATE_EUR = 1.18;

@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import {motion} from 'framer-motion';
 import {Trash2} from 'lucide-react';
-import {CartItem as CartItemType} from '../../types';
+import {CartItem as CartItemType, Currency} from '../../types';
+import {CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
 
 const ItemContainer = styled(motion.div)`
     display: grid;
@@ -117,9 +118,15 @@ interface CartItemProps {
     item: CartItemType;
     onColorChange: (itemId: number, newColor: string) => void;
     onRemove: (itemId: number) => void;
+    currency: Currency;
 }
 
-export const CartItem: React.FC<CartItemProps> = ({item, onColorChange, onRemove}) => {
+const formatCurrency = (amount: number, currency: Currency) => {
+    const finalAmount = currency === 'EUR' ? amount * EXCHANGE_RATE_EUR : amount;
+    return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
+};
+
+export const CartItem: React.FC<CartItemProps> = ({item, onColorChange, onRemove, currency}) => {
     return (
         <ItemContainer
             variants={itemVariants}
@@ -146,7 +153,7 @@ export const CartItem: React.FC<CartItemProps> = ({item, onColorChange, onRemove
                 ))}
             </ColorSelector>
             <PriceAndActions>
-                <ItemPrice>£{item.price.toFixed(2)}</ItemPrice>
+                <ItemPrice>{formatCurrency(item.price, currency)}</ItemPrice>
                 <RemoveButton onClick={() => onRemove(item.id)}>
                     <Trash2 size={18}/>
                 </RemoveButton>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ShippingMethodI as ShippingMethodType} from '../../../types';
+import {Currency, ShippingMethodI as ShippingMethodType} from '../../../types';
 import {ShippingOption} from '../../ShippingOption/ShippingOption';
 import {appTexts, SHIPPING_OPTIONS} from '../../../constants/text';
 
@@ -44,6 +44,7 @@ interface StepShippingMethodProps {
     selectedDate?: Date;
     onDateChange: (date: Date) => void;
     onContinue: () => void;
+    currency: Currency;
 }
 
 export const ShippingMethod: React.FC<StepShippingMethodProps> = ({
@@ -52,6 +53,7 @@ export const ShippingMethod: React.FC<StepShippingMethodProps> = ({
                                                                       selectedDate,
                                                                       onDateChange,
                                                                       onContinue,
+                                                                      currency
                                                                   }) => {
     return (
         <>
@@ -64,6 +66,7 @@ export const ShippingMethod: React.FC<StepShippingMethodProps> = ({
                         onSelect={() => onSelectShipping(option)}
                         selectedDate={selectedDate}
                         onDateChange={onDateChange}
+                        currency={currency}
                     />
                 ))}
             </OptionsContainer>

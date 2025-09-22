@@ -4,8 +4,8 @@ import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
 import {addDays, format} from 'date-fns';
 import {DayPicker} from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import {ShippingMethodI} from '../../types';
-import {appTexts} from '../../constants/text';
+import {Currency, ShippingMethodI} from '../../types';
+import {appTexts, CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
 import {InfoNotice} from '../InfoNotice/InfoNotice';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
@@ -102,14 +102,20 @@ interface ShippingOptionProps {
     onSelect: () => void;
     selectedDate?: Date;
     onDateChange: (date: Date) => void;
+    currency: Currency;
 }
 
+const formatCurrency = (amount: number, currency: Currency) => {
+    const finalAmount = currency === 'EUR' ? amount * EXCHANGE_RATE_EUR : amount;
+    return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
+};
 export const ShippingOption: React.FC<ShippingOptionProps> = ({
                                                                   option,
                                                                   isSelected,
                                                                   onSelect,
                                                                   selectedDate,
                                                                   onDateChange,
+                                                                  currency,
                                                               }) => {
     const Icon = option.icon;
     const today = new Date();
@@ -143,7 +149,7 @@ export const ShippingOption: React.FC<ShippingOptionProps> = ({
                 />
                 <MainContent>
                     <TitleRow>
-                        <Price>${option.cost.toFixed(2)}</Price>
+                        <Price>{formatCurrency(option.cost, currency)}</Price>
                         <DotSeparator>•</DotSeparator>
                         <Title>{option.name}</Title>
                         {option.recommended && <RecommendedChip>{appTexts.recommended}</RecommendedChip>}

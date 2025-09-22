@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type Currency = 'GBP' | 'EUR';
+
 export interface CartItem {
     id: number;
     name: string;
@@ -51,6 +53,7 @@ export interface OrderData {
     trackingNumber: string;
     estimatedArrival: string;
     scheduledDate?: Date;
+    currency: Currency;
 }
 
 declare global {
@@ -205,9 +208,12 @@ declare global {
 
         class PaymentsClient {
             constructor(paymentOptions: PaymentOptions);
+
             isReadyToPay(isReadyToPayRequest: IsReadyToPayRequest): Promise<IsReadyToPayResponse>;
+
             loadPaymentData(paymentDataRequest: PaymentDataRequest): Promise<PaymentData>;
-            createButton(options: {onClick: () => void, [key: string]: any}): HTMLElement;
+
+            createButton(options: { onClick: () => void, [key: string]: any }): HTMLElement;
         }
     }
 }

@@ -7,7 +7,7 @@ import {CardPaymentView} from '../../PaymentMethodViews/CardPaymentView';
 import {BnplPaymentView} from '../../PaymentMethodViews/BnplPaymentView';
 import {DigitalWalletView} from '../../PaymentMethodViews/DigitalWalletView';
 import {CryptoPaymentView} from '../../PaymentMethodViews/CryptoPaymentView';
-import { OrderData } from '../../../types';
+import {Currency, OrderData} from '../../../types';
 
 const SegmentedControl = styled.div`
     display: flex;
@@ -103,6 +103,7 @@ interface PaymentProps {
     onPaymentMethodChange: (method: string) => void;
     onComplete: () => void;
     appliedCouponCode?: string;
+    currency: Currency;
 }
 
 const paymentMethods = [
@@ -119,6 +120,7 @@ export const Payment: React.FC<PaymentProps> = ({
                                                     onPaymentMethodChange,
                                                     onComplete,
                                                     appliedCouponCode,
+                                                    currency,
                                                 }) => {
     const [selectedMethod, setSelectedMethod] = useState('card');
     const [couponCode, setCouponCode] = useState('');
@@ -136,7 +138,7 @@ export const Payment: React.FC<PaymentProps> = ({
     const renderPaymentView = () => {
         switch (selectedMethod) {
             case 'gpay':
-                return <DigitalWalletView orderData={orderData} onPaymentAuthorized={onComplete} />;
+                return <DigitalWalletView orderData={orderData} onPaymentAuthorized={onComplete} currency={currency}/>;
             case 'card':
                 return <CardPaymentView/>;
             case 'bnpl':

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
 import {addDays, format} from 'date-fns';
 import {appTexts, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
-import {ContactInfo, Coupon, OrderData, ShippingMethodI} from '../../types';
+import {ContactInfo, Coupon, Currency, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import {OrderSummary} from '../OrderSummary/OrderSummary';
 import {YourCart} from '../Steps/YourCart/YourCart';
@@ -98,6 +98,7 @@ const initialOrderData: OrderData = {
     trackingNumber: 'VIV-123-XYZ',
     estimatedArrival: 'August 15, 2025',
     scheduledDate: undefined,
+    currency: 'GBP',
 };
 
 const isContactInfoValid = (contactInfo: ContactInfo): boolean => {
@@ -127,21 +128,24 @@ export const CheckoutPage = () => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [currency, setCurrency] = useState<Currency>('GBP');
+
 
     const isDeliveryFormValid = useMemo(() => isContactInfoValid(orderData.contactInfo!), [orderData.contactInfo]);
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
         const memberDiscount = orderData.vivreDiscount.applied ? subtotal * orderData.vivreDiscount.discountPercentage : 0;
-        const couponDiscount = orderData.coupon ? (subtotal-memberDiscount) * orderData.coupon.discountPercentage : 0;
+        const couponDiscount = orderData.coupon ? (subtotal - memberDiscount) * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
         setOrderData(prev => ({
             ...prev,
             subtotal,
             total,
+            currency
         }));
-    }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon]);
+    }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon, currency]);
 
     const handleToggle = (stepId: number) => {
         if (stepId > highestCompletedStep + 1) {
@@ -214,7 +218,7 @@ export const CheckoutPage = () => {
         setOrderData(prev => ({
             ...prev,
             contactInfo: initialOrderData.contactInfo,
-            vivreDiscount: { ...prev.vivreDiscount, applied: false },
+            vivreDiscount: {...prev.vivreDiscount, applied: false},
         }));
         setHighestCompletedStep(1);
     };
@@ -240,7 +244,7 @@ export const CheckoutPage = () => {
 
     const handleCompleteOrder = () => {
         const estimatedArrival = getEstimatedArrivalText(orderData.shipping, orderData.scheduledDate);
-        setOrderData(prev => ({ ...prev, estimatedArrival }));
+        setOrderData(prev => ({...prev, estimatedArrival}));
 
         setIsProcessingPayment(true);
         setTimeout(() => {
@@ -253,6 +257,11 @@ export const CheckoutPage = () => {
         setShowConfirmation(false);
     }
 
+    const handleCurrencyChange = (newCurrency: Currency) => {
+        setCurrency(newCurrency);
+    };
+
+
     const getStepContent = (stepId: number) => {
         switch (stepId) {
             case 1:
@@ -262,6 +271,7 @@ export const CheckoutPage = () => {
                         onColorChange={handleColorChange}
                         onRemoveItem={handleRemoveItem}
                         onContinue={handleContinueFromCart}
+                        currency={currency}
                     />
                 );
             case 2:
@@ -283,6 +293,7 @@ export const CheckoutPage = () => {
                     selectedDate={orderData.scheduledDate}
                     onDateChange={handleDateChange}
                     onContinue={handleContinueFromShipping}
+                    currency={currency}
                 />;
             case 4:
                 return <Payment
@@ -292,6 +303,7 @@ export const CheckoutPage = () => {
                     onApplyCoupon={handleApplyCoupon}
                     appliedCouponCode={orderData.coupon?.code}
                     onComplete={handleCompleteOrder}
+                    currency={currency}
                 />;
             default:
                 return null;
@@ -320,7 +332,10 @@ export const CheckoutPage = () => {
                         </SafeAnimatePresence>
                     </LeftColumn>
                     <RightColumn>
-                        <OrderSummary orderData={orderData}/>
+                        <OrderSummary
+                            orderData={orderData}
+                            onCurrencyChange={handleCurrencyChange}
+                        />
                     </RightColumn>
                 </CheckoutGrid>
             </PageContainer>

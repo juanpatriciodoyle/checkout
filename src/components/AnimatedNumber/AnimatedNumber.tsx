@@ -1,13 +1,19 @@
 import React, {useEffect, useRef} from 'react';
 import {animate} from 'framer-motion';
+import {Currency} from '../../types';
+import {CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
 
 interface AnimatedNumberProps {
     value: number;
+    currency: Currency;
 }
 
-const formatCurrency = (value: number) => `£${value.toFixed(2)}`;
+const formatCurrency = (value: number, currency: Currency) => {
+    const finalAmount = currency === 'EUR' ? value * EXCHANGE_RATE_EUR : value;
+    return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
+};
 
-export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({value}) => {
+export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({value, currency}) => {
     const nodeRef = useRef<HTMLSpanElement>(null);
     const isInitialRender = useRef(true);
 
@@ -16,23 +22,25 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({value}) => {
         if (!node) return;
 
         if (isInitialRender.current) {
-            node.textContent = formatCurrency(value);
+            node.textContent = formatCurrency(value, currency);
             isInitialRender.current = false;
             return;
         }
 
-        const fromValue = parseFloat(node.textContent?.replace('£', '') || '0');
+        const fromValueText = node.textContent?.replace(CURRENCIES.GBP, '').replace(CURRENCIES.EUR, '') || '0';
+        const fromValue = parseFloat(fromValueText)
+        const fromValueInGBP = currency === 'EUR' ? fromValue / EXCHANGE_RATE_EUR : fromValue
 
-        const controls = animate(fromValue, value, {
+        const controls = animate(fromValueInGBP, value, {
             duration: 1.5,
             ease: 'easeOut',
             onUpdate(latest) {
-                node.textContent = formatCurrency(latest);
+                node.textContent = formatCurrency(latest, currency);
             },
         });
 
         return () => controls.stop();
-    }, [value]);
+    }, [value, currency]);
 
     return <span ref={nodeRef}/>;
 };
