@@ -9,7 +9,6 @@ export interface CartItem {
     price: number;
     image: string;
     color: string;
-    availableColors: string[];
     availableImages: { [color: string]: string };
 }
 
@@ -208,12 +207,9 @@ declare global {
 
         class PaymentsClient {
             constructor(paymentOptions: PaymentOptions);
-
             isReadyToPay(isReadyToPayRequest: IsReadyToPayRequest): Promise<IsReadyToPayResponse>;
-
             loadPaymentData(paymentDataRequest: PaymentDataRequest): Promise<PaymentData>;
-
-            createButton(options: { onClick: () => void, [key: string]: any }): HTMLElement;
+            createButton(options: {onClick: () => void, [key: string]: any}): HTMLElement;
         }
     }
 }

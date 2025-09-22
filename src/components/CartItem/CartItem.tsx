@@ -7,7 +7,7 @@ import {CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
 
 const ItemContainer = styled(motion.div)`
     display: grid;
-    grid-template-columns: 120px 1fr auto auto;
+    grid-template-columns: 120px 1fr auto;
     align-items: center;
     gap: 16px;
     padding: 16px 0;
@@ -42,47 +42,6 @@ const ItemDescription = styled.p`
     color: ${({theme}) => theme.colors.textLight};
 `;
 
-const ColorSelector = styled.div`
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-`;
-
-const ColorSwatchLabel = styled.label`
-    position: relative;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-`;
-
-const ColorSwatchInput = styled.input`
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-
-    &:checked + div {
-        outline: 3px solid ${({theme}) => theme.colors.primary};
-        outline-offset: 2px;
-        transition: outline-offset 0.1s ease-in-out, outline 0.1s ease-in-out;
-    }
-`;
-
-const ColorSwatchVisual = styled.div<{ color: string }>`
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: ${({color}) => color};
-    border: 1px solid ${({theme}) => theme.colors.borderColor};
-    transition: transform 0.2s ease-in-out;
-
-    &:hover {
-        transform: scale(1.1);
-    }
-`;
-
 const PriceAndActions = styled.div`
     display: flex;
     align-items: center;
@@ -110,13 +69,8 @@ const RemoveButton = styled.button`
     }
 `;
 
-const itemVariants = {
-    exit: {opacity: 0, x: -50, transition: {duration: 0.3}},
-};
-
 interface CartItemProps {
     item: CartItemType;
-    onColorChange: (itemId: number, newColor: string) => void;
     onRemove: (itemId: number) => void;
     currency: Currency;
 }
@@ -126,32 +80,14 @@ const formatCurrency = (amount: number, currency: Currency) => {
     return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
 };
 
-export const CartItem: React.FC<CartItemProps> = ({item, onColorChange, onRemove, currency}) => {
+export const CartItem: React.FC<CartItemProps> = ({item, onRemove, currency}) => {
     return (
-        <ItemContainer
-            variants={itemVariants}
-            exit="exit"
-            layout
-        >
+        <ItemContainer>
             <ItemImage src={item.image} alt={item.name}/>
             <ItemDetails>
                 <ItemName>{item.name}</ItemName>
                 <ItemDescription>{item.description}</ItemDescription>
             </ItemDetails>
-            <ColorSelector>
-                {item.availableColors.map((color) => (
-                    <ColorSwatchLabel key={color}>
-                        <ColorSwatchInput
-                            type="radio"
-                            name={`color-${item.id}`}
-                            value={color}
-                            checked={item.color === color}
-                            onChange={() => onColorChange(item.id, color)}
-                        />
-                        <ColorSwatchVisual color={color}/>
-                    </ColorSwatchLabel>
-                ))}
-            </ColorSelector>
             <PriceAndActions>
                 <ItemPrice>{formatCurrency(item.price, currency)}</ItemPrice>
                 <RemoveButton onClick={() => onRemove(item.id)}>

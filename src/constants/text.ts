@@ -2,6 +2,7 @@ import {ShippingMethodI} from "../types";
 import {ReactComponent as BoxSvg} from '../assets/icons/box.svg';
 import {ReactComponent as DroneSvg} from '../assets/icons/drone.svg';
 import {ReactComponent as TruckSvg} from '../assets/icons/truck.svg';
+import {Car, HeartPulse} from "lucide-react";
 
 
 export const appTexts = {
@@ -57,6 +58,11 @@ export const appTexts = {
     estimatedArrival: 'Estimated Arrival',
     goToHomepage: 'Go to Homepage',
     googlePayNotSupported: 'Google Pay is not supported on this browser.',
+
+    driveSafeBundleTitle: 'Drive Safe Bundle',
+    driveSafeBundleDescription: 'Focus on safety and telemetrics for your vehicle.',
+    healthBundleTitle: 'Health & Wellness Bundle',
+    healthBundleDescription: 'Monitor your well-being on the go.',
 };
 
 export const SHIPPING_OPTIONS: ShippingMethodI[] = [
@@ -80,3 +86,74 @@ export const CURRENCIES = {
 };
 
 export const EXCHANGE_RATE_EUR = 1.18;
+
+export const DRIVE_SAFE_BUNDLE_ITEMS = [
+    {
+        id: 1,
+        name: appTexts.item1Name,
+        description: appTexts.item1Description,
+        price: 59.99,
+        image: `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+        color: '#000000',
+        availableImages: {
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
+        }
+    },
+    {
+        id: 2,
+        name: appTexts.item2Name,
+        description: appTexts.item2Description,
+        price: 119.99,
+        image: `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
+        color: '#000000',
+        availableImages: {
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Dashcam-white.jpg`
+        }
+    },
+];
+
+export const HEALTH_BUNDLE_ITEMS = [
+    {
+        id: 3,
+        name: 'Blood Pressure Monitor',
+        description: 'A home health monitoring system. Tracks blood pressure and stress levels.',
+        price: 89.99,
+        image: `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
+        color: '#FFFFFF',
+        availableImages: {
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`
+        }
+    },
+    {
+        id: 4,
+        name: 'Blood Oxygen Sensor',
+        description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
+        price: 79.99,
+        image: `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+        color: '#FFFFFF',
+        availableImages: {
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`
+        }
+    },
+];
+
+export const BUNDLES = [
+    {
+        id: 'drive',
+        title: appTexts.driveSafeBundleTitle,
+        description: appTexts.driveSafeBundleDescription,
+        icon: Car,
+        items: DRIVE_SAFE_BUNDLE_ITEMS
+    },
+    {
+        id: 'health',
+        title: appTexts.healthBundleTitle,
+        description: appTexts.healthBundleDescription,
+        icon: HeartPulse,
+        items: HEALTH_BUNDLE_ITEMS
+    }
+];

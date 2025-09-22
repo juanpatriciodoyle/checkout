@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
 import {addDays, format} from 'date-fns';
-import {appTexts, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
+import {appTexts, BUNDLES, DRIVE_SAFE_BUNDLE_ITEMS, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
 import {ContactInfo, Coupon, Currency, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import {OrderSummary} from '../OrderSummary/OrderSummary';
@@ -61,38 +61,11 @@ const steps = [
 const standardShippingDefault = SHIPPING_OPTIONS.find(option => option.id === 'standard') || SHIPPING_OPTIONS[0];
 
 const initialOrderData: OrderData = {
-    items: [
-        {
-            id: 1,
-            name: appTexts.item1Name,
-            description: appTexts.item1Description,
-            price: 59.99,
-            image: `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
-            color: '#000000',
-            availableColors: ['#000000', '#FFFFFF'],
-            availableImages: {
-                '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
-                '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
-            }
-        },
-        {
-            id: 2,
-            name: appTexts.item2Name,
-            description: appTexts.item2Description,
-            price: 119.99,
-            image: `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
-            color: '#000000',
-            availableColors: ['#000000', '#FFFFFF'],
-            availableImages: {
-                '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
-                '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Dashcam-white.jpg`
-            }
-        },
-    ],
-    subtotal: 179.98,
+    items: DRIVE_SAFE_BUNDLE_ITEMS,
+    subtotal: DRIVE_SAFE_BUNDLE_ITEMS.reduce((sum, item) => sum + item.price, 0),
     shipping: standardShippingDefault,
     vivreDiscount: {applied: false, discountPercentage: 0.30},
-    total: 179.98 + standardShippingDefault.cost,
+    total: 0, // Will be calculated by useEffect
     contactInfo: {name: '', email: '', address: '', city: '', zip: '', phone: ''},
     paymentMethod: 'card',
     trackingNumber: 'VIV-123-XYZ',
@@ -129,14 +102,23 @@ export const CheckoutPage = () => {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [currency, setCurrency] = useState<Currency>('GBP');
+    const [selectedBundle, setSelectedBundle] = useState<'drive' | 'health'>('drive');
 
 
     const isDeliveryFormValid = useMemo(() => isContactInfoValid(orderData.contactInfo!), [orderData.contactInfo]);
 
     useEffect(() => {
+        const newItems = BUNDLES.find(b => b.id === selectedBundle)?.items || [];
+        setOrderData(prev => ({
+            ...prev,
+            items: newItems
+        }));
+    }, [selectedBundle]);
+
+    useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
         const memberDiscount = orderData.vivreDiscount.applied ? subtotal * orderData.vivreDiscount.discountPercentage : 0;
-        const couponDiscount = orderData.coupon ? (subtotal - memberDiscount) * orderData.coupon.discountPercentage : 0;
+        const couponDiscount = orderData.coupon ? (subtotal-memberDiscount) * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
         setOrderData(prev => ({
@@ -168,22 +150,6 @@ export const CheckoutPage = () => {
     const handleContinueFromShipping = () => {
         setHighestCompletedStep(prev => Math.max(prev, 3));
         setActiveStep(4);
-    };
-
-    const handleColorChange = (itemId: number, newColor: string) => {
-        setOrderData((prev) => ({
-            ...prev,
-            items: prev.items.map((item) => {
-                if (item.id === itemId) {
-                    return {
-                        ...item,
-                        color: newColor,
-                        image: item.availableImages[newColor] || item.image,
-                    };
-                }
-                return item;
-            }),
-        }));
     };
 
     const handleRemoveItem = (itemId: number) => {
@@ -218,7 +184,7 @@ export const CheckoutPage = () => {
         setOrderData(prev => ({
             ...prev,
             contactInfo: initialOrderData.contactInfo,
-            vivreDiscount: {...prev.vivreDiscount, applied: false},
+            vivreDiscount: { ...prev.vivreDiscount, applied: false },
         }));
         setHighestCompletedStep(1);
     };
@@ -244,7 +210,7 @@ export const CheckoutPage = () => {
 
     const handleCompleteOrder = () => {
         const estimatedArrival = getEstimatedArrivalText(orderData.shipping, orderData.scheduledDate);
-        setOrderData(prev => ({...prev, estimatedArrival}));
+        setOrderData(prev => ({ ...prev, estimatedArrival }));
 
         setIsProcessingPayment(true);
         setTimeout(() => {
@@ -261,6 +227,9 @@ export const CheckoutPage = () => {
         setCurrency(newCurrency);
     };
 
+    const handleBundleChange = (bundleId: 'drive' | 'health') => {
+        setSelectedBundle(bundleId);
+    };
 
     const getStepContent = (stepId: number) => {
         switch (stepId) {
@@ -268,10 +237,11 @@ export const CheckoutPage = () => {
                 return (
                     <YourCart
                         items={orderData.items}
-                        onColorChange={handleColorChange}
                         onRemoveItem={handleRemoveItem}
                         onContinue={handleContinueFromCart}
                         currency={currency}
+                        selectedBundle={selectedBundle}
+                        onBundleChange={handleBundleChange}
                     />
                 );
             case 2:
