@@ -16,6 +16,7 @@ const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps
 const OptionWrapper = styled.div``;
 
 const OptionLabel = styled.label<{ isSelected: boolean }>`
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -32,6 +33,7 @@ const OptionLabel = styled.label<{ isSelected: boolean }>`
 `;
 
 const RadioButton = styled.input`
+    box-sizing: border-box;
     accent-color: ${({theme}) => theme.colors.primary};
     width: 20px;
     height: 20px;
@@ -64,6 +66,7 @@ const DotSeparator = styled.span`
 `;
 
 const RecommendedChip = styled.div`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.successLight};
     color: ${({theme}) => theme.colors.success};
     font-size: 0.75rem;

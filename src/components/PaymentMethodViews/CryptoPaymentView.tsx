@@ -4,6 +4,7 @@ import {Copy} from 'lucide-react';
 import {ReactComponent as QrCodeSvg} from '../../assets/icons/qrcode.svg';
 
 const CryptoContainer = styled.div`
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,6 +15,7 @@ const CryptoContainer = styled.div`
 `;
 
 const QrCodePlaceholder = styled.div`
+    box-sizing: border-box;
     width: 150px;
     height: 150px;
     padding: 0.5rem;
@@ -37,6 +39,7 @@ const WalletAddressWrapper = styled.div`
 `;
 
 const AddressInput = styled.input`
+    box-sizing: border-box;
     flex-grow: 1;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius} 0 0 ${({theme}) => theme.borderRadius};
@@ -49,6 +52,7 @@ const AddressInput = styled.input`
 `;
 
 const CopyButton = styled.button`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.primary};
     color: white;
     border: none;

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useRive, useStateMachineInput } from '@rive-app/react-canvas';
-import { appTexts } from '../../constants/text';
+import {motion} from 'framer-motion';
+import {useRive, useStateMachineInput} from '@rive-app/react-canvas';
+import {appTexts} from '../../constants/text';
 
 const ModalBackdrop = styled(motion.div)`
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,13 +19,14 @@ const ModalBackdrop = styled(motion.div)`
 `;
 
 const ModalContent = styled(motion.div)`
-    background-color: ${({ theme }) => theme.colors.bgWhite};
-    border-radius: ${({ theme }) => theme.borderRadius};
+    box-sizing: border-box;
+    background-color: ${({theme}) => theme.colors.bgWhite};
+    border-radius: ${({theme}) => theme.borderRadius};
     padding: 2rem;
     text-align: center;
     width: 90%;
     max-width: 380px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 `;
 
 const RiveCanvasWrapper = styled.div`
@@ -36,24 +38,26 @@ const RiveCanvasWrapper = styled.div`
 const Title = styled.h2`
     margin: 0 0 1.5rem;
     font-size: 1.5rem;
-    color: ${({ theme }) => theme.colors.textMain};
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const Input = styled.input`
+    box-sizing: border-box;
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 1rem;
-    border-radius: ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    border-radius: ${({theme}) => theme.borderRadius};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
     font-size: 1rem;
 
     &:focus {
         outline: none;
-        border-color: ${({ theme }) => theme.colors.primary};
+        border-color: ${({theme}) => theme.colors.primary};
     }
 `;
 
 const LoginButton = styled.button<{ $isProcessing?: boolean }>`
+    box-sizing: border-box;
     z-index: 1;
     position: relative;
     padding: 0.75rem;
@@ -62,12 +66,12 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
     color: #ffffff;
     font-size: 1rem;
     font-weight: 600;
-    background-color: ${({ $isProcessing }) => ($isProcessing ? '#a989ce' : '#d00a75')};
+    background-color: ${({$isProcessing}) => ($isProcessing ? '#a989ce' : '#d00a75')};
     outline: none;
     border: none;
     transition: color 0.5s, background-color 0.3s ease-in-out;
     cursor: pointer;
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.borderRadius};
 
     .blob-btn__inner {
         z-index: -1;
@@ -77,7 +81,7 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
         top: 0;
         width: 100%;
         height: 100%;
-        border-radius: ${({ theme }) => theme.borderRadius};
+        border-radius: ${({theme}) => theme.borderRadius};
     }
 
     .blob-btn__blobs {
@@ -92,7 +96,7 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
         top: 2px;
         width: 25%;
         height: 100%;
-        background: ${({ theme }) => theme.colors.primary};
+        background: ${({theme}) => theme.colors.primary};
         border-radius: 100%;
         transform: translate3d(0, 150%, 0) scale(1.7);
         transition: transform 0.45s;
@@ -105,14 +109,17 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
             left: 0%;
             transition-delay: 0s;
         }
+
         &:nth-child(2) {
             left: 25%;
             transition-delay: 0.08s;
         }
+
         &:nth-child(3) {
             left: 50%;
             transition-delay: 0.16s;
         }
+
         &:nth-child(4) {
             left: 75%;
             transition-delay: 0.24s;
@@ -143,14 +150,14 @@ interface LoginModalProps {
 
 const STATE_MACHINE_NAME = 'Login Machine';
 
-export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
+export const LoginModal: React.FC<LoginModalProps> = ({onLoginSuccess, onClose}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const { rive, RiveComponent } = useRive({
+    const {rive, RiveComponent} = useRive({
         src: `${process.env.PUBLIC_URL}/login/animated_login_character.riv`,
         stateMachines: STATE_MACHINE_NAME,
         autoplay: true,
@@ -169,59 +176,60 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
     }, [username, numLookInput]);
 
     const handlePasswordFocus = () => {
-        if(isHandsUpInput) isHandsUpInput.value = true;
+        if (isHandsUpInput) isHandsUpInput.value = true;
     };
 
     const handlePasswordBlur = () => {
-        if(isHandsUpInput) isHandsUpInput.value = false;
+        if (isHandsUpInput) isHandsUpInput.value = false;
     };
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setIsProcessing(true);
-        if(isCheckingInput) isCheckingInput.value = true;
+        if (isCheckingInput) isCheckingInput.value = true;
 
         setTimeout(() => {
             if (username === 'kc123456' && password === 'HCL-Dem0') {
-                if(trigSuccessInput) trigSuccessInput.fire();
+                if (trigSuccessInput) trigSuccessInput.fire();
                 setIsSuccess(true);
                 setTimeout(() => {
                     onLoginSuccess();
                 }, 1000);
             } else {
-                if(trigFailInput) trigFailInput.fire();
+                if (trigFailInput) trigFailInput.fire();
                 setError('Invalid username or password.');
                 setIsProcessing(false);
-                if(isCheckingInput) isCheckingInput.value = false;
+                if (isCheckingInput) isCheckingInput.value = false;
             }
         }, 1500);
     };
 
     return (
         <ModalBackdrop
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
             onClick={onClose}
         >
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{display: 'none'}}>
                 <defs>
                     <filter id="goo">
                         <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
-                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7"
+                                       result="goo"></feColorMatrix>
                         <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
                     </filter>
                 </defs>
             </svg>
             <ModalContent
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
+                initial={{y: -50, opacity: 0}}
+                animate={{y: 0, opacity: 1}}
+                exit={{y: -50, opacity: 0}}
                 onClick={(e) => e.stopPropagation()}
             >
                 <RiveCanvasWrapper>
-                    <RiveComponent />
+                    <RiveComponent/>
                 </RiveCanvasWrapper>
                 <Title>{appTexts.loginWithVivre}</Title>
                 <form onSubmit={handleLogin}>
@@ -260,9 +268,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose 
                 </form>
                 {error && (
                     <ErrorMessage
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                     >
                         {error}
                     </ErrorMessage>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BnplContainer = styled.div`
+    box-sizing: border-box;
     text-align: center;
     padding: 2rem 1rem;
     border: 1px solid ${({theme}) => theme.colors.borderColor};

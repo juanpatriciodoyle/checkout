@@ -40,6 +40,7 @@ const CardBack = styled(CardFace)`
     grid-template-columns: auto 1fr auto;
     gap: 1rem;
     padding: 0 1rem;
+    box-sizing: border-box;
 `;
 
 const Avatar = styled.div`
@@ -110,6 +111,7 @@ const LoginButton = styled(Button)`
     border: 1px solid ${({ theme }) => theme.colors.primary};
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
 
     &:hover:not(:disabled) {
         background-color: ${({ theme }) => theme.colors.bgSubtle};

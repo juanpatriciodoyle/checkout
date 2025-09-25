@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Info} from 'lucide-react';
 
 const NoticeContainer = styled.div`
+    box-sizing: border-box;
     display: flex;
     gap: 0.75rem;
     background-color: #EBF8FF;

@@ -5,6 +5,7 @@ import {GooglePayButton} from './GooglePayButton';
 import {Currency, OrderData} from '../../types';
 
 const NoticeContainer = styled.div`
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;

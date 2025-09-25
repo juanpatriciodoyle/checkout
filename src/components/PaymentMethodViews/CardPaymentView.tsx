@@ -21,6 +21,7 @@ const IconWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
+    box-sizing: border-box;
     width: 100%;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius};

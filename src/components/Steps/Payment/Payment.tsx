@@ -10,6 +10,7 @@ import {CryptoPaymentView} from '../../PaymentMethodViews/CryptoPaymentView';
 import {Currency, OrderData} from '../../../types';
 
 const SegmentedControl = styled.div`
+    box-sizing: border-box;
     display: flex;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius};
@@ -19,6 +20,7 @@ const SegmentedControl = styled.div`
 `;
 
 const SegmentButton = styled.button<{ isActive: boolean }>`
+    box-sizing: border-box;
     flex: 1;
     padding: 0.75rem;
     font-size: 1rem;
@@ -45,6 +47,7 @@ const CouponSection = styled.div`
 `;
 
 const CouponInput = styled.input`
+    box-sizing: border-box;
     flex-grow: 1;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius};
@@ -53,6 +56,7 @@ const CouponInput = styled.input`
 `;
 
 const ApplyButton = styled.button`
+    box-sizing: border-box;
     background-color: transparent;
     color: ${({theme}) => theme.colors.primary};
     border: 1px solid ${({theme}) => theme.colors.primary};
@@ -67,6 +71,7 @@ const ApplyButton = styled.button`
 `;
 
 const PayButton = styled(motion.button)`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.primary};
     color: ${({theme}) => theme.colors.bgWhite};
     border: none;

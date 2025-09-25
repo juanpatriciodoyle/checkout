@@ -5,6 +5,7 @@ import {CheckCircle2} from 'lucide-react';
 import {appTexts} from '../../constants/text';
 
 const ModalBackdrop = styled(motion.div)`
+    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,6 +19,7 @@ const ModalBackdrop = styled(motion.div)`
 `;
 
 const ModalContent = styled(motion.div)`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border-radius: ${({theme}) => theme.borderRadius};
     padding: 3rem;
@@ -61,6 +63,7 @@ const DetailItem = styled.li`
 `;
 
 const HomepageButton = styled.button`
+    box-sizing: border-box;
     background-color: transparent;
     color: ${({theme}) => theme.colors.primary};
     border: 1px solid ${({theme}) => theme.colors.primary};

@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useRef, useState} from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
 import {Gift} from 'lucide-react';
@@ -72,45 +72,8 @@ const Header = styled.div`
     margin-bottom: 1.5rem;
 `;
 
-const CurrencyControlContainer = styled.div`
-    position: relative;
-    display: flex;
-    background-color: #F1F3F4;
-    border-radius: 6px;
-    padding: 4px;
-`;
-
-const CurrencyOption = styled.button`
-    position: relative;
-    z-index: 1;
-    padding: 0.25rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    background-color: transparent;
-    color: ${({theme}) => theme.colors.textMain};
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    border-radius: 4px;
-
-    &.active {
-        color: ${({theme}) => theme.colors.bgWhite};
-    }
-`;
-
-const ActiveSlider = styled(motion.div)`
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    background-color: ${({theme}) => theme.colors.primary};
-    border-radius: 4px;
-    z-index: 0;
-`;
-
-
 interface OrderSummaryProps {
     orderData: OrderData;
-    onCurrencyChange: (currency: Currency) => void;
 }
 
 const formatCurrency = (amount: number, currency: Currency) => {
@@ -118,22 +81,8 @@ const formatCurrency = (amount: number, currency: Currency) => {
     return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
 };
 
-export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData, onCurrencyChange}) => {
+export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
     const {items, subtotal, shipping, vivreDiscount, coupon, total, currency} = orderData;
-
-    const gbpRef = useRef<HTMLButtonElement>(null);
-    const eurRef = useRef<HTMLButtonElement>(null);
-    const [sliderStyle, setSliderStyle] = useState({});
-
-    useEffect(() => {
-        const targetRef = currency === 'GBP' ? gbpRef.current : eurRef.current;
-        if (targetRef) {
-            setSliderStyle({
-                left: targetRef.offsetLeft,
-                width: targetRef.offsetWidth,
-            });
-        }
-    }, [currency]);
 
     const discountAmount = vivreDiscount.applied ? subtotal * vivreDiscount.discountPercentage : 0;
     const couponDiscountAmount = coupon ? vivreDiscount.applied ? ((subtotal - discountAmount) * coupon.discountPercentage) : subtotal * coupon.discountPercentage : 0;
@@ -142,20 +91,6 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData, onCurrency
         <SummaryContainer>
             <Header>
                 <Title>{appTexts.orderSummaryTitle}</Title>
-                <CurrencyControlContainer>
-                    <ActiveSlider
-                        animate={sliderStyle}
-                        transition={{type: "spring", stiffness: 500, damping: 40}}
-                    />
-                    <CurrencyOption ref={gbpRef} className={currency === 'GBP' ? 'active' : ''}
-                                    onClick={() => onCurrencyChange('GBP')}>
-                        GBP
-                    </CurrencyOption>
-                    <CurrencyOption ref={eurRef} className={currency === 'EUR' ? 'active' : ''}
-                                    onClick={() => onCurrencyChange('EUR')}>
-                        EUR
-                    </CurrencyOption>
-                </CurrencyControlContainer>
             </Header>
             <ItemList>
                 {items.map((item) => (

@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import theme from './theme';
 
 const GlobalStyle = createGlobalStyle`
@@ -12,8 +12,8 @@ const GlobalStyle = createGlobalStyle`
         -moz-osx-font-smoothing: grayscale;
     }
 
-    *, *::before, *::after {
-        box-sizing: border-box;
+    * {
+        box-sizing: content-box;
     }
 `;
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps} from 'framer-motion';
 import {addDays, format} from 'date-fns';
 import {appTexts, BUNDLES, DRIVE_SAFE_BUNDLE_ITEMS, SHIPPING_OPTIONS, VIVRE_MEMBER_DATA} from '../../constants/text';
-import {ContactInfo, Coupon, Currency, OrderData, ShippingMethodI} from '../../types';
+import {ContactInfo, Coupon, OrderData, ShippingMethodI} from '../../types';
 import AccordionStep from '../Accordion/AccordionStep';
 import {OrderSummary} from '../OrderSummary/OrderSummary';
 import {YourCart} from '../Steps/YourCart/YourCart';
@@ -12,6 +12,9 @@ import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
 import {Payment} from '../Steps/Payment/Payment';
 import {ConfirmationModal} from '../ConfirmationModal/ConfirmationModal';
 import {LoginModal} from "../LoginModal/LoginModal";
+import {usePreferences} from "../../utils/dx/preferences";
+import {SettingsModal} from "../../utils/dx/SettingModal";
+import {Settings} from "lucide-react";
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -48,6 +51,31 @@ const RightColumn = styled.div`
         position: sticky;
         top: 20px;
         align-self: start;
+    }
+`;
+
+const SettingsButton = styled.button`
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: ${({theme}) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.bgWhite};
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    transition: transform 0.2s ease-out;
+    box-sizing: border-box;
+
+
+    &:hover {
+        transform: scale(1.1);
     }
 `;
 
@@ -95,39 +123,39 @@ const getEstimatedArrivalText = (shippingOption: ShippingMethodI, scheduledDate?
 };
 
 export const CheckoutPage = () => {
+    const {preferences} = usePreferences();
     const [activeStep, setActiveStep] = useState(1);
     const [highestCompletedStep, setHighestCompletedStep] = useState(0);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [currency, setCurrency] = useState<Currency>('GBP');
-    const [selectedBundle, setSelectedBundle] = useState<'drive' | 'health'>('drive');
+    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
 
     const isDeliveryFormValid = useMemo(() => isContactInfoValid(orderData.contactInfo!), [orderData.contactInfo]);
 
     useEffect(() => {
-        const newItems = BUNDLES.find(b => b.id === selectedBundle)?.items || [];
+        const newItems = BUNDLES.find(b => b.id === preferences.bundle)?.items || [];
         setOrderData(prev => ({
             ...prev,
-            items: newItems
+            items: newItems,
+            currency: preferences.currency,
         }));
-    }, [selectedBundle]);
+    }, [preferences]);
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
         const memberDiscount = orderData.vivreDiscount.applied ? subtotal * orderData.vivreDiscount.discountPercentage : 0;
-        const couponDiscount = orderData.coupon ? (subtotal-memberDiscount) * orderData.coupon.discountPercentage : 0;
+        const couponDiscount = orderData.coupon ? (subtotal - memberDiscount) * orderData.coupon.discountPercentage : 0;
         const total = subtotal + orderData.shipping.cost - memberDiscount - couponDiscount;
 
         setOrderData(prev => ({
             ...prev,
             subtotal,
             total,
-            currency
         }));
-    }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon, currency]);
+    }, [orderData.items, orderData.shipping.cost, orderData.vivreDiscount, orderData.coupon]);
 
     const handleToggle = (stepId: number) => {
         if (stepId > highestCompletedStep + 1) {
@@ -184,7 +212,7 @@ export const CheckoutPage = () => {
         setOrderData(prev => ({
             ...prev,
             contactInfo: initialOrderData.contactInfo,
-            vivreDiscount: { ...prev.vivreDiscount, applied: false },
+            vivreDiscount: {...prev.vivreDiscount, applied: false},
         }));
         setHighestCompletedStep(1);
     };
@@ -210,7 +238,7 @@ export const CheckoutPage = () => {
 
     const handleCompleteOrder = () => {
         const estimatedArrival = getEstimatedArrivalText(orderData.shipping, orderData.scheduledDate);
-        setOrderData(prev => ({ ...prev, estimatedArrival }));
+        setOrderData(prev => ({...prev, estimatedArrival}));
 
         setIsProcessingPayment(true);
         setTimeout(() => {
@@ -223,14 +251,6 @@ export const CheckoutPage = () => {
         setShowConfirmation(false);
     }
 
-    const handleCurrencyChange = (newCurrency: Currency) => {
-        setCurrency(newCurrency);
-    };
-
-    const handleBundleChange = (bundleId: 'drive' | 'health') => {
-        setSelectedBundle(bundleId);
-    };
-
     const getStepContent = (stepId: number) => {
         switch (stepId) {
             case 1:
@@ -239,9 +259,7 @@ export const CheckoutPage = () => {
                         items={orderData.items}
                         onRemoveItem={handleRemoveItem}
                         onContinue={handleContinueFromCart}
-                        currency={currency}
-                        selectedBundle={selectedBundle}
-                        onBundleChange={handleBundleChange}
+                        currency={orderData.currency}
                     />
                 );
             case 2:
@@ -263,7 +281,7 @@ export const CheckoutPage = () => {
                     selectedDate={orderData.scheduledDate}
                     onDateChange={handleDateChange}
                     onContinue={handleContinueFromShipping}
-                    currency={currency}
+                    currency={orderData.currency}
                 />;
             case 4:
                 return <Payment
@@ -273,7 +291,7 @@ export const CheckoutPage = () => {
                     onApplyCoupon={handleApplyCoupon}
                     appliedCouponCode={orderData.coupon?.code}
                     onComplete={handleCompleteOrder}
-                    currency={currency}
+                    currency={orderData.currency}
                 />;
             default:
                 return null;
@@ -302,13 +320,16 @@ export const CheckoutPage = () => {
                         </SafeAnimatePresence>
                     </LeftColumn>
                     <RightColumn>
-                        <OrderSummary
-                            orderData={orderData}
-                            onCurrencyChange={handleCurrencyChange}
-                        />
+                        <OrderSummary orderData={orderData}/>
                     </RightColumn>
                 </CheckoutGrid>
             </PageContainer>
+
+            <SettingsButton onClick={() => setIsSettingsModalOpen(true)}>
+                <Settings/>
+            </SettingsButton>
+
+            <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)}/>
 
             <SafeAnimatePresence>
                 {isLoginModalOpen && (

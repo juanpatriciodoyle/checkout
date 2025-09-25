@@ -4,6 +4,7 @@ import {motion} from 'framer-motion';
 import {CheckCircle2} from 'lucide-react';
 
 const StepContainer = styled.div`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius};

@@ -6,6 +6,7 @@ import {CartItem as CartItemType, Currency} from '../../types';
 import {CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
 
 const ItemContainer = styled(motion.div)`
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: 120px 1fr auto;
     align-items: center;
@@ -56,6 +57,7 @@ const ItemPrice = styled.span`
 `;
 
 const RemoveButton = styled.button`
+    box-sizing: border-box;
     background: none;
     border: none;
     cursor: pointer;
