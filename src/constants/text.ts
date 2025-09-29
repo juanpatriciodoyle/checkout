@@ -93,10 +93,10 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         name: appTexts.item1Name,
         description: appTexts.item1Description,
         price: 59.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+        image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
         color: '#000000',
         availableImages: {
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+            '#000000': `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
             '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
         }
     },
