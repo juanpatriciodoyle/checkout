@@ -41,12 +41,14 @@ const Item = styled.li`
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const SummaryRow = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const DiscountRow = styled(motion.div)`
