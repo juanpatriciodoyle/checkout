@@ -13,7 +13,6 @@ import {Payment} from '../Steps/Payment/Payment';
 import {ConfirmationModal} from '../ConfirmationModal/ConfirmationModal';
 import {LoginModal} from "../LoginModal/LoginModal";
 import {useSettings} from "../../utils/dx/settingsContext";
-import {SettingsButton} from "../../utils/dx/SettingsButton";
 import {SettingsModal} from "../../utils/dx/SettingsModal";
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
@@ -299,16 +298,15 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({isLocalhost}) => {
                         </SafeAnimatePresence>
                     </LeftColumn>
                     <RightColumn>
-                        <OrderSummary orderData={orderData}/>
+                        <OrderSummary
+                            orderData={orderData}
+                            isSettingsModalOpen={isSettingsModalOpen}
+                            onSettingsClick={() => setIsSettingsModalOpen(true)}
+                            isLocalhost={isLocalhost}
+                        />
                     </RightColumn>
                 </CheckoutGrid>
             </PageContainer>
-
-            <SettingsButton
-                isActive={isSettingsModalOpen}
-                onClick={() => setIsSettingsModalOpen(true)}
-                isLocalhost={isLocalhost}
-            />
 
             <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)}/>
 

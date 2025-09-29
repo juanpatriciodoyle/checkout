@@ -6,12 +6,17 @@ import {appTexts} from '../../constants/text';
 import {OrderData} from '../../types';
 import {AnimatedNumber} from '../AnimatedNumber/AnimatedNumber';
 import {formatCurrency} from '../../utils/formatters';
+import {SettingsButton} from '../../utils/dx/SettingsButton';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
 };
 
 const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
+
+const RelativeWrapper = styled.div`
+    position: relative;
+`;
 
 const SummaryContainer = styled.div`
     box-sizing: border-box;
@@ -76,61 +81,71 @@ const Header = styled.div`
 
 interface OrderSummaryProps {
     orderData: OrderData;
+    isSettingsModalOpen: boolean;
+    onSettingsClick: () => void;
+    isLocalhost: boolean;
 }
 
-export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
+export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData, isSettingsModalOpen, onSettingsClick, isLocalhost}) => {
     const {items, subtotal, shipping, vivreDiscount, coupon, total, currency} = orderData;
 
     const discountAmount = vivreDiscount.applied ? subtotal * vivreDiscount.discountPercentage : 0;
     const couponDiscountAmount = coupon ? vivreDiscount.applied ? ((subtotal - discountAmount) * coupon.discountPercentage) : subtotal * coupon.discountPercentage : 0;
 
     return (
-        <SummaryContainer>
-            <Header>
-                <Title>{appTexts.orderSummaryTitle}</Title>
-            </Header>
-            <ItemList>
-                {items.map((item) => (
-                    <Item key={item.id}>
-                        <span>{item.name}</span>
-                        <span>{formatCurrency(item.price, currency)}</span>
-                    </Item>
-                ))}
-            </ItemList>
-            <SummaryRow>
-                <span>{appTexts.subtotal}</span>
-                <span>{formatCurrency(subtotal, currency)}</span>
-            </SummaryRow>
-            <SummaryRow>
-                <span>{appTexts.shipping}</span>
-                <span>{formatCurrency(shipping.cost, currency)}</span>
-            </SummaryRow>
-
-            <SafeAnimatePresence>
-                {vivreDiscount.applied && (
-                    <DiscountRow
-                        initial={{opacity: 0, x: -20}}
-                        animate={{opacity: 1, x: 0}}
-                        exit={{opacity: 0, x: 20}}
-                        layout
-                    >
-                        <span><Gift size={18}/> {appTexts.discount}</span>
-                        <span>-{formatCurrency(discountAmount, currency)}</span>
-                    </DiscountRow>
-                )}
-            </SafeAnimatePresence>
-
-            {coupon && (
+        <RelativeWrapper>
+            <SettingsButton
+                isActive={isSettingsModalOpen}
+                onClick={onSettingsClick}
+                isLocalhost={isLocalhost}
+            />
+            <SummaryContainer>
+                <Header>
+                    <Title>{appTexts.orderSummaryTitle}</Title>
+                </Header>
+                <ItemList>
+                    {items.map((item) => (
+                        <Item key={item.id}>
+                            <span>{item.name}</span>
+                            <span>{formatCurrency(item.price, currency)}</span>
+                        </Item>
+                    ))}
+                </ItemList>
                 <SummaryRow>
-                    <span>Coupon ({coupon.code})</span>
-                    <span>-{formatCurrency(couponDiscountAmount, currency)}</span>
+                    <span>{appTexts.subtotal}</span>
+                    <span>{formatCurrency(subtotal, currency)}</span>
                 </SummaryRow>
-            )}
+                <SummaryRow>
+                    <span>{appTexts.shipping}</span>
+                    <span>{formatCurrency(shipping.cost, currency)}</span>
+                </SummaryRow>
 
-            <TotalRow>
-                <span>{appTexts.total}</span>
-                <AnimatedNumber value={total} currency={currency}/>
-            </TotalRow>
-        </SummaryContainer>
+                <SafeAnimatePresence>
+                    {vivreDiscount.applied && (
+                        <DiscountRow
+                            initial={{opacity: 0, x: -20}}
+                            animate={{opacity: 1, x: 0}}
+                            exit={{opacity: 0, x: 20}}
+                            layout
+                        >
+                            <span><Gift size={18}/> {appTexts.discount}</span>
+                            <span>-{formatCurrency(discountAmount, currency)}</span>
+                        </DiscountRow>
+                    )}
+                </SafeAnimatePresence>
+
+                {coupon && (
+                    <SummaryRow>
+                        <span>Coupon ({coupon.code})</span>
+                        <span>-{formatCurrency(couponDiscountAmount, currency)}</span>
+                    </SummaryRow>
+                )}
+
+                <TotalRow>
+                    <span>{appTexts.total}</span>
+                    <AnimatedNumber value={total} currency={currency}/>
+                </TotalRow>
+            </SummaryContainer>
+        </RelativeWrapper>
     );
 };

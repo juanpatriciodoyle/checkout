@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Settings} from 'lucide-react';
+import { Settings } from 'lucide-react';
 
 const activeStyles = css`
     transform: scale(1.2);
@@ -11,21 +11,21 @@ const activeStyles = css`
 `;
 
 const StyledButton = styled.button<{ $isActive: boolean }>`
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
     background-color: ${({theme}) => theme.colors.primary};
     color: ${({theme}) => theme.colors.bgWhite};
     border: none;
     border-radius: 50%;
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
     box-sizing: border-box;
     transition: transform 0.2s ease-out;
 
@@ -38,7 +38,6 @@ const StyledButton = styled.button<{ $isActive: boolean }>`
     }
 
     ${({$isActive}) => $isActive && activeStyles}
-
 `;
 
 interface SettingsButtonProps {
@@ -47,7 +46,7 @@ interface SettingsButtonProps {
     isLocalhost: boolean;
 }
 
-export const SettingsButton: React.FC<SettingsButtonProps> = ({onClick, isActive, isLocalhost}) => {
+export const SettingsButton: React.FC<SettingsButtonProps> = ({ onClick, isActive, isLocalhost }) => {
     return (
         <StyledButton
             className={isLocalhost ? '' : 'hide_in_view_mode'}
