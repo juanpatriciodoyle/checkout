@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ContactInfo } from '../../../types';
 import { appTexts } from '../../../constants/text';
 import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
+import VivreLogo from '../../../assets/images/vivre/Logo.png';
+import KateAvatar from '../../../assets/images/vivre/Kate.png';
 
 const FlipContainer = styled.div`
     width: 100%;
@@ -177,13 +179,13 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                 >
                     <CardFront>
                         <LoginButton onClick={onVivreLogin} disabled={isLoggedIn}>
-                            <LoginIcon src={`${process.env.PUBLIC_URL}/vivre/Logo.png`} alt="Vivre Logo" />
+                            <LoginIcon src={VivreLogo} alt="Vivre Logo" />
                             {appTexts.loginWithVivre}
                         </LoginButton>
                     </CardFront>
                     <CardBack>
                         <Avatar>
-                            <img src={`${process.env.PUBLIC_URL}/vivre/Kate.png`} alt="Kate's Profile" />
+                            <img src={KateAvatar} alt="Kate's Profile" />
                         </Avatar>
                         <UserInfo>
                             <UserName>{contactInfo.name}</UserName>

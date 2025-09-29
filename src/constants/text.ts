@@ -3,6 +3,12 @@ import {ReactComponent as BoxSvg} from '../assets/icons/box.svg';
 import {ReactComponent as DroneSvg} from '../assets/icons/drone.svg';
 import {ReactComponent as TruckSvg} from '../assets/icons/truck.svg';
 import {Car, HeartPulse} from "lucide-react";
+import TelemetryImg from '../assets/images/cart-images/Telemetry.jpg';
+import TelemetryWhiteImg from '../assets/images/cart-images/Telemetry-white.jpg';
+import DashcamImg from '../assets/images/cart-images/Dashcam.jpg';
+import DashcamWhiteImg from '../assets/images/cart-images/Dashcam-white.jpg';
+import BloodPressureImg from '../assets/images/cart-images/blood-pressure.jpg';
+import BloodOxygenImg from '../assets/images/cart-images/blood-oxygen.jpeg';
 
 
 export const appTexts = {
@@ -93,11 +99,11 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         name: appTexts.item1Name,
         description: appTexts.item1Description,
         price: 59.99,
-        image: '/cart-images/Telemetry.jpg',
+        image: TelemetryImg,
         color: '#000000',
         availableImages: {
-            '#000000': '/cart-images/Telemetry.jpg',
-            '#FFFFFF': '/cart-images/Telemetry-white.jpg'
+            '#000000': TelemetryImg,
+            '#FFFFFF': TelemetryWhiteImg
         }
     },
     {
@@ -105,11 +111,11 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         name: appTexts.item2Name,
         description: appTexts.item2Description,
         price: 119.99,
-        image: '/cart-images/Dashcam.jpg',
+        image: DashcamImg,
         color: '#000000',
         availableImages: {
-            '#000000': '/cart-images/Dashcam.jpg',
-            '#FFFFFF': '/cart-images/Dashcam-white.jpg'
+            '#000000': DashcamImg,
+            '#FFFFFF': DashcamWhiteImg
         }
     },
 ];
@@ -120,11 +126,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Pressure Monitor',
         description: 'A home health monitoring system. Tracks blood pressure and stress levels.',
         price: 89.99,
-        image: '/cart-images/blood-pressure.jpg',
+        image: BloodPressureImg,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': '/cart-images/blood-pressure.jpg',
-            '#000000': '/cart-images/Telemetry.jpg'
+            '#FFFFFF': BloodPressureImg,
+            '#000000': TelemetryImg
         }
     },
     {
@@ -132,11 +138,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Oxygen Sensor',
         description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
         price: 79.99,
-        image: '/cart-images/blood-oxygen.jpeg',
+        image: BloodOxygenImg,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': '/cart-images/blood-oxygen.jpeg',
-            '#000000': '/cart-images/Dashcam.jpg'
+            '#FFFFFF': BloodOxygenImg,
+            '#000000': DashcamImg
         }
     },
 ];
