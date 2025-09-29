@@ -4,6 +4,9 @@ import {ReactComponent as DroneSvg} from '../assets/icons/drone.svg';
 import {ReactComponent as TruckSvg} from '../assets/icons/truck.svg';
 import {Car, HeartPulse} from "lucide-react";
 
+const bloodOxygenBase64 = 'PASTE_BASE64_FOR_BLOOD_OXYGEN_JPEG_HERE';
+
+
 export const appTexts = {
     title: 'Checkout Process',
     accordionPlaceholder: 'Accordion Steps Will Go Here',
@@ -131,10 +134,10 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Oxygen Sensor',
         description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
         price: 79.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+        image: bloodOxygenBase64,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+            '#FFFFFF': bloodOxygenBase64,
             '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`
         }
     },
