@@ -87,13 +87,15 @@ export const CURRENCIES = {
 
 export const EXCHANGE_RATE_EUR = 1.18;
 
+const DAM_BASE_VIVRE_ASSETS_URL = `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/`;
+
 export const DRIVE_SAFE_BUNDLE_ITEMS = [
     {
         id: 1,
         name: appTexts.item1Name,
         description: appTexts.item1Description,
         price: 59.99,
-        image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
+        image: `${DAM_BASE_VIVRE_ASSETS_URL}f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
         color: '#000000',
     },
     {
