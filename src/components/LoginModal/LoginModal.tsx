@@ -187,20 +187,26 @@ export const LoginModal: React.FC<LoginModalProps> = ({onLoginSuccess, onClose})
         e.preventDefault();
         setError('');
         setIsProcessing(true);
+        if (isHandsUpInput) isHandsUpInput.value = false;
         if (isCheckingInput) isCheckingInput.value = true;
 
         setTimeout(() => {
             if (username === 'kc123456' && password === 'HCL-Dem0') {
-                if (trigSuccessInput) trigSuccessInput.fire();
+                if (isCheckingInput) isCheckingInput.value = false;
                 setIsSuccess(true);
+
                 setTimeout(() => {
-                    onLoginSuccess();
-                }, 1000);
+                    if (trigSuccessInput) trigSuccessInput.fire();
+                    setTimeout(() => {
+                        onLoginSuccess();
+                    }, 2000);
+                }, 100);
+
             } else {
+                if (isCheckingInput) isCheckingInput.value = false;
                 if (trigFailInput) trigFailInput.fire();
                 setError('Invalid username or password.');
                 setIsProcessing(false);
-                if (isCheckingInput) isCheckingInput.value = false;
             }
         }, 1500);
     };
