@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
 import {X} from 'lucide-react';
 import {useSettings} from './settingsContext';
@@ -57,21 +57,90 @@ const FormLabel = styled.label`
     font-weight: 600;
 `;
 
+const crissCrossLeft = keyframes`
+    0% {
+        left: -20px;
+    }
+    50% {
+        left: 50%;
+        width: 20px;
+        height: 20px;
+    }
+    100% {
+        left: 50%;
+        width: 400px;
+        height: 400px;
+    }
+`;
+
+const crissCrossRight = keyframes`
+    0% {
+        right: -20px;
+    }
+    50% {
+        right: 50%;
+        width: 20px;
+        height: 20px;
+    }
+    100% {
+        right: 50%;
+        width: 400px;
+        height: 400px;
+    }
+`;
+
 const SaveButton = styled.button`
     box-sizing: border-box;
     width: 100%;
     margin-top: 16px;
-    background-color: ${({theme}) => theme.colors.primary};
-    color: ${({theme}) => theme.colors.bgWhite};
-    border: none;
+    background-color: transparent;
+    color: ${({theme}) => theme.colors.primary};
+    border: 1px solid ${({theme}) => theme.colors.primary};
     border-radius: ${({theme}) => theme.borderRadius};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.6s ease-in-out;
+
+    span {
+        position: relative;
+        z-index: 2;
+    }
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 20px;
+        background-color: ${({theme}) => theme.colors.primary};
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    &::before {
+        left: -20px;
+        transform: translate(-50%, -50%);
+    }
+
+    &::after {
+        right: -20px;
+        transform: translate(50%, -50%);
+    }
 
     &:hover {
-        opacity: 0.9;
+        color: ${({theme}) => theme.colors.bgWhite};
+
+        &::before {
+            animation: ${crissCrossLeft} 0.8s both alternate;
+        }
+
+        &::after {
+            animation: ${crissCrossRight} 0.8s both alternate;
+        }
     }
 `;
 
@@ -130,7 +199,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({isOpen, onClose}) =
                         ))}
 
                         <SaveButton onClick={handleSave}>
-                            {MODAL_DATA.general.saveButton}
+                            <span>{MODAL_DATA.general.saveButton}</span>
                         </SaveButton>
                     </ModalContent>
                 </ModalBackdrop>
