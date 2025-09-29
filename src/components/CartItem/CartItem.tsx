@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {motion} from 'framer-motion';
 import {Trash2} from 'lucide-react';
 import {CartItem as CartItemType, Currency} from '../../types';
-import {CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
+import {formatCurrency} from '../../utils/formatters';
 
 const ItemContainer = styled(motion.div)`
     box-sizing: border-box;
@@ -76,11 +76,6 @@ interface CartItemProps {
     onRemove: (itemId: number) => void;
     currency: Currency;
 }
-
-const formatCurrency = (amount: number, currency: Currency) => {
-    const finalAmount = currency === 'EUR' ? amount * EXCHANGE_RATE_EUR : amount;
-    return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
-};
 
 export const CartItem: React.FC<CartItemProps> = ({item, onRemove, currency}) => {
     return (

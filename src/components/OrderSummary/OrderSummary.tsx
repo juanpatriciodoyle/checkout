@@ -2,9 +2,10 @@ import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {AnimatePresence, AnimatePresenceProps, motion} from 'framer-motion';
 import {Gift} from 'lucide-react';
-import {appTexts, CURRENCIES, EXCHANGE_RATE_EUR} from '../../constants/text';
-import {Currency, OrderData} from '../../types';
+import {appTexts} from '../../constants/text';
+import {OrderData} from '../../types';
 import {AnimatedNumber} from '../AnimatedNumber/AnimatedNumber';
+import {formatCurrency} from '../../utils/formatters';
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -13,6 +14,7 @@ type SafeAnimatePresenceProps = AnimatePresenceProps & {
 const SafeAnimatePresence = AnimatePresence as React.FC<SafeAnimatePresenceProps>;
 
 const SummaryContainer = styled.div`
+    box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     border-radius: ${({theme}) => theme.borderRadius};
@@ -75,11 +77,6 @@ const Header = styled.div`
 interface OrderSummaryProps {
     orderData: OrderData;
 }
-
-const formatCurrency = (amount: number, currency: Currency) => {
-    const finalAmount = currency === 'EUR' ? amount * EXCHANGE_RATE_EUR : amount;
-    return `${CURRENCIES[currency]}${finalAmount.toFixed(2)}`;
-};
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({orderData}) => {
     const {items, subtotal, shipping, vivreDiscount, coupon, total, currency} = orderData;

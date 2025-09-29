@@ -106,7 +106,7 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
         }
 
         &:nth-child(1) {
-            left: 0%;
+            left: 0;
             transition-delay: 0s;
         }
 

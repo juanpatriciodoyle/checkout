@@ -12,9 +12,9 @@ import {ShippingMethod} from '../Steps/ShippingMethod/ShippingMethod';
 import {Payment} from '../Steps/Payment/Payment';
 import {ConfirmationModal} from '../ConfirmationModal/ConfirmationModal';
 import {LoginModal} from "../LoginModal/LoginModal";
-import {usePreferences} from "../../utils/dx/preferences";
-import {SettingsModal} from "../../utils/dx/SettingModal";
-import {Settings} from "lucide-react";
+import {useSettings} from "../../utils/dx/settingsContext";
+import {SettingsButton} from "../../utils/dx/SettingsButton";
+import {SettingsModal} from "../../utils/dx/SettingsModal";
 
 type SafeAnimatePresenceProps = AnimatePresenceProps & {
     children: ReactNode;
@@ -51,31 +51,6 @@ const RightColumn = styled.div`
         position: sticky;
         top: 20px;
         align-self: start;
-    }
-`;
-
-const SettingsButton = styled.button`
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: ${({theme}) => theme.colors.primary};
-    color: ${({theme}) => theme.colors.bgWhite};
-    border: none;
-    border-radius: 50%;
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 999;
-    transition: transform 0.2s ease-out;
-    box-sizing: border-box;
-
-
-    &:hover {
-        transform: scale(1.1);
     }
 `;
 
@@ -122,8 +97,12 @@ const getEstimatedArrivalText = (shippingOption: ShippingMethodI, scheduledDate?
     }
 };
 
-export const CheckoutPage = () => {
-    const {preferences} = usePreferences();
+interface CheckoutPageProps {
+    isLocalhost: boolean;
+}
+
+export const CheckoutPage: React.FC<CheckoutPageProps> = ({isLocalhost}) => {
+    const {settings} = useSettings();
     const [activeStep, setActiveStep] = useState(1);
     const [highestCompletedStep, setHighestCompletedStep] = useState(0);
     const [orderData, setOrderData] = useState<OrderData>(initialOrderData);
@@ -136,13 +115,13 @@ export const CheckoutPage = () => {
     const isDeliveryFormValid = useMemo(() => isContactInfoValid(orderData.contactInfo!), [orderData.contactInfo]);
 
     useEffect(() => {
-        const newItems = BUNDLES.find(b => b.id === preferences.bundle)?.items || [];
+        const newItems = BUNDLES.find(b => b.id === settings.bundle)?.items || [];
         setOrderData(prev => ({
             ...prev,
             items: newItems,
-            currency: preferences.currency,
+            currency: settings.currency,
         }));
-    }, [preferences]);
+    }, [settings]);
 
     useEffect(() => {
         const subtotal = orderData.items.reduce((acc, item) => acc + item.price, 0);
@@ -325,9 +304,11 @@ export const CheckoutPage = () => {
                 </CheckoutGrid>
             </PageContainer>
 
-            <SettingsButton onClick={() => setIsSettingsModalOpen(true)}>
-                <Settings/>
-            </SettingsButton>
+            <SettingsButton
+                isActive={isSettingsModalOpen}
+                onClick={() => setIsSettingsModalOpen(true)}
+                isLocalhost={isLocalhost}
+            />
 
             <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)}/>
 
