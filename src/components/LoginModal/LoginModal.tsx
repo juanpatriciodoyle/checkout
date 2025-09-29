@@ -158,7 +158,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({onLoginSuccess, onClose})
     const [isSuccess, setIsSuccess] = useState(false);
 
     const {rive, RiveComponent} = useRive({
-        src: `${process.env.PUBLIC_URL}/login/animated_login_character.riv`,
+        src: `https://analyst.woodburn.digital/dx/api/dam/v1/collections/4d3aec2b-6004-4eeb-9577-a935aa3e1014/items/6038c7c3-510f-45f1-ab2c-dd3bab884ddb/renditions/46a448be-68cc-4ac7-9d54-07ec301f8932?binary=true`,
         stateMachines: STATE_MACHINE_NAME,
         autoplay: true,
     });
