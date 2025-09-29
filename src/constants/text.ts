@@ -120,11 +120,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Pressure Monitor',
         description: 'A home health monitoring system. Tracks blood pressure and stress levels.',
         price: 89.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
+        image: `./cart-images/blood-pressure.jpg`,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`
+            '#FFFFFF': `./cart-images/blood-pressure.jpg`,
+            '#000000': `./cart-images/Telemetry.jpg`
         }
     },
     {
@@ -132,11 +132,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Oxygen Sensor',
         description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
         price: 79.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+        image: `./cart-images/blood-oxygen.jpeg`,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`
+            '#FFFFFF': `./cart-images/blood-oxygen.jpeg`,
+            '#000000': `./cart-images/Dashcam.jpg`
         }
     },
 ];
