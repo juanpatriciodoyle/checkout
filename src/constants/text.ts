@@ -95,22 +95,14 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         price: 59.99,
         image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
         color: '#000000',
-        availableImages: {
-            '#000000': `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f44772c9-0ada-4efa-a9e1-71d1f3b5f719/renditions/fe1020ad-7dab-400b-ad2d-5852c2b7e486?binary=true`,
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
-        }
     },
     {
         id: 2,
         name: appTexts.item2Name,
         description: appTexts.item2Description,
         price: 119.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
+        image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/e3929ef7-0f40-4efb-b206-d200d12ef6d4/renditions/5d6edf4b-0481-4a27-b299-ca3fa05e429d?binary=true`,
         color: '#000000',
-        availableImages: {
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Dashcam-white.jpg`
-        }
     },
 ];
 
@@ -120,24 +112,16 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Pressure Monitor',
         description: 'A home health monitoring system. Tracks blood pressure and stress levels.',
         price: 89.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
+        image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/f95577f3-02ce-476e-96ce-e8f5d1a3f3c0/renditions/7619c8b0-59b3-4f8c-ac3c-6332507d1fc7?binary=true`,
         color: '#FFFFFF',
-        availableImages: {
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`
-        }
     },
     {
         id: 4,
         name: 'Blood Oxygen Sensor',
         description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
         price: 79.99,
-        image: `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+        image: `https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/8006db45-f9ac-4c59-84c0-6046ea0c6aff/renditions/df12fdbf-1e4c-473b-9c29-7f505a1f7b68?binary=true`,
         color: '#FFFFFF',
-        availableImages: {
-            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
-            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`
-        }
     },
 ];
 

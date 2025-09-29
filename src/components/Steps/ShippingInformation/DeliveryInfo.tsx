@@ -177,13 +177,13 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
                 >
                     <CardFront>
                         <LoginButton onClick={onVivreLogin} disabled={isLoggedIn}>
-                            <LoginIcon src={`${process.env.PUBLIC_URL}/vivre/Logo.png`} alt="Vivre Logo" />
+                            <LoginIcon src={`https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/e51a782d-e5dd-4ab9-8a8e-e8882429f480/renditions/fa01afb7-04bc-43c3-aed4-d82777073e5e?binary=true`} alt="Vivre Logo" />
                             {appTexts.loginWithVivre}
                         </LoginButton>
                     </CardFront>
                     <CardBack>
                         <Avatar>
-                            <img src={`${process.env.PUBLIC_URL}/vivre/Kate.png`} alt="Kate's Profile" />
+                            <img src={'https://vivre.woodburn.digital/dx/api/dam/v1/collections/b5ada47f-3a8d-42e9-b3c2-6a436f3359e3/items/6adba40e-4c02-4122-925c-4014c7421d17/renditions/2ec7d776-c9d9-40c9-83cc-1558e7896ba6?binary=true'} alt="Kate's Profile" />
                         </Avatar>
                         <UserInfo>
                             <UserName>{contactInfo.name}</UserName>
