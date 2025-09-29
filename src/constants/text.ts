@@ -3,13 +3,6 @@ import {ReactComponent as BoxSvg} from '../assets/icons/box.svg';
 import {ReactComponent as DroneSvg} from '../assets/icons/drone.svg';
 import {ReactComponent as TruckSvg} from '../assets/icons/truck.svg';
 import {Car, HeartPulse} from "lucide-react";
-import TelemetryImg from '../assets/images/cart-images/Telemetry.jpg';
-import TelemetryWhiteImg from '../assets/images/cart-images/Telemetry-white.jpg';
-import DashcamImg from '../assets/images/cart-images/Dashcam.jpg';
-import DashcamWhiteImg from '../assets/images/cart-images/Dashcam-white.jpg';
-import BloodPressureImg from '../assets/images/cart-images/blood-pressure.jpg';
-import BloodOxygenImg from '../assets/images/cart-images/blood-oxygen.jpeg';
-
 
 export const appTexts = {
     title: 'Checkout Process',
@@ -99,11 +92,11 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         name: appTexts.item1Name,
         description: appTexts.item1Description,
         price: 59.99,
-        image: TelemetryImg,
+        image: `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
         color: '#000000',
         availableImages: {
-            '#000000': TelemetryImg,
-            '#FFFFFF': TelemetryWhiteImg
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`,
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Telemetry-white.jpg`
         }
     },
     {
@@ -111,11 +104,11 @@ export const DRIVE_SAFE_BUNDLE_ITEMS = [
         name: appTexts.item2Name,
         description: appTexts.item2Description,
         price: 119.99,
-        image: DashcamImg,
+        image: `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
         color: '#000000',
         availableImages: {
-            '#000000': DashcamImg,
-            '#FFFFFF': DashcamWhiteImg
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`,
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/Dashcam-white.jpg`
         }
     },
 ];
@@ -126,11 +119,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Pressure Monitor',
         description: 'A home health monitoring system. Tracks blood pressure and stress levels.',
         price: 89.99,
-        image: BloodPressureImg,
+        image: `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': BloodPressureImg,
-            '#000000': TelemetryImg
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-pressure.jpg`,
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Telemetry.jpg`
         }
     },
     {
@@ -138,11 +131,11 @@ export const HEALTH_BUNDLE_ITEMS = [
         name: 'Blood Oxygen Sensor',
         description: 'Measures and monitors your blood oxygen levels to ensure a healthy lifestyle.',
         price: 79.99,
-        image: BloodOxygenImg,
+        image: `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
         color: '#FFFFFF',
         availableImages: {
-            '#FFFFFF': BloodOxygenImg,
-            '#000000': DashcamImg
+            '#FFFFFF': `${process.env.PUBLIC_URL}/cart-images/blood-oxygen.jpeg`,
+            '#000000': `${process.env.PUBLIC_URL}/cart-images/Dashcam.jpg`
         }
     },
 ];

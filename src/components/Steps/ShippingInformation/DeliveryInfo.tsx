@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { ContactInfo } from '../../../types';
-import { appTexts } from '../../../constants/text';
-import { FloatingLabelInput } from '../../FloatingLabelInput/FloatingLabelInput';
-import VivreLogo from '../../../assets/images/vivre/Logo.png';
-import KateAvatar from '../../../assets/images/vivre/Kate.png';
+import {motion} from 'framer-motion';
+import {ContactInfo} from '../../../types';
+import {appTexts} from '../../../constants/text';
+import {FloatingLabelInput} from '../../FloatingLabelInput/FloatingLabelInput';
 
 const FlipContainer = styled.div`
     width: 100%;
@@ -29,14 +27,14 @@ const CardFace = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: ${({ theme }) => theme.sizing.borderRadius.cards};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
 `;
 
 const CardFront = styled(CardFace)``;
 
 const CardBack = styled(CardFace)`
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
-    border: 1px solid ${({ theme }) => theme.colors.borderColor};
+    background-color: ${({theme}) => theme.colors.bgSubtle};
+    border: 1px solid ${({theme}) => theme.colors.borderColor};
     transform: rotateY(180deg);
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -49,7 +47,7 @@ const Avatar = styled.div`
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: ${({ theme }) => theme.colors.bgSubtle};
+    background-color: ${({theme}) => theme.colors.bgSubtle};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,18 +67,18 @@ const UserInfo = styled.div`
 
 const UserName = styled.div`
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.textMain};
+    color: ${({theme}) => theme.colors.textMain};
 `;
 
 const UserEmail = styled.div`
     font-size: 0.875rem;
-    color: ${({ theme }) => theme.colors.textLight};
+    color: ${({theme}) => theme.colors.textLight};
 `;
 
 const ChangeLink = styled.button`
     background: none;
     border: none;
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.primary};
     font-weight: 600;
     cursor: pointer;
     font-size: 0.875rem;
@@ -90,7 +88,7 @@ const ChangeLink = styled.button`
 
 const Button = styled.button`
     border: none;
-    border-radius: ${({ theme }) => theme.sizing.borderRadius.buttons};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
@@ -109,20 +107,20 @@ const Button = styled.button`
 
 const LoginButton = styled(Button)`
     background-color: transparent;
-    color: ${({ theme }) => theme.colors.primary};
-    border: 1px solid ${({ theme }) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.primary};
+    border: 1px solid ${({theme}) => theme.colors.primary};
     width: 100%;
     height: 100%;
     box-sizing: border-box;
 
     &:hover:not(:disabled) {
-        background-color: ${({ theme }) => theme.colors.bgSubtle};
+        background-color: ${({theme}) => theme.colors.bgSubtle};
     }
 `;
 
 const ContinueButton = styled(Button)`
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.bgWhite};
+    background-color: ${({theme}) => theme.colors.primary};
+    color: ${({theme}) => theme.colors.bgWhite};
 
     &:hover:not(:disabled) {
         opacity: 0.9;
@@ -174,18 +172,18 @@ export const DeliveryInfo: React.FC<StepDeliveryInfoProps> = ({
         <div>
             <FlipContainer>
                 <Card
-                    animate={{ rotateY: isLoggedIn ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    animate={{rotateY: isLoggedIn ? 180 : 0}}
+                    transition={{duration: 0.3, ease: "easeInOut"}}
                 >
                     <CardFront>
                         <LoginButton onClick={onVivreLogin} disabled={isLoggedIn}>
-                            <LoginIcon src={VivreLogo} alt="Vivre Logo" />
+                            <LoginIcon src={`${process.env.PUBLIC_URL}/vivre/Logo.png`} alt="Vivre Logo"/>
                             {appTexts.loginWithVivre}
                         </LoginButton>
                     </CardFront>
                     <CardBack>
                         <Avatar>
-                            <img src={KateAvatar} alt="Kate's Profile" />
+                            <img src={`${process.env.PUBLIC_URL}/vivre/Kate.png`} alt="Kate's Profile"/>
                         </Avatar>
                         <UserInfo>
                             <UserName>{contactInfo.name}</UserName>
