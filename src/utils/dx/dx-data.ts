@@ -21,3 +21,7 @@ export const MODAL_DATA = {
         currencyLabel: 'Currency',
     },
 };
+
+export const DX_ATTRIBUTES = {
+    rootName: '__SPNS__root' //If this changes, a manual change must be done in index.html
+}
