@@ -9,11 +9,38 @@ const theme = {
         borderColor: '#EAEBEE',
         success: '#28A745',
         successLight: '#EAF7EC',
+
+        background: '#FFFFFF',
+        subtleBackground: '#F6F6F6',
+        textHeadings: '#1D1D1F',
+        textBody: '#545454',
+        borders: '#D1D1D6',
     },
-    fonts: {
-        body: "'Inter', sans-serif",
+    font: {
+        primary: 'Inter, sans-serif',
+        weights: {
+            regular: 400,
+            medium: 500,
+            semiBold: 600,
+            bold: 700,
+        },
+        sizes: {
+            display: '100px',
+            h1: '34px',
+            h2: '26px',
+            h3: '19px',
+            body: '16px',
+            label: '16px',
+            subtext: '13px',
+            button: '15px',
+        },
     },
-    borderRadius: '6px',
+    sizing: {
+        borderRadius: {
+            cards: '12px',
+            buttons: '6px',
+        },
+    },
 };
 
 export default theme;

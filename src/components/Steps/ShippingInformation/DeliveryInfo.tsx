@@ -27,7 +27,7 @@ const CardFace = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({ theme }) => theme.sizing.borderRadius.cards};
 `;
 
 const CardFront = styled(CardFace)``;
@@ -88,7 +88,7 @@ const ChangeLink = styled.button`
 
 const Button = styled.button`
     border: none;
-    border-radius: ${({ theme }) => theme.borderRadius};
+    border-radius: ${({ theme }) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

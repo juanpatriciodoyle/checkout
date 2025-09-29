@@ -11,7 +11,7 @@ const CryptoContainer = styled.div`
     gap: 1.5rem;
     padding: 2rem 1rem;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
 `;
 
 const QrCodePlaceholder = styled.div`
@@ -21,7 +21,7 @@ const QrCodePlaceholder = styled.div`
     padding: 0.5rem;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,7 +42,7 @@ const AddressInput = styled.input`
     box-sizing: border-box;
     flex-grow: 1;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius} 0 0 ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons} 0 0 ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem;
     font-size: 0.875rem;
     background-color: ${({theme}) => theme.colors.bgSubtle};
@@ -57,7 +57,7 @@ const CopyButton = styled.button`
     color: white;
     border: none;
     padding: 0 1rem;
-    border-radius: 0 ${({theme}) => theme.borderRadius} ${({theme}) => theme.borderRadius} 0;
+    border-radius: 0 ${({theme}) => theme.sizing.borderRadius.buttons} ${({theme}) => theme.sizing.borderRadius.buttons} 0;
     cursor: pointer;
     display: flex;
     align-items: center;

@@ -23,7 +23,7 @@ const OptionLabel = styled.label<{ isSelected: boolean }>`
     gap: 1rem;
     padding: 1rem;
     border: 2px solid ${({isSelected, theme}) => isSelected ? theme.colors.primary : theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     cursor: pointer;
     transition: border-color 0.2s ease-in-out;
     background-color: ${({theme}) => theme.colors.bgWhite};

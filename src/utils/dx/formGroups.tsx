@@ -7,11 +7,11 @@ const Select = styled.select`
     width: 100%;
     padding: 12px 16px;
     box-sizing: border-box;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     background-color: ${({theme}) => theme.colors.bgSubtle};
     color: ${({theme}) => theme.colors.textMain};
-    font-family: ${({theme}) => theme.fonts.body};
+    font-family: ${({theme}) => theme.font.primary};
     font-size: 1rem;
 `;
 

@@ -12,7 +12,7 @@ const NoticeContainer = styled.div`
     text-align: center;
     padding: 2rem 1rem;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
 `;
 
 const IconWrapper = styled.div`

@@ -21,7 +21,7 @@ const ModalBackdrop = styled(motion.div)`
 const ModalContent = styled(motion.div)`
     box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     padding: 2rem;
     text-align: center;
     width: 90%;
@@ -46,7 +46,7 @@ const Input = styled.input`
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 1rem;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
     font-size: 1rem;
 
@@ -71,7 +71,7 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
     border: none;
     transition: color 0.5s, background-color 0.3s ease-in-out;
     cursor: pointer;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
 
     .blob-btn__inner {
         z-index: -1;
@@ -81,7 +81,7 @@ const LoginButton = styled.button<{ $isProcessing?: boolean }>`
         top: 0;
         width: 100%;
         height: 100%;
-        border-radius: ${({theme}) => theme.borderRadius};
+        border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     }
 
     .blob-btn__blobs {

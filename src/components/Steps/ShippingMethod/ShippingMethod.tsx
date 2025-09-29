@@ -12,7 +12,7 @@ const OptionsContainer = styled.div`
 
 const Button = styled.button`
     border: none;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

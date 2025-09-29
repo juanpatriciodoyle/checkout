@@ -23,7 +23,7 @@ const ContinueButton = styled.button`
     background-color: ${({theme}) => theme.colors.primary};
     color: ${({theme}) => theme.colors.bgWhite};
     border: none;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

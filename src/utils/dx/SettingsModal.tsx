@@ -29,7 +29,7 @@ const ModalContent = styled(motion.div)`
     box-sizing: border-box;
     background: ${({theme}) => theme.colors.bgWhite};
     padding: 32px;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     width: 100%;
     max-width: 400px;
     position: relative;
@@ -96,7 +96,7 @@ const SaveButton = styled.button`
     background-color: transparent;
     color: ${({theme}) => theme.colors.primary};
     border: 1px solid ${({theme}) => theme.colors.primary};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

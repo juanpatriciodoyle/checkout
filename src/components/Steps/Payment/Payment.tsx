@@ -13,7 +13,7 @@ const SegmentedControl = styled.div`
     box-sizing: border-box;
     display: flex;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     overflow: hidden;
     margin-bottom: 2rem;
     padding: 4px;
@@ -50,7 +50,7 @@ const CouponInput = styled.input`
     box-sizing: border-box;
     flex-grow: 1;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem;
     font-size: 1rem;
 `;
@@ -60,7 +60,7 @@ const ApplyButton = styled.button`
     background-color: transparent;
     color: ${({theme}) => theme.colors.primary};
     border: 1px solid ${({theme}) => theme.colors.primary};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     cursor: pointer;
@@ -75,7 +75,7 @@ const PayButton = styled(motion.button)`
     background-color: ${({theme}) => theme.colors.primary};
     color: ${({theme}) => theme.colors.bgWhite};
     border: none;
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

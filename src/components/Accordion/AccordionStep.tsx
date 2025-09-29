@@ -7,7 +7,7 @@ const StepContainer = styled.div`
     box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     margin-bottom: 1rem;
     overflow: hidden;
 `;

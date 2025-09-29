@@ -10,7 +10,7 @@ const InputField = styled.input`
     box-sizing: border-box;
     width: 100%;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem;
     font-size: 1rem;
     background-color: transparent;

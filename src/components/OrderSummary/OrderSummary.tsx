@@ -22,7 +22,7 @@ const SummaryContainer = styled.div`
     box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     padding: 1.5rem;
 `;
 

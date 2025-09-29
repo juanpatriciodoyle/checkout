@@ -21,7 +21,7 @@ const ModalBackdrop = styled(motion.div)`
 const ModalContent = styled(motion.div)`
     box-sizing: border-box;
     background-color: ${({theme}) => theme.colors.bgWhite};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.cards};
     padding: 3rem;
     text-align: center;
     width: 90%;
@@ -67,7 +67,7 @@ const HomepageButton = styled.button`
     background-color: transparent;
     color: ${({theme}) => theme.colors.primary};
     border: 1px solid ${({theme}) => theme.colors.primary};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;

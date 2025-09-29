@@ -24,7 +24,7 @@ const StyledInput = styled.input`
     box-sizing: border-box;
     width: 100%;
     border: 1px solid ${({theme}) => theme.colors.borderColor};
-    border-radius: ${({theme}) => theme.borderRadius};
+    border-radius: ${({theme}) => theme.sizing.borderRadius.buttons};
     padding: 1rem;
     font-size: 1rem;
     height: 50px;
