@@ -12,11 +12,22 @@ const defaultSettings: Settings = {
     currency: settingsConfig.currency.defaultValue,
 };
 
+const getSettingsKey = () => {
+    const path = window.location.pathname;
+    if (path.includes('checkout-health')) {
+        return 'checkoutSettings_health';
+    }
+    if (path.includes('checkout-auto')) {
+        return 'checkoutSettings_auto';
+    }
+    return 'checkoutSettings';
+};
+
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 const getInitialSettings = (): Settings => {
     try {
-        const item = window.localStorage.getItem('checkoutSettings');
+        const item = window.localStorage.getItem(getSettingsKey());
         const savedSettings: Partial<Settings> = item ? JSON.parse(item) : {};
         const initialSettings: { [key: string]: any } = {...defaultSettings};
 
@@ -46,7 +57,7 @@ export const SettingsProvider = ({children}: { children: ReactNode }) => {
 
     useEffect(() => {
         try {
-            window.localStorage.setItem('checkoutSettings', JSON.stringify(settings));
+            window.localStorage.setItem(getSettingsKey(), JSON.stringify(settings));
         } catch (error) {
             console.error('Error saving settings to localStorage', error);
         }
